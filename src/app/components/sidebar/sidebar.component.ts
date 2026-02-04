@@ -1,6 +1,7 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { CommonModule } from '@angular/common';
 
 interface NavItem {
   label: string;
@@ -10,11 +11,16 @@ interface NavItem {
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   template: `
-    <aside class="sidebar">
-      <div class="logo">
-        <h1>NewsCenter</h1>
+    <aside class="sidebar" [class.open]="isOpen()">
+      <div class="sidebar-header">
+        <div class="logo">
+          <h1>State Council Admin</h1>
+        </div>
+        <button class="close-btn" (click)="close.emit()">
+          ✕
+        </button>
       </div>
 
       <nav class="nav-menu">
@@ -49,11 +55,20 @@ interface NavItem {
       position: fixed;
       left: 0;
       top: 0;
+      z-index: 100;
+      transition: transform 0.3s;
+    }
+
+    .sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e9ecef;
     }
 
     .logo {
       padding: 24px 20px;
-      border-bottom: 1px solid #e9ecef;
+      flex: 1;
     }
 
     .logo h1 {
@@ -61,6 +76,35 @@ interface NavItem {
       font-weight: 600;
       color: #007bff;
       margin: 0;
+    }
+
+    .close-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #6c757d;
+      cursor: pointer;
+      padding: 20px;
+      transition: color 0.2s;
+    }
+
+    .close-btn:hover {
+      color: #dc3545;
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .close-btn {
+        display: block;
+      }
     }
 
     .nav-menu {
@@ -121,6 +165,9 @@ interface NavItem {
   `]
 })
 export class SidebarComponent {
+  isOpen = input<boolean>(false);
+  close = output<void>();
+
   protected navItems: NavItem[] = [
     { label: 'Dashboard', route: '/dashboard', icon: '📊' },
     { label: 'Posts', route: '/posts', icon: '📝' },

@@ -6,11 +6,15 @@ import { PostFormComponent } from './pages/post-form/post-form.component';
 import { PostDetailComponent } from './pages/post-detail/post-detail.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { PlaceholderComponent } from './pages/placeholder/placeholder.component';
+import { LoginComponent } from './pages/login/login.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
+  { path: 'login', component: LoginComponent },
   {
     path: '',
     component: LayoutComponent,
+    canActivate: [authGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },

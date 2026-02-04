@@ -205,10 +205,39 @@ import { BlogCategory } from '../../models/blog.model';
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
+    @media (max-width: 640px) {
+      .form-container {
+        padding: 20px;
+      }
+
+      .form-header h1 {
+        font-size: 24px;
+      }
+
+      .form-actions {
+        flex-direction: column-reverse;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+      }
+    }
+
     .form-section {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .form-section {
+        grid-template-columns: 1fr;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr !important;
+      }
     }
 
     .form-group {

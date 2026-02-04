@@ -10,11 +10,6 @@ export class AuthService {
 
   constructor() {
     this.loadFromStorage();
-
-    // Auto-login with default user if not logged in
-    if (!this.currentUser()) {
-      this.loginAsAdmin();
-    }
   }
 
   getCurrentUser() {
@@ -25,11 +20,20 @@ export class AuthService {
     return this.currentUser() !== null;
   }
 
+  login(email: string, password: string): boolean {
+    // Simple authentication - in production, this would call an API
+    if (email === 'admin@statecounciladmin.com' && password === 'admin123') {
+      this.loginAsAdmin();
+      return true;
+    }
+    return false;
+  }
+
   loginAsAdmin(): void {
     const admin: User = {
       id: 'admin',
       name: 'Admin',
-      email: 'admin@newscenter.com',
+      email: 'admin@statecounciladmin.com',
       avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin',
       role: 'admin',
       createdAt: new Date()

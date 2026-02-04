@@ -42,16 +42,16 @@ import { AuthService } from '../../services/auth.service';
 
     h1 {
       font-size: 32px;
-      font-weight: 600;
+      font-weight: 400;
       margin: 0 0 32px 0;
-      color: #212529;
+      color: #6b7280;
     }
 
     .recent-section {
       background: white;
       border-radius: 12px;
       padding: 32px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     }
 
     .section-header {
@@ -59,19 +59,21 @@ import { AuthService } from '../../services/auth.service';
       justify-content: space-between;
       align-items: center;
       margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e5e7eb;
     }
 
     .section-header h2 {
-      font-size: 24px;
+      font-size: 20px;
       font-weight: 600;
       margin: 0;
-      color: #212529;
+      color: #374151;
     }
 
     .btn-link {
       background: none;
       border: none;
-      color: #007bff;
+      color: #0891b2;
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
@@ -79,67 +81,125 @@ import { AuthService } from '../../services/auth.service';
     }
 
     .btn-link:hover {
-      color: #0056b3;
+      color: #0e7490;
       text-decoration: underline;
     }
 
     .recent-posts {
       display: grid;
-      gap: 16px;
+      gap: 0;
     }
 
     .recent-post-item {
       display: flex;
-      gap: 16px;
-      padding: 16px;
-      border-radius: 8px;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid #f3f4f6;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: all 0.2s;
+    }
+
+    .recent-post-item:last-child {
+      border-bottom: none;
     }
 
     .recent-post-item:hover {
-      background: #f8f9fa;
+      padding-left: 8px;
+      background: linear-gradient(90deg, #ecfeff 0%, transparent 100%);
     }
 
     .recent-post-item img {
-      width: 120px;
-      height: 80px;
+      width: 140px;
+      height: 100px;
       object-fit: cover;
       border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .recent-post-content {
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .recent-post-category {
       display: inline-block;
-      background: #e7f3ff;
-      color: #007bff;
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 8px;
+      background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%);
+      color: #0891b2;
+      padding: 4px 12px;
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      width: fit-content;
     }
 
     .recent-post-content h3 {
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 600;
       margin: 0 0 8px 0;
-      color: #212529;
+      color: #1f2937;
+      line-height: 1.4;
     }
 
     .recent-post-date {
       font-size: 13px;
-      color: #6c757d;
+      color: #9ca3af;
       margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .recent-post-date::before {
+      content: '📅';
+      font-size: 12px;
     }
 
     .empty-message {
       text-align: center;
-      color: #6c757d;
-      padding: 32px;
+      color: #9ca3af;
+      padding: 64px 20px;
+      font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .recent-post-item {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .recent-post-item img {
+        width: 100%;
+        height: 180px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 24px;
+      }
+
+      .recent-section {
+        padding: 20px;
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .recent-post-item {
+        padding: 16px 0;
+      }
+
+      .recent-post-content h3 {
+        font-size: 16px;
+      }
     }
   `]
 })
