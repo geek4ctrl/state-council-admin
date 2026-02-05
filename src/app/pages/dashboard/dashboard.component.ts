@@ -8,27 +8,49 @@ import { AuthService } from '../../services/auth.service';
   selector: 'app-dashboard',
   imports: [CommonModule],
   template: `
-    <div class="dashboard">
-      <h1>Dashboard</h1>
+    <div class="dashboard" role="main">
+      <h1 id="dashboard-title">Dashboard</h1>
 
       <div class="recent-section">
         <div class="section-header">
-          <h2>Recent Posts</h2>
-          <button class="btn-link" (click)="viewAllPosts()">View All →</button>
+          <h2 id="recent-posts-title">Recent Posts</h2>
+          <button
+            class="btn-link"
+            (click)="viewAllPosts()"
+            aria-label="View all blog posts"
+          >
+            View All →
+          </button>
         </div>
 
-        <div class="recent-posts">
+        <div class="recent-posts" role="list" aria-labelledby="recent-posts-title">
           @for (blog of recentPosts(); track blog.id) {
-            <div class="recent-post-item" (click)="viewPost(blog.id)">
-              <img [src]="blog.imageUrl" [alt]="blog.title" />
+            <article
+              class="recent-post-item"
+              (click)="viewPost(blog.id)"
+              (keydown.enter)="viewPost(blog.id)"
+              (keydown.space)="viewPost(blog.id); $event.preventDefault()"
+              tabindex="0"
+              role="listitem"
+              [attr.aria-label]="'View post: ' + blog.title"
+            >
+              <img
+                [src]="blog.imageUrl"
+                [alt]="'Cover image for ' + blog.title"
+                loading="lazy"
+                decoding="async"
+                (error)="onImageError($event)"
+              />
               <div class="recent-post-content">
-                <span class="recent-post-category">{{ blog.category }}</span>
+                <span class="recent-post-category" aria-label="Category">{{ blog.category }}</span>
                 <h3>{{ blog.title }}</h3>
-                <p class="recent-post-date">{{ formatDate(blog.date) }}</p>
+                <p class="recent-post-date">
+                  <time [attr.datetime]="blog.date.toISOString()">{{ formatDate(blog.date) }}</time>
+                </p>
               </div>
-            </div>
+            </article>
           } @empty {
-            <p class="empty-message">No posts yet</p>
+            <p class="empty-message" role="status">No posts yet</p>
           }
         </div>
       </div>
@@ -97,6 +119,13 @@ import { AuthService } from '../../services/auth.service';
       border-bottom: 1px solid #f3f4f6;
       cursor: pointer;
       transition: all 0.2s;
+      outline: none;
+    }
+
+    .recent-post-item:focus {
+      padding-left: 8px;
+      background: linear-gradient(90deg, #ecfeff 0%, transparent 100%);
+      box-shadow: 0 0 0 2px #0891b2;
     }
 
     .recent-post-item:last-child {
@@ -176,6 +205,10 @@ import { AuthService } from '../../services/auth.service';
         width: 100%;
         height: 180px;
       }
+
+      .recent-section {
+        padding: 24px;
+      }
     }
 
     @media (max-width: 640px) {
@@ -193,12 +226,25 @@ import { AuthService } from '../../services/auth.service';
         gap: 12px;
       }
 
+      .section-header h2 {
+        font-size: 18px;
+      }
+
       .recent-post-item {
         padding: 16px 0;
       }
 
+      .recent-post-item img {
+        height: 160px;
+      }
+
       .recent-post-content h3 {
         font-size: 16px;
+      }
+
+      .recent-post-category {
+        font-size: 10px;
+        padding: 3px 10px;
       }
     }
   `]
@@ -238,5 +284,10 @@ export class DashboardComponent {
 
   protected viewPost(id: string): void {
     this.router.navigate(['/posts', id]);
+  }
+
+  protected onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = 'https://placehold.co/600x400/e5e7eb/6b7280?text=Image+Not+Available';
   }
 }

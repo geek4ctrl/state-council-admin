@@ -2,13 +2,17 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { HeaderComponent } from '../header/header.component';
+import { ToastComponent } from '../toast/toast.component';
+import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-layout',
-  imports: [CommonModule, RouterOutlet, SidebarComponent, HeaderComponent],
+  imports: [CommonModule, RouterOutlet, SidebarComponent, HeaderComponent, ToastComponent, ConfirmationModalComponent],
   template: `
     <div class="layout">
+      <app-toast />
+      <app-confirmation-modal />
       <app-sidebar [isOpen]="sidebarOpen()" (close)="closeSidebar()" />
       @if (sidebarOpen()) {
         <div class="overlay" (click)="closeSidebar()"></div>
@@ -97,6 +101,22 @@ import { CommonModule } from '@angular/common';
     @media (max-width: 768px) {
       .content {
         padding: 20px 16px;
+      }
+
+      .layout::before {
+        width: 600px;
+        height: 600px;
+      }
+
+      .layout::after {
+        width: 400px;
+        height: 400px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .content {
+        padding: 16px 12px;
       }
     }
   `]

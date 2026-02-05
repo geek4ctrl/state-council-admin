@@ -91,8 +91,8 @@ export class BlogService {
       const stored = localStorage.getItem(this.storageKey);
       if (stored) {
         try {
-          const parsed = JSON.parse(stored);
-          this.blogs.set(parsed.map((blog: any) => ({
+          const parsed: Blog[] = JSON.parse(stored);
+          this.blogs.set(parsed.map((blog) => ({
             ...blog,
             date: new Date(blog.date),
             createdAt: new Date(blog.createdAt),

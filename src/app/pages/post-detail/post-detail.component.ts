@@ -32,7 +32,14 @@ import { Blog } from '../../models/blog.model';
           </div>
 
           <div class="post-image">
-            <img [src]="blog.imageUrl" [alt]="blog.title" />
+            <img
+              [src]="blog.imageUrl"
+              [alt]="blog.title"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+              (error)="onImageError($event)"
+            />
           </div>
 
           <div class="post-body">
@@ -315,6 +322,11 @@ export class PostDetailComponent implements OnInit {
     if (blog) {
       this.router.navigate(['/posts/edit', blog.id]);
     }
+  }
+
+  protected onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = 'https://placehold.co/800x500/e5e7eb/6b7280?text=Image+Not+Available';
   }
 
   protected onDelete(): void {

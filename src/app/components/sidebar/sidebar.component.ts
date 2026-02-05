@@ -1,6 +1,7 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, input, output, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { ConfirmationService } from '../../services/confirmation.service';
 import { CommonModule } from '@angular/common';
 
 interface NavItem {
@@ -13,12 +14,16 @@ interface NavItem {
   selector: 'app-sidebar',
   imports: [CommonModule, RouterLink, RouterLinkActive],
   template: `
-    <aside class="sidebar" [class.open]="isOpen()">
+    <aside class="sidebar" [class.open]="isOpen()" role="navigation" aria-label="Main navigation">
       <div class="sidebar-header">
         <div class="logo">
           <h1>State Council Admin</h1>
         </div>
-        <button class="close-btn" (click)="close.emit()">
+        <button
+          class="close-btn"
+          (click)="close.emit()"
+          aria-label="Close navigation menu"
+        >
           ✕
         </button>
       </div>
@@ -29,16 +34,21 @@ interface NavItem {
             [routerLink]="item.route"
             routerLinkActive="active"
             class="nav-item"
+            [attr.aria-current]="item.route === '/dashboard' ? 'page' : null"
           >
-            <span class="nav-icon">{{ item.icon }}</span>
+            <span class="nav-icon" aria-hidden="true">{{ item.icon }}</span>
             <span class="nav-label">{{ item.label }}</span>
           </a>
         }
       </nav>
 
       <div class="sidebar-footer">
-        <button (click)="onLogout()" class="logout-btn">
-          <span class="nav-icon">🚪</span>
+        <button
+          (click)="onLogout()"
+          class="logout-btn"
+          aria-label="Log out of your account"
+        >
+          <span class="nav-icon" aria-hidden="true">🚪</span>
           <span class="nav-label">Log Out</span>
         </button>
       </div>
@@ -168,16 +178,25 @@ export class SidebarComponent {
   isOpen = input<boolean>(false);
   close = output<void>();
 
+  private authService = inject(AuthService);
+  private confirmationService = inject(ConfirmationService);
+
   protected navItems: NavItem[] = [
     { label: 'Dashboard', route: '/dashboard', icon: '📊' },
     { label: 'Posts', route: '/posts', icon: '📝' },
     { label: 'Settings', route: '/settings', icon: '⚙️' }
   ];
 
-  constructor(private authService: AuthService) {}
+  protected async onLogout(): Promise<void> {
+    const confirmed = await this.confirmationService.confirm({
+      title: 'Logout',
+      message: 'Are you sure you want to log out?',
+      confirmText: 'Logout',
+      cancelText: 'Cancel',
+      confirmButtonClass: 'danger'
+    });
 
-  protected onLogout(): void {
-    if (confirm('Are you sure you want to log out?')) {
+    if (confirmed) {
       this.authService.logout();
       window.location.reload();
     }

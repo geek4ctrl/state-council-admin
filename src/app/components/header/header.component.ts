@@ -5,8 +5,13 @@ import { AuthService } from '../../services/auth.service';
   selector: 'app-header',
   imports: [],
   template: `
-    <header class="header">
-      <button class="hamburger" (click)="toggleSidebar.emit()">
+    <header class="header" role="banner">
+      <button
+        class="hamburger"
+        (click)="toggleSidebar.emit()"
+        aria-label="Toggle navigation menu"
+        aria-expanded="false"
+      >
         <span></span>
         <span></span>
         <span></span>

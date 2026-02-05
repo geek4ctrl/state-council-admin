@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BlogService } from '../../services/blog.service';
 import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 import { BlogCategory } from '../../models/blog.model';
 
 @Component({
@@ -57,7 +58,13 @@ import { BlogCategory } from '../../models/blog.model';
               />
               @if (formData.imageUrl) {
                 <div class="image-preview">
-                  <img [src]="formData.imageUrl" alt="Preview" />
+                  <img
+                    [src]="formData.imageUrl"
+                    alt="Preview"
+                    loading="eager"
+                    decoding="async"
+                    (error)="onImageError($event)"
+                  />
                 </div>
               }
             </div>
@@ -179,30 +186,42 @@ import { BlogCategory } from '../../models/blog.model';
     .btn-back {
       background: none;
       border: none;
-      color: #007bff;
+      color: #6b7280;
       font-size: 14px;
+      font-weight: 600;
       cursor: pointer;
       padding: 8px 0;
       margin-bottom: 12px;
       display: block;
+      transition: color 0.2s;
     }
 
     .btn-back:hover {
-      text-decoration: underline;
+      color: #0891b2;
     }
 
     .form-header h1 {
       font-size: 32px;
-      font-weight: 600;
+      font-weight: 400;
       margin: 0;
-      color: #212529;
+      color: #6b7280;
     }
 
     .form-container {
       background: white;
       border-radius: 12px;
       padding: 32px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    @media (max-width: 768px) {
+      .form-container {
+        padding: 24px;
+      }
+
+      .form-header h1 {
+        font-size: 28px;
+      }
     }
 
     @media (max-width: 640px) {
@@ -221,6 +240,10 @@ import { BlogCategory } from '../../models/blog.model';
       .btn-primary,
       .btn-secondary {
         width: 100%;
+      }
+
+      .image-preview {
+        max-height: 200px;
       }
     }
 
@@ -259,7 +282,7 @@ import { BlogCategory } from '../../models/blog.model';
     label {
       font-size: 14px;
       font-weight: 600;
-      color: #495057;
+      color: #6b7280;
       margin-bottom: 8px;
     }
 
@@ -274,7 +297,7 @@ import { BlogCategory } from '../../models/blog.model';
 
     input:focus, select:focus, textarea:focus {
       outline: none;
-      border-color: #007bff;
+      border-color: #0891b2;
     }
 
     textarea {
@@ -319,7 +342,7 @@ import { BlogCategory } from '../../models/blog.model';
     }
 
     .btn-primary {
-      background: #007bff;
+      background: #0891b2;
       color: white;
       border: none;
       padding: 12px 32px;
@@ -327,17 +350,20 @@ import { BlogCategory } from '../../models/blog.model';
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: all 0.2s;
+      box-shadow: 0 2px 4px rgba(8, 145, 178, 0.2);
     }
 
     .btn-primary:hover {
-      background: #0056b3;
+      background: #0e7490;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(8, 145, 178, 0.3);
     }
 
     .btn-secondary {
       background: white;
-      color: #6c757d;
-      border: 1px solid #ced4da;
+      color: #6b7280;
+      border: 1px solid #e5e7eb;
       padding: 12px 24px;
       border-radius: 8px;
       font-size: 14px;
@@ -375,6 +401,7 @@ export class PostFormComponent implements OnInit {
   constructor(
     private blogService: BlogService,
     private authService: AuthService,
+    private toastService: ToastService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -419,14 +446,16 @@ export class PostFormComponent implements OnInit {
 
     const user = this.authService.getCurrentUser()();
     if (!user) {
-      alert('You must be logged in to create a post');
+      this.toastService.error('You must be logged in to create a post');
       return;
     }
 
     if (this.isEditMode() && this.editId) {
       this.blogService.updateBlog(this.editId, this.formData);
+      this.toastService.success('Post updated successfully');
     } else {
       this.blogService.createBlog(this.formData, user.id, user.name);
+      this.toastService.success('Post created successfully');
     }
 
     this.router.navigate(['/posts']);
@@ -434,5 +463,10 @@ export class PostFormComponent implements OnInit {
 
   protected onBack(): void {
     this.router.navigate(['/posts']);
+  }
+
+  protected onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = 'https://placehold.co/600x400/e5e7eb/6b7280?text=Preview+Not+Available';
   }
 }

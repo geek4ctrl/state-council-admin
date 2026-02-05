@@ -2,6 +2,7 @@ import { Component, computed, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-settings',
@@ -15,7 +16,14 @@ import { AuthService } from '../../services/auth.service';
           <h2>Profile Information</h2>
 
           <div class="avatar-section">
-            <img [src]="formData.avatar" alt="Avatar" class="avatar-large" />
+            <img
+              [src]="formData.avatar"
+              alt="Avatar"
+              class="avatar-large"
+              loading="lazy"
+              decoding="async"
+              (error)="onImageError($event)"
+            />
             <div class="avatar-info">
               <p class="avatar-label">Profile Picture</p>
               <input
@@ -86,9 +94,9 @@ import { AuthService } from '../../services/auth.service';
 
     h1 {
       font-size: 32px;
-      font-weight: 600;
+      font-weight: 400;
       margin: 0 0 32px 0;
-      color: #212529;
+      color: #6b7280;
     }
 
     .settings-container {
@@ -101,14 +109,14 @@ import { AuthService } from '../../services/auth.service';
       background: white;
       border-radius: 12px;
       padding: 32px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     }
 
     .section h2 {
       font-size: 20px;
       font-weight: 600;
       margin: 0 0 24px 0;
-      color: #212529;
+      color: #6b7280;
     }
 
     .avatar-section {
@@ -155,7 +163,7 @@ import { AuthService } from '../../services/auth.service';
       display: block;
       font-size: 14px;
       font-weight: 600;
-      color: #495057;
+      color: #6b7280;
       margin-bottom: 8px;
     }
 
@@ -170,7 +178,7 @@ import { AuthService } from '../../services/auth.service';
 
     input:focus {
       outline: none;
-      border-color: #007bff;
+      border-color: #0891b2;
     }
 
     .form-actions {
@@ -180,7 +188,7 @@ import { AuthService } from '../../services/auth.service';
     }
 
     .btn-primary {
-      background: #007bff;
+      background: #0891b2;
       color: white;
       border: none;
       padding: 12px 32px;
@@ -188,11 +196,14 @@ import { AuthService } from '../../services/auth.service';
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: all 0.2s;
+      box-shadow: 0 2px 4px rgba(8, 145, 178, 0.2);
     }
 
     .btn-primary:hover {
-      background: #0056b3;
+      background: #0e7490;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(8, 145, 178, 0.3);
     }
 
     .info-grid {
@@ -211,18 +222,60 @@ import { AuthService } from '../../services/auth.service';
     .info-label {
       font-size: 14px;
       font-weight: 600;
-      color: #6c757d;
+      color: #6b7280;
     }
 
     .info-value {
       font-size: 14px;
-      color: #212529;
+      color: #1f2937;
       text-transform: capitalize;
+    }
+
+    @media (max-width: 768px) {
+      .section {
+        padding: 24px;
+      }
+
+      .avatar-section {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+      }
+
+      .avatar-info {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 24px;
+        margin-bottom: 24px;
+      }
+
+      .section {
+        padding: 20px;
+      }
+
+      .section h2 {
+        font-size: 18px;
+      }
+
+      .info-item {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+      }
+
+      .btn-primary {
+        width: 100%;
+      }
     }
   `]
 })
 export class SettingsComponent {
   private authService = inject(AuthService);
+  private toastService = inject(ToastService);
   private user = this.authService.getCurrentUser();
 
   protected formData = {
@@ -244,6 +297,11 @@ export class SettingsComponent {
 
   protected onSave(): void {
     this.authService.updateProfile(this.formData);
-    alert('Profile updated successfully!');
+    this.toastService.success('Profile updated successfully');
+  }
+
+  protected onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(this.formData.name) + '&size=200&background=e5e7eb&color=6b7280';
   }
 }
