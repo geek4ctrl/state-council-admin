@@ -1,5 +1,6 @@
-import { Component, computed, output } from '@angular/core';
+import { Component, computed, inject, output } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-header',
@@ -17,13 +18,23 @@ import { AuthService } from '../../services/auth.service';
         <span></span>
       </button>
       <h2 class="greeting">Hello, {{ userName() }}</h2>
+      <div class="header-actions">
+        <button
+          class="theme-toggle"
+          type="button"
+          (click)="toggleTheme()"
+          [attr.aria-label]="themeLabel()"
+        >
+          {{ themeLabel() }}
+        </button>
+      </div>
     </header>
   `,
   styles: [`
     .header {
       height: 64px;
-      background: white;
-      border-bottom: 1px solid #e9ecef;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
       padding: 0 32px;
       display: flex;
       align-items: center;
@@ -46,21 +57,45 @@ import { AuthService } from '../../services/auth.service';
     .hamburger span {
       width: 24px;
       height: 3px;
-      background: #0891b2;
+      background: var(--primary);
       border-radius: 2px;
       transition: all 0.3s;
     }
 
     .hamburger:hover span {
-      background: #0e7490;
+      background: var(--primary-strong);
     }
 
     .greeting {
       font-size: 24px;
       font-weight: 400;
       margin: 0;
-      color: #212529;
+      color: var(--text);
       flex: 1;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle {
+      border: 1px solid var(--border);
+      background: var(--surface-alt);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--primary);
+      color: var(--primary);
     }
 
     @media (max-width: 1024px) {
@@ -83,11 +118,19 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HeaderComponent {
   toggleSidebar = output<void>();
+  private authService = inject(AuthService);
+  private themeService = inject(ThemeService);
 
   protected userName = computed(() => {
     const user = this.authService.getCurrentUser()();
     return user?.name || 'Guest';
   });
 
-  constructor(private authService: AuthService) {}
+  protected themeLabel = computed(() =>
+    this.themeService.themeName() === 'dark' ? 'Light mode' : 'Dark mode'
+  );
+
+  protected toggleTheme(): void {
+    this.themeService.toggleTheme();
+  }
 }

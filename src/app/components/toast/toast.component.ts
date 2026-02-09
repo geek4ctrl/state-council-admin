@@ -45,9 +45,9 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .toast {
-      background: white;
+      background: var(--surface);
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      box-shadow: var(--shadow-soft);
       padding: 16px;
       display: flex;
       align-items: flex-start;
@@ -70,23 +70,23 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .toast-success {
-      border-left-color: #10b981;
-      background: #f0fdf4;
+      border-left-color: var(--success);
+      background: color-mix(in srgb, var(--success) 12%, var(--surface));
     }
 
     .toast-error {
-      border-left-color: #ef4444;
-      background: #fef2f2;
+      border-left-color: var(--danger);
+      background: color-mix(in srgb, var(--danger) 12%, var(--surface));
     }
 
     .toast-info {
-      border-left-color: #3b82f6;
-      background: #eff6ff;
+      border-left-color: var(--info);
+      background: color-mix(in srgb, var(--info) 12%, var(--surface));
     }
 
     .toast-warning {
-      border-left-color: #f59e0b;
-      background: #fffbeb;
+      border-left-color: var(--warning);
+      background: color-mix(in srgb, var(--warning) 12%, var(--surface));
     }
 
     .toast-content {
@@ -103,7 +103,7 @@ import { ToastService } from '../../services/toast.service';
 
     .toast-message {
       font-size: 14px;
-      color: #374151;
+      color: var(--text);
       line-height: 1.5;
       white-space: normal;
       word-break: break-word;
@@ -113,7 +113,7 @@ import { ToastService } from '../../services/toast.service';
       background: none;
       border: none;
       font-size: 18px;
-      color: #9ca3af;
+      color: var(--text-subtle);
       cursor: pointer;
       padding: 4px;
       line-height: 1;
@@ -122,7 +122,7 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .toast-close:hover {
-      color: #374151;
+      color: var(--text);
     }
 
     @media (max-width: 640px) {

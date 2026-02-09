@@ -15,7 +15,7 @@ import { ToastService } from '../../services/toast.service';
           <circle cx="20" cy="20" r="18" fill="#0891b2"/>
           <path d="M15 15 L20 20 L25 15" stroke="white" stroke-width="2" fill="none"/>
           <path d="M15 23 L25 23" stroke="white" stroke-width="2"/>
-          <text x="45" y="27" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="600" fill="#0891b2">State Council</text>
+          <text x="45" y="27" font-family="Sora, sans-serif" font-size="18" font-weight="600" fill="#0891b2">State Council</text>
         </svg>
       </div>
 
@@ -178,7 +178,7 @@ import { ToastService } from '../../services/toast.service';
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      background: #f3f4f6;
+      background: var(--bg);
       position: relative;
       overflow: hidden;
     }
@@ -188,7 +188,7 @@ import { ToastService } from '../../services/toast.service';
       content: '';
       position: absolute;
       border-radius: 50%;
-      background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
       opacity: 0.1;
     }
 
@@ -205,7 +205,7 @@ import { ToastService } from '../../services/toast.service';
       height: 600px;
       bottom: -300px;
       right: -150px;
-      background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+      background: linear-gradient(135deg, var(--accent-2) 0%, var(--accent-1) 100%);
     }
 
     .logo {
@@ -227,9 +227,9 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .login-card {
-      background: white;
+      background: var(--surface);
       border-radius: 12px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--shadow-strong);
       width: 100%;
       max-width: 440px;
       overflow: hidden;
@@ -243,13 +243,13 @@ import { ToastService } from '../../services/toast.service';
     .login-header h1 {
       font-size: 28px;
       font-weight: 400;
-      color: #6b7280;
+      color: var(--text-muted);
       margin: 0 0 8px 0;
     }
 
     .login-header p {
       font-size: 14px;
-      color: #9ca3af;
+      color: var(--text-subtle);
       margin: 0;
     }
 
@@ -269,7 +269,7 @@ import { ToastService } from '../../services/toast.service';
     label {
       font-size: 13px;
       font-weight: 400;
-      color: #9ca3af;
+      color: var(--text-subtle);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -278,7 +278,7 @@ import { ToastService } from '../../services/toast.service';
     input[type="password"] {
       padding: 12px 16px;
       border: none;
-      border-bottom: 1px solid #e5e7eb;
+      border-bottom: 1px solid var(--border);
       font-size: 15px;
       font-family: inherit;
       transition: border-color 0.2s;
@@ -288,11 +288,11 @@ import { ToastService } from '../../services/toast.service';
     input[type="email"]:focus,
     input[type="password"]:focus {
       outline: none;
-      border-bottom-color: #0891b2;
+      border-bottom-color: var(--primary);
     }
 
     input::placeholder {
-      color: #d1d5db;
+      color: var(--text-subtle);
     }
 
     .form-options {
@@ -307,7 +307,7 @@ import { ToastService } from '../../services/toast.service';
       align-items: center;
       gap: 8px;
       font-size: 13px;
-      color: #6b7280;
+      color: var(--text-muted);
       cursor: pointer;
     }
 
@@ -319,7 +319,7 @@ import { ToastService } from '../../services/toast.service';
 
     .forgot-link {
       font-size: 13px;
-      color: #0891b2;
+      color: var(--primary);
       text-decoration: none;
     }
 
@@ -328,16 +328,16 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .error-message {
-      background: #fee2e2;
-      color: #dc2626;
+      background: color-mix(in srgb, var(--danger) 15%, var(--surface));
+      color: var(--danger);
       padding: 12px 16px;
       border-radius: 6px;
       font-size: 13px;
-      border-left: 3px solid #dc2626;
+      border-left: 3px solid var(--danger);
     }
 
     .btn-login {
-      background: #0891b2;
+      background: var(--primary);
       color: white;
       border: none;
       padding: 14px;
@@ -351,7 +351,7 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .btn-login:hover:not(:disabled) {
-      background: #0e7490;
+      background: var(--primary-strong);
     }
 
     .btn-login:disabled {
@@ -390,13 +390,13 @@ import { ToastService } from '../../services/toast.service';
     .new-user {
       text-align: center;
       font-size: 14px;
-      color: #6b7280;
+      color: var(--text-muted);
     }
 
     .link-button {
       background: none;
       border: none;
-      color: #0891b2;
+      color: var(--primary);
       text-decoration: none;
       font-weight: 500;
       cursor: pointer;
@@ -411,13 +411,13 @@ import { ToastService } from '../../services/toast.service';
     .footer-text {
       text-align: center;
       font-size: 12px;
-      color: #6b7280;
+      color: var(--text-muted);
       margin-top: 24px;
       max-width: 440px;
     }
 
     .footer-text a {
-      color: #0891b2;
+      color: var(--primary);
       text-decoration: none;
     }
 
@@ -428,7 +428,7 @@ import { ToastService } from '../../services/toast.service';
     .copyright {
       text-align: center;
       font-size: 12px;
-      color: #9ca3af;
+      color: var(--text-subtle);
       margin-top: 16px;
     }
 

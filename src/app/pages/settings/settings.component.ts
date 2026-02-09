@@ -96,7 +96,7 @@ import { ToastService } from '../../services/toast.service';
       font-size: 32px;
       font-weight: 400;
       margin: 0 0 32px 0;
-      color: #6b7280;
+      color: var(--text-muted);
     }
 
     .settings-container {
@@ -106,17 +106,17 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .section {
-      background: white;
+      background: var(--surface);
       border-radius: 12px;
       padding: 32px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      box-shadow: var(--shadow-soft);
     }
 
     .section h2 {
       font-size: 20px;
       font-weight: 600;
       margin: 0 0 24px 0;
-      color: #6b7280;
+      color: var(--text-muted);
     }
 
     .avatar-section {
@@ -125,7 +125,7 @@ import { ToastService } from '../../services/toast.service';
       gap: 24px;
       margin-bottom: 32px;
       padding-bottom: 24px;
-      border-bottom: 1px solid #e9ecef;
+      border-bottom: 1px solid var(--border);
     }
 
     .avatar-large {
@@ -133,7 +133,7 @@ import { ToastService } from '../../services/toast.service';
       height: 100px;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid #e9ecef;
+      border: 3px solid var(--border);
     }
 
     .avatar-info {
@@ -143,16 +143,18 @@ import { ToastService } from '../../services/toast.service';
     .avatar-label {
       font-size: 14px;
       font-weight: 600;
-      color: #495057;
+      color: var(--text-muted);
       margin: 0 0 8px 0;
     }
 
     .avatar-input {
       width: 100%;
       padding: 10px 12px;
-      border: 1px solid #ced4da;
+      border: 1px solid var(--border);
       border-radius: 6px;
       font-size: 14px;
+      background: var(--surface);
+      color: var(--text);
     }
 
     .form-group {
@@ -163,32 +165,34 @@ import { ToastService } from '../../services/toast.service';
       display: block;
       font-size: 14px;
       font-weight: 600;
-      color: #6b7280;
+      color: var(--text-muted);
       margin-bottom: 8px;
     }
 
     input {
       width: 100%;
       padding: 10px 12px;
-      border: 1px solid #ced4da;
+      border: 1px solid var(--border);
       border-radius: 6px;
       font-size: 14px;
       font-family: inherit;
+      background: var(--surface);
+      color: var(--text);
     }
 
     input:focus {
       outline: none;
-      border-color: #0891b2;
+      border-color: var(--primary);
     }
 
     .form-actions {
       margin-top: 32px;
       padding-top: 24px;
-      border-top: 1px solid #e9ecef;
+      border-top: 1px solid var(--border);
     }
 
     .btn-primary {
-      background: #0891b2;
+      background: var(--primary);
       color: white;
       border: none;
       padding: 12px 32px;
@@ -201,7 +205,7 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .btn-primary:hover {
-      background: #0e7490;
+      background: var(--primary-strong);
       transform: translateY(-1px);
       box-shadow: 0 4px 8px rgba(8, 145, 178, 0.3);
     }
@@ -215,19 +219,19 @@ import { ToastService } from '../../services/toast.service';
       display: flex;
       justify-content: space-between;
       padding: 16px;
-      background: #f8f9fa;
+      background: var(--surface-alt);
       border-radius: 8px;
     }
 
     .info-label {
       font-size: 14px;
       font-weight: 600;
-      color: #6b7280;
+      color: var(--text-muted);
     }
 
     .info-value {
       font-size: 14px;
-      color: #1f2937;
+      color: var(--text);
       text-transform: capitalize;
     }
 

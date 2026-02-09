@@ -135,7 +135,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
       font-size: 32px;
       font-weight: 400;
       margin: 0;
-      color: #6b7280;
+      color: var(--text-muted);
     }
 
     .posts-grid {
@@ -145,16 +145,16 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .post-card {
-      background: white;
+      background: var(--surface);
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      box-shadow: var(--shadow-soft);
       transition: all 0.3s;
     }
 
     .post-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      box-shadow: var(--shadow-strong);
     }
 
     .post-image {
@@ -178,8 +178,8 @@ import { ConfirmationService } from '../../services/confirmation.service';
       position: absolute;
       top: 12px;
       right: 12px;
-      background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%);
-      color: #0891b2;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent-1) 18%, var(--surface)) 0%, color-mix(in srgb, var(--accent-2) 18%, var(--surface)) 100%);
+      color: var(--primary);
       padding: 6px 14px;
       border-radius: 14px;
       font-size: 11px;
@@ -197,13 +197,13 @@ import { ConfirmationService } from '../../services/confirmation.service';
       font-size: 18px;
       font-weight: 600;
       margin: 0 0 8px 0;
-      color: #1f2937;
+      color: var(--text);
       line-height: 1.4;
     }
 
     .post-date {
       font-size: 13px;
-      color: #9ca3af;
+      color: var(--text-subtle);
       margin: 0 0 12px 0;
       display: flex;
       align-items: center;
@@ -217,7 +217,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
 
     .post-excerpt {
       font-size: 14px;
-      color: #6b7280;
+      color: var(--text-muted);
       margin: 0 0 16px 0;
       line-height: 1.6;
       display: -webkit-box;
@@ -232,12 +232,12 @@ import { ConfirmationService } from '../../services/confirmation.service';
       gap: 8px;
       margin-bottom: 16px;
       padding-bottom: 16px;
-      border-bottom: 1px solid #f3f4f6;
+      border-bottom: 1px solid var(--border);
     }
 
     .post-time, .post-location {
       font-size: 13px;
-      color: #9ca3af;
+      color: var(--text-subtle);
     }
 
     .post-actions {
@@ -253,7 +253,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .btn-primary {
-      background: #0891b2;
+      background: var(--primary);
       color: white;
       border: none;
       padding: 10px 20px;
@@ -269,15 +269,15 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .btn-primary:hover {
-      background: #0e7490;
+      background: var(--primary-strong);
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
     }
 
     .btn-secondary {
-      background: linear-gradient(90deg, #ecfeff 0%, transparent 100%);
-      color: #0891b2;
-      border: 1px solid #cffafe;
+      background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 12%, var(--surface)) 0%, transparent 100%);
+      color: var(--primary);
+      border: 1px solid color-mix(in srgb, var(--primary) 35%, var(--border));
       padding: 8px 16px;
       border-radius: 6px;
       font-size: 13px;
@@ -291,8 +291,8 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .btn-secondary:hover {
-      background: linear-gradient(90deg, #cffafe 0%, #ecfeff 100%);
-      border-color: #0891b2;
+      background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 22%, var(--surface)) 0%, color-mix(in srgb, var(--primary) 12%, var(--surface)) 100%);
+      border-color: var(--primary);
       transform: translateX(2px);
     }
 
@@ -311,13 +311,13 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .btn-icon:hover {
-      background: #ecfeff;
+      background: color-mix(in srgb, var(--primary) 12%, var(--surface));
       transform: scale(1.1);
     }
 
     .btn-danger:hover {
-      background: #fef2f2;
-      color: #dc2626;
+      background: color-mix(in srgb, var(--danger) 12%, var(--surface));
+      color: var(--danger);
     }
 
     .icon {
@@ -328,9 +328,9 @@ import { ConfirmationService } from '../../services/confirmation.service';
       grid-column: 1 / -1;
       text-align: center;
       padding: 64px 20px;
-      background: white;
+      background: var(--surface);
       border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      box-shadow: var(--shadow-soft);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -339,7 +339,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
 
     .empty-state p {
       font-size: 16px;
-      color: #9ca3af;
+      color: var(--text-subtle);
       margin-bottom: 24px;
       font-weight: 400;
     }
@@ -411,14 +411,14 @@ import { ConfirmationService } from '../../services/confirmation.service';
       align-items: center;
       margin-top: 40px;
       padding: 24px 32px;
-      background: white;
+      background: var(--surface);
       border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      box-shadow: var(--shadow-soft);
       gap: 16px;
     }
 
     .pagination-btn {
-      background: #0891b2;
+      background: var(--primary);
       color: white;
       border: none;
       padding: 12px 24px;
@@ -434,14 +434,14 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .pagination-btn:hover:not(:disabled) {
-      background: #0e7490;
+      background: var(--primary-strong);
       transform: translateY(-1px);
       box-shadow: 0 4px 8px rgba(8, 145, 178, 0.3);
     }
 
     .pagination-btn:disabled {
-      background: #e5e7eb;
-      color: #9ca3af;
+      background: var(--surface-alt);
+      color: var(--text-subtle);
       cursor: not-allowed;
       box-shadow: none;
       transform: none;
@@ -457,12 +457,12 @@ import { ConfirmationService } from '../../services/confirmation.service';
     .current-page {
       font-size: 15px;
       font-weight: 600;
-      color: #1f2937;
+      color: var(--text);
     }
 
     .post-count {
       font-size: 12px;
-      color: #9ca3af;
+      color: var(--text-subtle);
     }
 
     @media (max-width: 640px) {
