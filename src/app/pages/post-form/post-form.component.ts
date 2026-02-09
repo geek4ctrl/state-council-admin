@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -379,6 +379,12 @@ import { BlogCategory } from '../../models/blog.model';
   `]
 })
 export class PostFormComponent implements OnInit {
+  private blogService = inject(BlogService);
+  private authService = inject(AuthService);
+  private toastService = inject(ToastService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
   protected isEditMode = signal(false);
   protected dateString = '';
 
@@ -398,20 +404,12 @@ export class PostFormComponent implements OnInit {
 
   private editId: string | null = null;
 
-  constructor(
-    private blogService: BlogService,
-    private authService: AuthService,
-    private toastService: ToastService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
-
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEditMode.set(true);
       this.editId = id;
-      this.loadBlog(id);
+      await this.loadBlog(id);
     } else {
       // Set default date to today
       const today = new Date();
@@ -420,27 +418,36 @@ export class PostFormComponent implements OnInit {
     }
   }
 
-  private loadBlog(id: string): void {
-    const blog = this.blogService.getBlogById(id);
-    if (blog) {
-      this.formData = {
-        title: blog.title,
-        content: blog.content,
-        excerpt: blog.excerpt,
-        category: blog.category,
-        imageUrl: blog.imageUrl,
-        date: new Date(blog.date),
-        time: blog.time,
-        location: blog.location || '',
-        externalLink: blog.externalLink || '',
-        showOnHomePage: blog.showOnHomePage,
-        showOnRegistration: blog.showOnRegistration
-      };
-      this.dateString = new Date(blog.date).toISOString().split('T')[0];
+  private async loadBlog(id: string): Promise<void> {
+    try {
+      const blog = await this.blogService.fetchBlogById(id);
+      if (blog) {
+        this.formData = {
+          title: blog.title,
+          content: blog.content,
+          excerpt: blog.excerpt,
+          category: blog.category,
+          imageUrl: blog.imageUrl,
+          date: new Date(blog.date),
+          time: blog.time,
+          location: blog.location || '',
+          externalLink: blog.externalLink || '',
+          showOnHomePage: blog.showOnHomePage,
+          showOnRegistration: blog.showOnRegistration
+        };
+        this.dateString = new Date(blog.date).toISOString().split('T')[0];
+        return;
+      }
+
+      this.toastService.error('Post not found');
+      this.router.navigate(['/posts']);
+    } catch {
+      this.toastService.error('Failed to load post');
+      this.router.navigate(['/posts']);
     }
   }
 
-  protected onSubmit(): void {
+  protected async onSubmit(): Promise<void> {
     // Update date from string input
     this.formData.date = new Date(this.dateString);
 
@@ -450,15 +457,19 @@ export class PostFormComponent implements OnInit {
       return;
     }
 
-    if (this.isEditMode() && this.editId) {
-      this.blogService.updateBlog(this.editId, this.formData);
-      this.toastService.success('Post updated successfully');
-    } else {
-      this.blogService.createBlog(this.formData, user.id, user.name);
-      this.toastService.success('Post created successfully');
-    }
+    try {
+      if (this.isEditMode() && this.editId) {
+        await this.blogService.updateBlog(this.editId, this.formData);
+        this.toastService.success('Post updated successfully');
+      } else {
+        await this.blogService.createBlog(this.formData, user.id, user.name);
+        this.toastService.success('Post created successfully');
+      }
 
-    this.router.navigate(['/posts']);
+      this.router.navigate(['/posts']);
+    } catch {
+      this.toastService.error('Failed to save post. Please try again.');
+    }
   }
 
   protected onBack(): void {

@@ -22,80 +22,150 @@ import { ToastService } from '../../services/toast.service';
       <div class="login-container">
         <div class="login-card">
           <div class="login-header">
-            <h1>Welcome to State Council</h1>
-            <p>Please login to your account</p>
+            <h1>{{ isRegisterMode() ? 'Create your account' : 'Welcome to State Council' }}</h1>
+            <p>{{ isRegisterMode() ? 'Fill in your details to get started' : 'Please login to your account' }}</p>
           </div>
 
-          <form (ngSubmit)="onLogin()" class="login-form" role="form" aria-label="Login form">
-            <div class="form-group">
-              <label for="email">Email Address</label>
-              <input
-                type="email"
-                id="email"
-                [(ngModel)]="email"
-                name="email"
-                placeholder="admin@statecounciladmin.com"
-                required
-                autocomplete="email"
-                aria-required="true"
-                aria-describedby="email-hint"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                [(ngModel)]="password"
-                name="password"
-                placeholder="••••••••••"
-                required
-                autocomplete="current-password"
-                aria-required="true"
-              />
-            </div>
-
-            <div class="form-options">
-              <label class="remember-me">
+          @if (isRegisterMode()) {
+            <form (ngSubmit)="onRegister()" class="login-form" role="form" aria-label="Create account form">
+              <div class="form-group">
+                <label for="registerEmail">Email Address</label>
                 <input
-                  type="checkbox"
-                  [(ngModel)]="rememberMe"
-                  name="rememberMe"
-                  id="rememberMe"
-                  aria-label="Remember me"
+                  type="email"
+                  id="registerEmail"
+                  [(ngModel)]="registerEmail"
+                  name="registerEmail"
+                  placeholder="you@example.com"
+                  required
+                  autocomplete="email"
+                  aria-required="true"
                 />
-                <span>Remember me</span>
-              </label>
-              <a href="#" class="forgot-link" role="button" aria-label="Forgot your password">Forgot your password?</a>
-            </div>
-
-            @if (errorMessage()) {
-              <div class="error-message" role="alert" aria-live="assertive">
-                {{ errorMessage() }}
               </div>
-            }
 
-            <button
-              type="submit"
-              class="btn-login"
-              [disabled]="isLoading()"
-              [attr.aria-busy]="isLoading()"
-              aria-label="Login to your account"
-            >
-              {{ isLoading() ? 'SIGNING IN...' : 'LOGIN' }}
-            </button>
+              <div class="form-group">
+                <label for="registerPassword">Password</label>
+                <input
+                  type="password"
+                  id="registerPassword"
+                  [(ngModel)]="registerPassword"
+                  name="registerPassword"
+                  placeholder="Create a password"
+                  required
+                  autocomplete="new-password"
+                  aria-required="true"
+                />
+              </div>
 
-            <div class="demo-credentials" role="region" aria-label="Demo credentials information">
-              <p class="demo-title">Demo Credentials:</p>
-              <p class="demo-item" id="email-hint"><strong>Email:</strong> admin@statecounciladmin.com</p>
-              <p class="demo-item"><strong>Password:</strong> admin123</p>
-            </div>
+              <div class="form-group">
+                <label for="registerConfirm">Confirm Password</label>
+                <input
+                  type="password"
+                  id="registerConfirm"
+                  [(ngModel)]="registerConfirm"
+                  name="registerConfirm"
+                  placeholder="Confirm your password"
+                  required
+                  autocomplete="new-password"
+                  aria-required="true"
+                />
+              </div>
 
-            <div class="new-user">
-              <span>New User? <a href="#" aria-label="Create a new account">Create an Account</a></span>
-            </div>
-          </form>
+              @if (errorMessage()) {
+                <div class="error-message" role="alert" aria-live="assertive">
+                  {{ errorMessage() }}
+                </div>
+              }
+
+              <button
+                type="submit"
+                class="btn-login"
+                [disabled]="isLoading()"
+                [attr.aria-busy]="isLoading()"
+                aria-label="Create your account"
+              >
+                {{ isLoading() ? 'CREATING ACCOUNT...' : 'CREATE ACCOUNT' }}
+              </button>
+
+              <div class="new-user">
+                <span>Already have an account?
+                  <button type="button" class="link-button" (click)="setRegisterMode(false)">Sign In</button>
+                </span>
+              </div>
+            </form>
+          } @else {
+            <form (ngSubmit)="onLogin()" class="login-form" role="form" aria-label="Login form">
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  [(ngModel)]="email"
+                  name="email"
+                  placeholder="admin@statecounciladmin.com"
+                  required
+                  autocomplete="email"
+                  aria-required="true"
+                  aria-describedby="email-hint"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  [(ngModel)]="password"
+                  name="password"
+                  placeholder="••••••••••"
+                  required
+                  autocomplete="current-password"
+                  aria-required="true"
+                />
+              </div>
+
+              <div class="form-options">
+                <label class="remember-me">
+                  <input
+                    type="checkbox"
+                    [(ngModel)]="rememberMe"
+                    name="rememberMe"
+                    id="rememberMe"
+                    aria-label="Remember me"
+                  />
+                  <span>Remember me</span>
+                </label>
+                <a href="#" class="forgot-link" role="button" aria-label="Forgot your password">Forgot your password?</a>
+              </div>
+
+              @if (errorMessage()) {
+                <div class="error-message" role="alert" aria-live="assertive">
+                  {{ errorMessage() }}
+                </div>
+              }
+
+              <button
+                type="submit"
+                class="btn-login"
+                [disabled]="isLoading()"
+                [attr.aria-busy]="isLoading()"
+                aria-label="Login to your account"
+              >
+                {{ isLoading() ? 'SIGNING IN...' : 'LOGIN' }}
+              </button>
+
+              <div class="demo-credentials" role="region" aria-label="Demo credentials information">
+                <p class="demo-title">Demo Credentials:</p>
+                <p class="demo-item" id="email-hint"><strong>Email:</strong> admin@statecounciladmin.com</p>
+                <p class="demo-item"><strong>Password:</strong> admin123</p>
+              </div>
+
+              <div class="new-user">
+                <span>New User?
+                  <button type="button" class="link-button" (click)="setRegisterMode(true)">Create an Account</button>
+                </span>
+              </div>
+            </form>
+          }
         </div>
 
         <footer class="footer-text" role="contentinfo">
@@ -329,13 +399,18 @@ import { ToastService } from '../../services/toast.service';
       color: #6b7280;
     }
 
-    .new-user a {
+    .link-button {
+      background: none;
+      border: none;
       color: #0891b2;
       text-decoration: none;
       font-weight: 500;
+      cursor: pointer;
+      padding: 0;
+      font-size: 14px;
     }
 
-    .new-user a:hover {
+    .link-button:hover {
       text-decoration: underline;
     }
 
@@ -432,23 +507,62 @@ export class LoginComponent {
   protected rememberMe = false;
   protected errorMessage = signal('');
   protected isLoading = signal(false);
+  protected isRegisterMode = signal(false);
+  protected registerEmail = '';
+  protected registerPassword = '';
+  protected registerConfirm = '';
 
-  protected onLogin(): void {
+  protected setRegisterMode(isRegister: boolean): void {
+    this.isRegisterMode.set(isRegister);
+    this.errorMessage.set('');
+    this.isLoading.set(false);
+    this.registerEmail = '';
+    this.registerPassword = '';
+    this.registerConfirm = '';
+  }
+
+  protected async onLogin(): Promise<void> {
     this.errorMessage.set('');
     this.isLoading.set(true);
 
-    // Simulate a brief loading state
-    setTimeout(() => {
-      const success = this.authService.login(this.email, this.password);
+    const success = await this.authService.login(this.email, this.password);
 
-      if (success) {
-        this.toastService.success('Login successful! Welcome back.');
-        this.router.navigate(['/dashboard']);
-      } else {
-        this.errorMessage.set('Invalid email or password. Please use the demo credentials.');
-        this.toastService.error('Invalid email or password. Please try again.');
-        this.isLoading.set(false);
-      }
-    }, 500);
+    if (success) {
+      this.toastService.success('Login successful! Welcome back.');
+      this.router.navigate(['/dashboard']);
+      return;
+    }
+
+    this.errorMessage.set('Invalid email or password. Please use the demo credentials.');
+    this.toastService.error('Invalid email or password. Please try again.');
+    this.isLoading.set(false);
+  }
+
+  protected async onRegister(): Promise<void> {
+    this.errorMessage.set('');
+
+    if (this.registerPassword !== this.registerConfirm) {
+      this.errorMessage.set('Passwords do not match.');
+      return;
+    }
+
+    this.isLoading.set(true);
+
+    const success = await this.authService.register(
+      this.registerEmail.trim(),
+      this.registerPassword
+    );
+
+    if (success) {
+      this.toastService.success('Account created successfully. Please sign in.');
+      this.email = this.registerEmail.trim();
+      this.password = '';
+      this.setRegisterMode(false);
+      return;
+    }
+
+    this.errorMessage.set('Unable to create account. Please try again.');
+    this.toastService.error('Registration failed. Please try again.');
+    this.isLoading.set(false);
   }
 }

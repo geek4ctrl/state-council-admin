@@ -41,7 +41,8 @@ import { ToastService } from '../../services/toast.service';
       display: flex;
       flex-direction: column;
       gap: 12px;
-      max-width: 400px;
+      max-width: 420px;
+      width: min(420px, calc(100vw - 32px));
     }
 
     .toast {
@@ -50,10 +51,10 @@ import { ToastService } from '../../services/toast.service';
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       padding: 16px;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 12px;
-      min-width: 300px;
+      min-width: 280px;
       animation: slideIn 0.3s ease-out;
       border-left: 4px solid;
     }
@@ -91,7 +92,7 @@ import { ToastService } from '../../services/toast.service';
 
     .toast-content {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 12px;
       flex: 1;
     }
@@ -105,6 +106,8 @@ import { ToastService } from '../../services/toast.service';
       font-size: 14px;
       color: #374151;
       line-height: 1.5;
+      white-space: normal;
+      word-break: break-word;
     }
 
     .toast-close {
