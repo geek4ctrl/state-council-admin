@@ -52,7 +52,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
+      background: var(--overlay);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -70,9 +70,9 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .modal-container {
-      background: white;
+      background: var(--surface);
       border-radius: 12px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      box-shadow: var(--shadow-strong);
       width: 90%;
       max-width: 480px;
       animation: slideUp 0.3s ease-out;
@@ -94,13 +94,13 @@ import { ConfirmationService } from '../../services/confirmation.service';
       justify-content: space-between;
       align-items: center;
       padding: 24px 24px 16px;
-      border-bottom: 1px solid #e9ecef;
+      border-bottom: 1px solid var(--border);
     }
 
     .modal-header h2 {
       font-size: 20px;
       font-weight: 600;
-      color: #212529;
+      color: var(--text);
       margin: 0;
     }
 
@@ -108,7 +108,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
       background: none;
       border: none;
       font-size: 24px;
-      color: #9ca3af;
+      color: var(--text-subtle);
       cursor: pointer;
       padding: 4px;
       line-height: 1;
@@ -116,7 +116,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .modal-close:hover {
-      color: #374151;
+      color: var(--text);
     }
 
     .modal-body {
@@ -125,7 +125,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
 
     .modal-body p {
       font-size: 15px;
-      color: #6c757d;
+      color: var(--text-muted);
       line-height: 1.6;
       margin: 0;
     }
@@ -149,31 +149,31 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .btn-secondary {
-      background: white;
-      color: #6c757d;
-      border: 1px solid #ced4da;
+      background: var(--surface);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
     }
 
     .btn-secondary:hover {
-      background: #f8f9fa;
-      border-color: #6c757d;
+      background: var(--surface-alt);
+      border-color: var(--text-muted);
     }
 
     .btn-primary {
-      background: #0891b2;
+      background: var(--primary);
       color: white;
     }
 
     .btn-primary:hover {
-      background: #0e7490;
+      background: var(--primary-strong);
     }
 
     .btn-danger {
-      background: #dc3545;
+      background: var(--danger);
     }
 
     .btn-danger:hover {
-      background: #c82333;
+      background: var(--danger-strong);
     }
 
     @media (max-width: 640px) {

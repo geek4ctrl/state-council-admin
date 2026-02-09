@@ -29,7 +29,7 @@ import { CommonModule } from '@angular/common';
     .layout {
       display: flex;
       min-height: 100vh;
-      background: #f3f4f6;
+      background: var(--bg);
       position: relative;
       overflow: hidden;
     }
@@ -39,7 +39,7 @@ import { CommonModule } from '@angular/common';
       content: '';
       position: fixed;
       border-radius: 50%;
-      background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
       opacity: 0.05;
       pointer-events: none;
       z-index: 0;
@@ -58,7 +58,7 @@ import { CommonModule } from '@angular/common';
       height: 600px;
       bottom: -300px;
       left: 100px;
-      background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+      background: linear-gradient(135deg, var(--accent-2) 0%, var(--accent-1) 100%);
     }
 
     .overlay {
@@ -68,7 +68,7 @@ import { CommonModule } from '@angular/common';
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
+      background: var(--overlay);
       z-index: 99;
     }
 
