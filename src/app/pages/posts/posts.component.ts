@@ -1,14 +1,13 @@
-import { Component, computed, signal, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, computed, signal, inject, OnInit } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { BlogService } from '../../services/blog.service';
-import { Blog } from '../../models/blog.model';
 import { ToastService } from '../../services/toast.service';
 import { ConfirmationService } from '../../services/confirmation.service';
 
 @Component({
   selector: 'app-posts',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   template: `
     <div class="posts-page" role="main">
       <div class="page-header">
@@ -50,25 +49,26 @@ import { ConfirmationService } from '../../services/confirmation.service';
               </div>
 
               <div class="post-actions">
-                <button
+                <a
                   class="btn-secondary"
-                  (click)="onViewDetails(blog.id)"
+                  [routerLink]="['/posts', blog.id]"
                   [attr.aria-label]="'View details for ' + blog.title"
                 >
                   View Details
-                </button>
+                </a>
                 <div class="action-buttons" role="group" aria-label="Post actions">
-                  <button
+                  <a
                     class="btn-icon"
-                    (click)="onEdit(blog.id)"
+                    [routerLink]="['/posts/edit', blog.id]"
                     [attr.aria-label]="'Edit ' + blog.title"
                   >
                     <span aria-hidden="true">✏️</span>
-                  </button>
+                  </a>
                   <button
                     class="btn-icon btn-danger"
                     (click)="onDelete(blog.id)"
                     [attr.aria-label]="'Delete ' + blog.title"
+                    type="button"
                   >
                     <span aria-hidden="true">🗑️</span>
                   </button>
@@ -284,6 +284,10 @@ import { ConfirmationService } from '../../services/confirmation.service';
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .btn-secondary:hover {
@@ -300,6 +304,10 @@ import { ConfirmationService } from '../../services/confirmation.service';
       padding: 8px;
       border-radius: 6px;
       transition: all 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .btn-icon:hover {
@@ -323,6 +331,10 @@ import { ConfirmationService } from '../../services/confirmation.service';
       background: white;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     .empty-state p {
@@ -330,6 +342,10 @@ import { ConfirmationService } from '../../services/confirmation.service';
       color: #9ca3af;
       margin-bottom: 24px;
       font-weight: 400;
+    }
+
+    .empty-state .btn-primary {
+      align-self: center;
     }
 
     @media (max-width: 768px) {
@@ -468,7 +484,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
   `]
 })
-export class PostsComponent {
+export class PostsComponent implements OnInit {
   private blogService = inject(BlogService);
   private router = inject(Router);
   private toastService = inject(ToastService);
@@ -488,6 +504,17 @@ export class PostsComponent {
     const end = this.endIndex();
     return this.blogs().slice(start, end);
   });
+
+  async ngOnInit(): Promise<void> {
+    try {
+      const loaded = await this.blogService.loadBlogs();
+      if (!loaded) {
+        this.toastService.error('Failed to load posts. Please try again.');
+      }
+    } catch {
+      this.toastService.error('Failed to load posts. Please try again.');
+    }
+  }
 
   protected nextPage(): void {
     if (this.currentPage() < this.totalPages()) {
@@ -533,10 +560,10 @@ export class PostsComponent {
     });
 
     if (confirmed) {
-      const success = this.blogService.deleteBlog(id);
-      if (success) {
+      try {
+        await this.blogService.deleteBlog(id);
         this.toastService.success('Post deleted successfully');
-      } else {
+      } catch {
         this.toastService.error('Failed to delete post');
       }
     }

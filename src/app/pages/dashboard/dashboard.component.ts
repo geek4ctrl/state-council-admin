@@ -1,12 +1,12 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { BlogService } from '../../services/blog.service';
-import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   template: `
     <div class="dashboard" role="main">
       <h1 id="dashboard-title">Dashboard</h1>
@@ -25,12 +25,9 @@ import { AuthService } from '../../services/auth.service';
 
         <div class="recent-posts" role="list" aria-labelledby="recent-posts-title">
           @for (blog of recentPosts(); track blog.id) {
-            <article
+            <a
               class="recent-post-item"
-              (click)="viewPost(blog.id)"
-              (keydown.enter)="viewPost(blog.id)"
-              (keydown.space)="viewPost(blog.id); $event.preventDefault()"
-              tabindex="0"
+              [routerLink]="['/posts', blog.id]"
               role="listitem"
               [attr.aria-label]="'View post: ' + blog.title"
             >
@@ -48,7 +45,7 @@ import { AuthService } from '../../services/auth.service';
                   <time [attr.datetime]="blog.date.toISOString()">{{ formatDate(blog.date) }}</time>
                 </p>
               </div>
-            </article>
+            </a>
           } @empty {
             <p class="empty-message" role="status">No posts yet</p>
           }
@@ -249,10 +246,11 @@ import { AuthService } from '../../services/auth.service';
     }
   `]
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   private blogService = inject(BlogService);
   private router = inject(Router);
   private blogs = this.blogService.getBlogs();
+  private toastService = inject(ToastService);
 
   protected totalPosts = computed(() => this.blogs().length);
   protected eventCount = computed(() =>
@@ -270,6 +268,17 @@ export class DashboardComponent {
       .slice(0, 5)
   );
 
+  async ngOnInit(): Promise<void> {
+    try {
+      const loaded = await this.blogService.loadBlogs();
+      if (!loaded) {
+        this.toastService.error('Failed to load recent posts.');
+      }
+    } catch {
+      this.toastService.error('Failed to load recent posts.');
+    }
+  }
+
   protected formatDate(date: Date): string {
     return new Date(date).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -280,10 +289,6 @@ export class DashboardComponent {
 
   protected viewAllPosts(): void {
     this.router.navigate(['/posts']);
-  }
-
-  protected viewPost(id: string): void {
-    this.router.navigate(['/posts', id]);
   }
 
   protected onImageError(event: Event): void {
