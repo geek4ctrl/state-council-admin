@@ -15,7 +15,6 @@ import { ToastService } from '../../services/toast.service';
           [class.toast-info]="toast.type === 'info'"
           [class.toast-warning]="toast.type === 'warning'"
           role="alert"
-          [@slideIn]
         >
           <div class="toast-content">
             <span class="toast-icon" aria-hidden="true">{{ getIcon(toast.type) }}</span>
