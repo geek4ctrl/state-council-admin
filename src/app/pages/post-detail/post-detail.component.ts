@@ -1,8 +1,10 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BlogService } from '../../services/blog.service';
 import { Blog } from '../../models/blog.model';
+import { ConfirmationService } from '../../services/confirmation.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-post-detail',
@@ -279,19 +281,24 @@ import { Blog } from '../../models/blog.model';
   `]
 })
 export class PostDetailComponent implements OnInit {
+  private blogService = inject(BlogService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private confirmationService = inject(ConfirmationService);
+  private toastService = inject(ToastService);
+
   protected blog = signal<Blog | undefined>(undefined);
 
-  constructor(
-    private blogService: BlogService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
-
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      const foundBlog = this.blogService.getBlogById(id);
-      this.blog.set(foundBlog);
+      try {
+        const foundBlog = await this.blogService.fetchBlogById(id);
+        this.blog.set(foundBlog);
+      } catch {
+        this.toastService.error('Failed to load post');
+        this.blog.set(undefined);
+      }
     }
   }
 
@@ -329,11 +336,30 @@ export class PostDetailComponent implements OnInit {
     img.src = 'https://placehold.co/800x500/e5e7eb/6b7280?text=Image+Not+Available';
   }
 
-  protected onDelete(): void {
+  protected async onDelete(): Promise<void> {
     const blog = this.blog();
-    if (blog && confirm('Are you sure you want to delete this post?')) {
-      this.blogService.deleteBlog(blog.id);
+    if (!blog) {
+      return;
+    }
+
+    const confirmed = await this.confirmationService.confirm({
+      title: 'Delete Post',
+      message: 'Are you sure you want to delete this post? This action cannot be undone.',
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+      confirmButtonClass: 'danger'
+    });
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await this.blogService.deleteBlog(blog.id);
+      this.toastService.success('Post deleted successfully');
       this.router.navigate(['/posts']);
+    } catch {
+      this.toastService.error('Failed to delete post');
     }
   }
 }

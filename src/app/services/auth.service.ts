@@ -1,12 +1,32 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 import { User, UserProfile } from '../models/user.model';
+
+type ApiUser = {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  role?: 'admin' | 'user' | string;
+  createdAt?: string;
+};
+
+type ApiAuthResponse = {
+  token?: string;
+  accessToken?: string;
+  user?: ApiUser;
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private http = inject(HttpClient);
   private currentUser = signal<User | null>(null);
   private storageKey = 'currentUser';
+  private tokenKey = 'authToken';
+  private apiBase = 'http://localhost:3001';
 
   constructor() {
     this.loadFromStorage();
@@ -20,27 +40,65 @@ export class AuthService {
     return this.currentUser() !== null;
   }
 
-  login(email: string, password: string): boolean {
-    // Simple authentication - in production, this would call an API
-    if (email === 'admin@statecounciladmin.com' && password === 'admin123') {
-      this.loginAsAdmin();
+  async login(email: string, password: string): Promise<boolean> {
+    try {
+      const response = await firstValueFrom(
+        this.http.post<ApiAuthResponse>(`${this.apiBase}/api/auth/login`, { email, password })
+      );
+
+      const token = response.token ?? response.accessToken ?? '';
+      const apiUser = response.user;
+
+      if (!token || !apiUser) {
+        return false;
+      }
+
+      const user: User = {
+        id: apiUser.id,
+        name: apiUser.name,
+        email: apiUser.email,
+        avatar: apiUser.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin',
+        role: apiUser.role === 'admin' ? 'admin' : 'user',
+        createdAt: apiUser.createdAt ? new Date(apiUser.createdAt) : new Date()
+      };
+
+      this.currentUser.set(user);
+      this.saveToken(token);
+      this.saveToStorage();
       return true;
+    } catch {
+      return false;
     }
-    return false;
   }
 
-  loginAsAdmin(): void {
-    const admin: User = {
-      id: 'admin',
-      name: 'Admin',
-      email: 'admin@statecounciladmin.com',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin',
-      role: 'admin',
-      createdAt: new Date()
-    };
+  async register(email: string, password: string): Promise<boolean> {
+    try {
+      const response = await firstValueFrom(
+        this.http.post<ApiAuthResponse>(`${this.apiBase}/api/auth/register`, { email, password })
+      );
 
-    this.currentUser.set(admin);
-    this.saveToStorage();
+      const token = response.token ?? response.accessToken ?? '';
+      const apiUser = response.user;
+
+      if (token && apiUser) {
+        const user: User = {
+          id: apiUser.id,
+          name: apiUser.name,
+          email: apiUser.email,
+          avatar: apiUser.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin',
+          role: apiUser.role === 'admin' ? 'admin' : 'user',
+          createdAt: apiUser.createdAt ? new Date(apiUser.createdAt) : new Date()
+        };
+
+        this.currentUser.set(user);
+        this.saveToken(token);
+        this.saveToStorage();
+      }
+
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   updateProfile(profile: UserProfile): void {
@@ -61,7 +119,15 @@ export class AuthService {
     this.currentUser.set(null);
     if (typeof localStorage !== 'undefined') {
       localStorage.removeItem(this.storageKey);
+      localStorage.removeItem(this.tokenKey);
     }
+  }
+
+  getAuthToken(): string | null {
+    if (typeof localStorage !== 'undefined') {
+      return localStorage.getItem(this.tokenKey);
+    }
+    return null;
   }
 
   private saveToStorage(): void {
@@ -70,6 +136,12 @@ export class AuthService {
       if (user) {
         localStorage.setItem(this.storageKey, JSON.stringify(user));
       }
+    }
+  }
+
+  private saveToken(token: string): void {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(this.tokenKey, token);
     }
   }
 
