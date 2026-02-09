@@ -186,7 +186,7 @@ import { BlogCategory } from '../../models/blog.model';
     .btn-back {
       background: none;
       border: none;
-      color: #6b7280;
+      color: var(--text-muted);
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
@@ -197,21 +197,21 @@ import { BlogCategory } from '../../models/blog.model';
     }
 
     .btn-back:hover {
-      color: #0891b2;
+      color: var(--primary);
     }
 
     .form-header h1 {
       font-size: 32px;
       font-weight: 400;
       margin: 0;
-      color: #6b7280;
+      color: var(--text-muted);
     }
 
     .form-container {
-      background: white;
+      background: var(--surface);
       border-radius: 12px;
       padding: 32px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      box-shadow: var(--shadow-soft);
     }
 
     @media (max-width: 768px) {
@@ -282,22 +282,24 @@ import { BlogCategory } from '../../models/blog.model';
     label {
       font-size: 14px;
       font-weight: 600;
-      color: #6b7280;
+      color: var(--text-muted);
       margin-bottom: 8px;
     }
 
     input, select, textarea {
       padding: 10px 12px;
-      border: 1px solid #ced4da;
+      border: 1px solid var(--border);
       border-radius: 6px;
       font-size: 14px;
       font-family: inherit;
       transition: border-color 0.2s;
+      background: var(--surface);
+      color: var(--text);
     }
 
     input:focus, select:focus, textarea:focus {
       outline: none;
-      border-color: #0891b2;
+      border-color: var(--primary);
     }
 
     textarea {
@@ -338,11 +340,11 @@ import { BlogCategory } from '../../models/blog.model';
       gap: 12px;
       margin-top: 32px;
       padding-top: 24px;
-      border-top: 1px solid #e9ecef;
+      border-top: 1px solid var(--border);
     }
 
     .btn-primary {
-      background: #0891b2;
+      background: var(--primary);
       color: white;
       border: none;
       padding: 12px 32px;
@@ -355,15 +357,15 @@ import { BlogCategory } from '../../models/blog.model';
     }
 
     .btn-primary:hover {
-      background: #0e7490;
+      background: var(--primary-strong);
       transform: translateY(-1px);
       box-shadow: 0 4px 8px rgba(8, 145, 178, 0.3);
     }
 
     .btn-secondary {
-      background: white;
-      color: #6b7280;
-      border: 1px solid #e5e7eb;
+      background: var(--surface);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
       padding: 12px 24px;
       border-radius: 8px;
       font-size: 14px;
@@ -373,8 +375,8 @@ import { BlogCategory } from '../../models/blog.model';
     }
 
     .btn-secondary:hover {
-      background: #f8f9fa;
-      border-color: #6c757d;
+      background: var(--surface-alt);
+      border-color: var(--text-muted);
     }
   `]
 })

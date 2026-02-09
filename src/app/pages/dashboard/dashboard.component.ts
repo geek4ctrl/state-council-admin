@@ -63,14 +63,14 @@ import { ToastService } from '../../services/toast.service';
       font-size: 32px;
       font-weight: 400;
       margin: 0 0 32px 0;
-      color: #6b7280;
+      color: var(--text-muted);
     }
 
     .recent-section {
-      background: white;
+      background: var(--surface);
       border-radius: 12px;
       padding: 32px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      box-shadow: var(--shadow-soft);
     }
 
     .section-header {
@@ -79,20 +79,20 @@ import { ToastService } from '../../services/toast.service';
       align-items: center;
       margin-bottom: 24px;
       padding-bottom: 16px;
-      border-bottom: 1px solid #e5e7eb;
+      border-bottom: 1px solid var(--border);
     }
 
     .section-header h2 {
       font-size: 20px;
       font-weight: 600;
       margin: 0;
-      color: #374151;
+      color: var(--text);
     }
 
     .btn-link {
       background: none;
       border: none;
-      color: #0891b2;
+      color: var(--primary);
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
@@ -100,7 +100,7 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .btn-link:hover {
-      color: #0e7490;
+      color: var(--primary-strong);
       text-decoration: underline;
     }
 
@@ -113,7 +113,7 @@ import { ToastService } from '../../services/toast.service';
       display: flex;
       gap: 20px;
       padding: 20px 0;
-      border-bottom: 1px solid #f3f4f6;
+      border-bottom: 1px solid var(--border);
       cursor: pointer;
       transition: all 0.2s;
       outline: none;
@@ -121,8 +121,8 @@ import { ToastService } from '../../services/toast.service';
 
     .recent-post-item:focus {
       padding-left: 8px;
-      background: linear-gradient(90deg, #ecfeff 0%, transparent 100%);
-      box-shadow: 0 0 0 2px #0891b2;
+      background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 12%, transparent) 0%, transparent 100%);
+      box-shadow: 0 0 0 2px var(--primary);
     }
 
     .recent-post-item:last-child {
@@ -131,7 +131,7 @@ import { ToastService } from '../../services/toast.service';
 
     .recent-post-item:hover {
       padding-left: 8px;
-      background: linear-gradient(90deg, #ecfeff 0%, transparent 100%);
+      background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 12%, transparent) 0%, transparent 100%);
     }
 
     .recent-post-item img {
@@ -139,7 +139,7 @@ import { ToastService } from '../../services/toast.service';
       height: 100px;
       object-fit: cover;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: var(--shadow-soft);
     }
 
     .recent-post-content {
@@ -151,8 +151,8 @@ import { ToastService } from '../../services/toast.service';
 
     .recent-post-category {
       display: inline-block;
-      background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%);
-      color: #0891b2;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent-1) 18%, var(--surface)) 0%, color-mix(in srgb, var(--accent-2) 18%, var(--surface)) 100%);
+      color: var(--primary);
       padding: 4px 12px;
       border-radius: 14px;
       font-size: 11px;
@@ -167,13 +167,13 @@ import { ToastService } from '../../services/toast.service';
       font-size: 17px;
       font-weight: 600;
       margin: 0 0 8px 0;
-      color: #1f2937;
+      color: var(--text);
       line-height: 1.4;
     }
 
     .recent-post-date {
       font-size: 13px;
-      color: #9ca3af;
+      color: var(--text-subtle);
       margin: 0;
       display: flex;
       align-items: center;
@@ -187,7 +187,7 @@ import { ToastService } from '../../services/toast.service';
 
     .empty-message {
       text-align: center;
-      color: #9ca3af;
+      color: var(--text-subtle);
       padding: 64px 20px;
       font-size: 16px;
     }

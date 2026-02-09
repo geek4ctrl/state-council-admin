@@ -97,7 +97,7 @@ import { ToastService } from '../../services/toast.service';
     .btn-back {
       background: none;
       border: none;
-      color: #007bff;
+      color: var(--primary);
       font-size: 14px;
       cursor: pointer;
       padding: 8px 0;
@@ -122,35 +122,35 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .btn-secondary {
-      background: white;
-      color: #007bff;
-      border: 1px solid #007bff;
+      background: var(--surface);
+      color: var(--primary);
+      border: 1px solid var(--primary);
     }
 
     .btn-secondary:hover {
-      background: #e7f3ff;
+      background: color-mix(in srgb, var(--primary) 12%, var(--surface));
     }
 
     .btn-danger {
-      background: white;
-      color: #dc3545;
-      border: 1px solid #dc3545;
+      background: var(--surface);
+      color: var(--danger);
+      border: 1px solid var(--danger);
     }
 
     .btn-danger:hover {
-      background: #fee;
+      background: color-mix(in srgb, var(--danger) 12%, var(--surface));
     }
 
     .post-content {
-      background: white;
+      background: var(--surface);
       border-radius: 12px;
       padding: 48px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: var(--shadow-soft);
     }
 
     .post-category {
       display: inline-block;
-      background: #007bff;
+      background: var(--primary);
       color: white;
       padding: 8px 16px;
       border-radius: 20px;
@@ -163,7 +163,7 @@ import { ToastService } from '../../services/toast.service';
       font-size: 36px;
       font-weight: 700;
       margin: 0 0 24px 0;
-      color: #212529;
+      color: var(--text);
       line-height: 1.3;
     }
 
@@ -172,10 +172,10 @@ import { ToastService } from '../../services/toast.service';
       flex-wrap: wrap;
       gap: 24px;
       font-size: 14px;
-      color: #6c757d;
+      color: var(--text-muted);
       margin-bottom: 32px;
       padding-bottom: 24px;
-      border-bottom: 1px solid #e9ecef;
+      border-bottom: 1px solid var(--border);
     }
 
     .post-image {
@@ -196,7 +196,7 @@ import { ToastService } from '../../services/toast.service';
 
     .post-excerpt {
       font-size: 18px;
-      color: #495057;
+      color: var(--text-muted);
       font-weight: 500;
       margin-bottom: 24px;
       line-height: 1.6;
@@ -204,7 +204,7 @@ import { ToastService } from '../../services/toast.service';
 
     .post-text {
       font-size: 16px;
-      color: #212529;
+      color: var(--text);
       line-height: 1.8;
       white-space: pre-wrap;
     }
@@ -212,12 +212,12 @@ import { ToastService } from '../../services/toast.service';
     .post-link {
       margin-bottom: 24px;
       padding: 16px;
-      background: #f8f9fa;
+      background: var(--surface-alt);
       border-radius: 8px;
     }
 
     .post-link a {
-      color: #007bff;
+      color: var(--primary);
       text-decoration: none;
       font-weight: 600;
     }
@@ -234,8 +234,8 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .flag {
-      background: #d4edda;
-      color: #155724;
+      background: color-mix(in srgb, var(--success) 18%, var(--surface));
+      color: var(--success);
       padding: 8px 16px;
       border-radius: 6px;
       font-size: 13px;
@@ -244,12 +244,12 @@ import { ToastService } from '../../services/toast.service';
 
     .post-footer {
       padding-top: 24px;
-      border-top: 1px solid #e9ecef;
+      border-top: 1px solid var(--border);
     }
 
     .post-dates {
       font-size: 13px;
-      color: #6c757d;
+      color: var(--text-muted);
       margin: 0;
     }
 

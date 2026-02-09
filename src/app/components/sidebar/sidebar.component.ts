@@ -58,8 +58,8 @@ interface NavItem {
     .sidebar {
       width: 240px;
       height: 100vh;
-      background: #f8f9fa;
-      border-right: 1px solid #e9ecef;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       position: fixed;
@@ -73,7 +73,7 @@ interface NavItem {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #e9ecef;
+      border-bottom: 1px solid var(--border);
     }
 
     .logo {
@@ -84,7 +84,7 @@ interface NavItem {
     .logo h1 {
       font-size: 20px;
       font-weight: 600;
-      color: #007bff;
+      color: var(--primary);
       margin: 0;
     }
 
@@ -93,14 +93,14 @@ interface NavItem {
       background: none;
       border: none;
       font-size: 24px;
-      color: #6c757d;
+      color: var(--text-muted);
       cursor: pointer;
       padding: 20px;
       transition: color 0.2s;
     }
 
     .close-btn:hover {
-      color: #dc3545;
+      color: var(--danger);
     }
 
     @media (max-width: 1024px) {
@@ -127,7 +127,7 @@ interface NavItem {
       display: flex;
       align-items: center;
       padding: 12px 20px;
-      color: #495057;
+      color: var(--text);
       text-decoration: none;
       transition: all 0.2s;
       cursor: pointer;
@@ -139,14 +139,14 @@ interface NavItem {
     }
 
     .nav-item:hover, .logout-btn:hover {
-      background: #e9ecef;
-      color: #007bff;
+      background: var(--surface-alt);
+      color: var(--primary);
     }
 
     .nav-item.active {
-      background: #e7f3ff;
-      color: #007bff;
-      border-right: 3px solid #007bff;
+      background: color-mix(in srgb, var(--primary) 12%, transparent);
+      color: var(--primary);
+      border-right: 3px solid var(--primary);
     }
 
     .nav-icon {
@@ -162,15 +162,15 @@ interface NavItem {
 
     .sidebar-footer {
       padding: 20px;
-      border-top: 1px solid #e9ecef;
+      border-top: 1px solid var(--border);
     }
 
     .logout-btn {
-      color: #dc3545;
+      color: var(--danger);
     }
 
     .logout-btn:hover {
-      background: #fee;
+      background: color-mix(in srgb, var(--danger) 12%, transparent);
     }
   `]
 })
