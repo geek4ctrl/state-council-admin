@@ -153,12 +153,6 @@ import { ToastService } from '../../services/toast.service';
                 {{ isLoading() ? 'SIGNING IN...' : 'LOGIN' }}
               </button>
 
-              <div class="demo-credentials" role="region" aria-label="Demo credentials information">
-                <p class="demo-title">Demo Credentials:</p>
-                <p class="demo-item" id="email-hint"><strong>Email:</strong> admin@statecounciladmin.com</p>
-                <p class="demo-item"><strong>Password:</strong> admin123</p>
-              </div>
-
               <div class="new-user">
                 <span>New User?
                   <button type="button" class="link-button" (click)="setRegisterMode(true)">Create an Account</button>
