@@ -23,9 +23,9 @@ import { ThemeService } from '../../services/theme.service';
           class="theme-toggle"
           type="button"
           (click)="toggleTheme()"
-          [attr.aria-label]="themeLabel()"
+          [attr.aria-label]="themeAriaLabel()"
         >
-          {{ themeLabel() }}
+          <span class="theme-icon" aria-hidden="true">{{ themeIcon() }}</span>
         </button>
       </div>
     </header>
@@ -84,13 +84,18 @@ import { ThemeService } from '../../services/theme.service';
       border: 1px solid var(--border);
       background: var(--surface-alt);
       color: var(--text);
-      padding: 6px 12px;
+      padding: 6px 10px;
       border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
+      font-size: 16px;
+      line-height: 1;
       cursor: pointer;
       transition: all 0.2s;
+    }
+
+    .theme-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .theme-toggle:hover {
@@ -126,8 +131,12 @@ export class HeaderComponent {
     return user?.name || 'Guest';
   });
 
-  protected themeLabel = computed(() =>
-    this.themeService.themeName() === 'dark' ? 'Light mode' : 'Dark mode'
+  protected themeIcon = computed(() =>
+    this.themeService.themeName() === 'dark' ? '☀' : '🌙'
+  );
+
+  protected themeAriaLabel = computed(() =>
+    this.themeService.themeName() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
   );
 
   protected toggleTheme(): void {

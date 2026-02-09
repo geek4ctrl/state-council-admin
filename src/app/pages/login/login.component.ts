@@ -1,9 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,14 @@ import { ToastService } from '../../services/toast.service';
           <text x="45" y="27" font-family="Sora, sans-serif" font-size="18" font-weight="600" fill="#0891b2">State Council</text>
         </svg>
       </div>
+      <button
+        class="theme-toggle"
+        type="button"
+        (click)="toggleTheme()"
+        [attr.aria-label]="themeAriaLabel()"
+      >
+        <span class="theme-icon" aria-hidden="true">{{ themeIcon() }}</span>
+      </button>
 
       <div class="login-container">
         <div class="login-card">
@@ -213,6 +222,33 @@ import { ToastService } from '../../services/toast.service';
       top: 32px;
       left: 40px;
       z-index: 10;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 28px;
+      right: 32px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+      transition: all 0.2s;
+      z-index: 10;
+    }
+
+    .theme-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--primary);
+      color: var(--primary);
     }
 
     .login-container {
@@ -457,6 +493,13 @@ import { ToastService } from '../../services/toast.service';
         text-align: center;
       }
 
+      .theme-toggle {
+        position: relative;
+        top: 0;
+        right: 0;
+        margin: 0 0 12px;
+      }
+
       .logo svg {
         width: 160px;
         height: 36px;
@@ -495,6 +538,7 @@ export class LoginComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   private toastService = inject(ToastService);
+  private themeService = inject(ThemeService);
 
   protected email = '';
   protected password = '';
@@ -505,6 +549,17 @@ export class LoginComponent {
   protected registerEmail = '';
   protected registerPassword = '';
   protected registerConfirm = '';
+  protected themeIcon = computed(() =>
+    this.themeService.themeName() === 'dark' ? '☀' : '🌙'
+  );
+
+  protected themeAriaLabel = computed(() =>
+    this.themeService.themeName() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
+  );
+
+  protected toggleTheme(): void {
+    this.themeService.toggleTheme();
+  }
 
   protected setRegisterMode(isRegister: boolean): void {
     this.isRegisterMode.set(isRegister);
