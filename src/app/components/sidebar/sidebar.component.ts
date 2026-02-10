@@ -15,7 +15,7 @@ interface NavItem {
   selector: 'app-sidebar',
   imports: [CommonModule, RouterLink, RouterLinkActive],
   template: `
-    <aside class="sidebar" [class.open]="isOpen()" role="navigation" aria-label="Main navigation">
+    <aside class="sidebar" [class.open]="isOpen()" role="navigation" [attr.aria-label]="copy().sidebarNavAriaLabel">
       <div class="sidebar-header">
         <div class="logo">
           <h1>{{ copy().sidebarTitle }}</h1>

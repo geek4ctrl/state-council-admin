@@ -29,14 +29,28 @@ import { ThemeService } from '../../services/theme.service';
         >
           <span class="theme-icon" aria-hidden="true">{{ themeIcon() }}</span>
         </button>
-        <button
-          class="language-toggle"
-          type="button"
-          (click)="toggleLanguage()"
-          [attr.aria-label]="languageAriaLabel()"
-        >
-          {{ languageLabel() }}
-        </button>
+        <div class="language-toggle" role="group" [attr.aria-label]="copy().headerLanguageLabel">
+          <button
+            class="language-option"
+            type="button"
+            [class.is-active]="languageService.languageName() === 'en'"
+            [attr.aria-pressed]="languageService.languageName() === 'en'"
+            [attr.aria-label]="copy().switchToEnglishLabel"
+            (click)="setLanguage('en')"
+          >
+            EN
+          </button>
+          <button
+            class="language-option"
+            type="button"
+            [class.is-active]="languageService.languageName() === 'fr'"
+            [attr.aria-pressed]="languageService.languageName() === 'fr'"
+            [attr.aria-label]="copy().switchToFrenchLabel"
+            (click)="setLanguage('fr')"
+          >
+            FR
+          </button>
+        </div>
       </div>
 
       <div class="login-container">
@@ -256,8 +270,7 @@ import { ThemeService } from '../../services/theme.service';
       z-index: 10;
     }
 
-    .theme-toggle,
-    .language-toggle {
+    .theme-toggle {
       border: 1px solid var(--border);
       background: var(--surface);
       color: var(--text);
@@ -271,16 +284,53 @@ import { ThemeService } from '../../services/theme.service';
       transition: all 0.2s;
     }
 
+    .language-toggle {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .language-option {
+      border: none;
+      background: transparent;
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      line-height: 1;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .language-option:hover {
+      color: var(--primary);
+    }
+
+    .language-option.is-active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(8, 145, 178, 0.25);
+    }
+
     .theme-icon {
       display: inline-flex;
       align-items: center;
       justify-content: center;
     }
 
-    .theme-toggle:hover,
-    .language-toggle:hover {
+    .theme-toggle:hover {
       border-color: var(--primary);
       color: var(--primary);
+    }
+
+    .language-toggle:hover {
+      border-color: var(--primary);
     }
 
     .login-container {
@@ -576,7 +626,7 @@ import { ThemeService } from '../../services/theme.service';
 })
 export class LoginComponent {
   private authService = inject(AuthService);
-  private languageService = inject(LanguageService);
+  protected languageService = inject(LanguageService);
   private router = inject(Router);
   private toastService = inject(ToastService);
   private themeService = inject(ThemeService);
@@ -602,22 +652,12 @@ export class LoginComponent {
       : this.copy().themeSwitchToDark
   );
 
-  protected languageLabel = computed(() =>
-    this.languageService.languageName() === 'fr' ? 'EN' : 'FR'
-  );
-
-  protected languageAriaLabel = computed(() =>
-    this.languageService.languageName() === 'fr'
-      ? this.copy().switchToEnglishLabel
-      : this.copy().switchToFrenchLabel
-  );
-
   protected toggleTheme(): void {
     this.themeService.toggleTheme();
   }
 
-  protected toggleLanguage(): void {
-    this.languageService.toggleLanguage();
+  protected setLanguage(value: 'en' | 'fr'): void {
+    this.languageService.setLanguage(value);
   }
 
   protected setRegisterMode(isRegister: boolean): void {

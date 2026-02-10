@@ -159,6 +159,11 @@ type AppCopy = {
   sidebarLogoutTitle: string;
   sidebarLogoutMessage: string;
   sidebarLogoutConfirm: string;
+  sidebarNavAriaLabel: string;
+  headerGreetingPrefix: string;
+  headerGuestName: string;
+  headerLanguageLabel: string;
+  headerMenuToggleLabel: string;
 };
 
 const translations: Record<Language, AppCopy> = {
@@ -317,7 +322,12 @@ const translations: Record<Language, AppCopy> = {
     sidebarLogoutLabel: 'Log out',
     sidebarLogoutTitle: 'Log out',
     sidebarLogoutMessage: 'Are you sure you want to log out?',
-    sidebarLogoutConfirm: 'Log out'
+    sidebarLogoutConfirm: 'Log out',
+    sidebarNavAriaLabel: 'Main navigation',
+    headerGreetingPrefix: 'Hello',
+    headerGuestName: 'Guest',
+    headerLanguageLabel: 'Language',
+    headerMenuToggleLabel: 'Toggle navigation menu'
   },
   fr: {
     logoText: 'Conseil d\'Etat',
@@ -474,7 +484,12 @@ const translations: Record<Language, AppCopy> = {
     sidebarLogoutLabel: 'Se deconnecter',
     sidebarLogoutTitle: 'Deconnexion',
     sidebarLogoutMessage: 'Voulez-vous vraiment vous deconnecter ?',
-    sidebarLogoutConfirm: 'Se deconnecter'
+    sidebarLogoutConfirm: 'Se deconnecter',
+    sidebarNavAriaLabel: 'Navigation principale',
+    headerGreetingPrefix: 'Bonjour',
+    headerGuestName: 'Invite',
+    headerLanguageLabel: 'Langue',
+    headerMenuToggleLabel: 'Basculer le menu de navigation'
   }
 };
 
