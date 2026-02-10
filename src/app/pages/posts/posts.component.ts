@@ -2,6 +2,7 @@ import { Component, computed, signal, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { BlogService } from '../../services/blog.service';
+import { LanguageService } from '../../services/language.service';
 import { ToastService } from '../../services/toast.service';
 import { ConfirmationService } from '../../services/confirmation.service';
 
@@ -11,13 +12,13 @@ import { ConfirmationService } from '../../services/confirmation.service';
   template: `
     <div class="posts-page" role="main">
       <div class="page-header">
-        <h1 id="page-title">All Posts</h1>
+        <h1 id="page-title">{{ copy().postsTitle }}</h1>
         <button
           class="btn-primary"
           (click)="onCreatePost()"
-          aria-label="Create a new blog post"
+          [attr.aria-label]="copy().postsCreateAriaLabel"
         >
-          <span class="icon" aria-hidden="true">+</span> New Post
+          <span class="icon" aria-hidden="true">+</span> {{ copy().postsNewButton }}
         </button>
       </div>
 
@@ -27,12 +28,12 @@ import { ConfirmationService } from '../../services/confirmation.service';
             <div class="post-image">
               <img
                 [src]="blog.imageUrl"
-                [alt]="'Cover image for ' + blog.title"
+                [alt]="copy().postsCoverAltPrefix + ' ' + blog.title"
                 loading="lazy"
                 decoding="async"
                 (error)="onImageError($event)"
               />
-              <span class="post-category" aria-label="Category">{{ blog.category }}</span>
+              <span class="post-category" [attr.aria-label]="copy().postsCategoryLabel">{{ blog.category }}</span>
             </div>
             <div class="post-content">
               <h3 class="post-title">{{ blog.title }}</h3>
@@ -41,10 +42,10 @@ import { ConfirmationService } from '../../services/confirmation.service';
               </p>
               <p class="post-excerpt">{{ blog.excerpt }}</p>
 
-              <div class="post-meta" aria-label="Post metadata">
-                <span class="post-time" aria-label="Time"><span aria-hidden="true">⏰</span> {{ blog.time }}</span>
+              <div class="post-meta" [attr.aria-label]="copy().postsMetaLabel">
+                <span class="post-time" [attr.aria-label]="copy().postsTimeLabel"><span aria-hidden="true">⏰</span> {{ blog.time }}</span>
                 @if (blog.location) {
-                  <span class="post-location" aria-label="Location"><span aria-hidden="true">📍</span> {{ blog.location }}</span>
+                  <span class="post-location" [attr.aria-label]="copy().postsLocationLabel"><span aria-hidden="true">📍</span> {{ blog.location }}</span>
                 }
               </div>
 
@@ -52,22 +53,22 @@ import { ConfirmationService } from '../../services/confirmation.service';
                 <a
                   class="btn-secondary"
                   [routerLink]="['/posts', blog.id]"
-                  [attr.aria-label]="'View details for ' + blog.title"
+                  [attr.aria-label]="copy().postsViewDetailsPrefix + ' ' + blog.title"
                 >
-                  View Details
+                  {{ copy().postsViewDetailsText }}
                 </a>
-                <div class="action-buttons" role="group" aria-label="Post actions">
+                <div class="action-buttons" role="group" [attr.aria-label]="copy().postsActionsLabel">
                   <a
                     class="btn-icon"
                     [routerLink]="['/posts/edit', blog.id]"
-                    [attr.aria-label]="'Edit ' + blog.title"
+                    [attr.aria-label]="copy().postsEditPrefix + ' ' + blog.title"
                   >
                     <span aria-hidden="true">✏️</span>
                   </a>
                   <button
                     class="btn-icon btn-danger"
                     (click)="onDelete(blog.id)"
-                    [attr.aria-label]="'Delete ' + blog.title"
+                    [attr.aria-label]="copy().postsDeletePrefix + ' ' + blog.title"
                     type="button"
                   >
                     <span aria-hidden="true">🗑️</span>
@@ -78,41 +79,41 @@ import { ConfirmationService } from '../../services/confirmation.service';
           </article>
         } @empty {
           <div class="empty-state" role="status" aria-live="polite">
-            <p>No posts yet. Create your first post!</p>
+            <p>{{ copy().postsEmptyText }}</p>
             <button
               class="btn-primary"
               (click)="onCreatePost()"
-              aria-label="Create your first post"
+              [attr.aria-label]="copy().postsCreateFirstAriaLabel"
             >
-              Create Post
+              {{ copy().postsCreateFirstButton }}
             </button>
           </div>
         }
       </div>
 
       @if (totalPages() > 1) {
-        <nav class="pagination" role="navigation" aria-label="Posts pagination">
+        <nav class="pagination" role="navigation" [attr.aria-label]="copy().postsPaginationLabel">
           <button
             class="pagination-btn"
             (click)="previousPage()"
             [disabled]="currentPage() === 1"
-            [attr.aria-label]="'Go to previous page'"
+            [attr.aria-label]="copy().postsPrevAriaLabel"
           >
-            <span aria-hidden="true">←</span> Previous
+            <span aria-hidden="true">←</span> {{ copy().postsPrevText }}
           </button>
 
           <div class="pagination-info" role="status" aria-live="polite" aria-atomic="true">
-            <span class="current-page">Page {{ currentPage() }} of {{ totalPages() }}</span>
-            <span class="post-count">{{ startIndex() + 1 }}-{{ endIndex() }} of {{ totalBlogs() }} posts</span>
+            <span class="current-page">{{ copy().postsPageLabel }} {{ currentPage() }} {{ copy().postsOfText }} {{ totalPages() }}</span>
+            <span class="post-count">{{ startIndex() + 1 }}-{{ endIndex() }} {{ copy().postsOfText }} {{ totalBlogs() }} {{ copy().postsCountSuffix }}</span>
           </div>
 
           <button
             class="pagination-btn"
             (click)="nextPage()"
             [disabled]="currentPage() === totalPages()"
-            [attr.aria-label]="'Go to next page'"
+            [attr.aria-label]="copy().postsNextAriaLabel"
           >
-            Next <span aria-hidden="true">→</span>
+            {{ copy().postsNextText }} <span aria-hidden="true">→</span>
           </button>
         </nav>
       }
@@ -486,9 +487,12 @@ import { ConfirmationService } from '../../services/confirmation.service';
 })
 export class PostsComponent implements OnInit {
   private blogService = inject(BlogService);
+  private languageService = inject(LanguageService);
   private router = inject(Router);
   private toastService = inject(ToastService);
   private confirmationService = inject(ConfirmationService);
+
+  protected copy = this.languageService.copy;
 
   protected blogs = this.blogService.getBlogs();
   protected currentPage = signal(1);
@@ -509,10 +513,10 @@ export class PostsComponent implements OnInit {
     try {
       const loaded = await this.blogService.loadBlogs();
       if (!loaded) {
-        this.toastService.error('Failed to load posts. Please try again.');
+        this.toastService.error(this.copy().postsLoadError);
       }
     } catch {
-      this.toastService.error('Failed to load posts. Please try again.');
+      this.toastService.error(this.copy().postsLoadError);
     }
   }
 
@@ -535,7 +539,7 @@ export class PostsComponent implements OnInit {
   }
 
   protected formatDate(date: Date): string {
-    return new Date(date).toLocaleDateString('en-US', {
+    return new Date(date).toLocaleDateString(this.languageService.locale(), {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
@@ -552,19 +556,19 @@ export class PostsComponent implements OnInit {
 
   protected async onDelete(id: string): Promise<void> {
     const confirmed = await this.confirmationService.confirm({
-      title: 'Delete Post',
-      message: 'Are you sure you want to delete this post? This action cannot be undone.',
-      confirmText: 'Delete',
-      cancelText: 'Cancel',
+      title: this.copy().postsDeleteTitle,
+      message: this.copy().postsDeleteMessage,
+      confirmText: this.copy().postsDeleteConfirm,
+      cancelText: this.copy().commonCancel,
       confirmButtonClass: 'danger'
     });
 
     if (confirmed) {
       try {
         await this.blogService.deleteBlog(id);
-        this.toastService.success('Post deleted successfully');
+        this.toastService.success(this.copy().postsDeleteSuccess);
       } catch {
-        this.toastService.error('Failed to delete post');
+        this.toastService.error(this.copy().postsDeleteError);
       }
     }
   }

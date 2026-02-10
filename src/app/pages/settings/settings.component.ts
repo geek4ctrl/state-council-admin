@@ -3,33 +3,34 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-settings',
   imports: [CommonModule, FormsModule],
   template: `
     <div class="settings-page">
-      <h1>Settings</h1>
+      <h1>{{ copy().settingsTitle }}</h1>
 
       <div class="settings-container">
         <div class="section">
-          <h2>Profile Information</h2>
+          <h2>{{ copy().settingsProfileTitle }}</h2>
 
           <div class="avatar-section">
             <img
               [src]="formData.avatar"
-              alt="Avatar"
+              [attr.alt]="copy().settingsAvatarAlt"
               class="avatar-large"
               loading="lazy"
               decoding="async"
               (error)="onImageError($event)"
             />
             <div class="avatar-info">
-              <p class="avatar-label">Profile Picture</p>
+              <p class="avatar-label">{{ copy().settingsProfilePictureLabel }}</p>
               <input
                 type="url"
                 [(ngModel)]="formData.avatar"
-                placeholder="Avatar URL"
+                [placeholder]="copy().settingsAvatarPlaceholder"
                 class="avatar-input"
               />
             </div>
@@ -37,7 +38,7 @@ import { ToastService } from '../../services/toast.service';
 
           <form (ngSubmit)="onSave()">
             <div class="form-group">
-              <label for="name">Full Name</label>
+              <label for="name">{{ copy().settingsFullNameLabel }}</label>
               <input
                 type="text"
                 id="name"
@@ -48,7 +49,7 @@ import { ToastService } from '../../services/toast.service';
             </div>
 
             <div class="form-group">
-              <label for="email">Email Address</label>
+              <label for="email">{{ copy().settingsEmailLabel }}</label>
               <input
                 type="email"
                 id="email"
@@ -60,25 +61,25 @@ import { ToastService } from '../../services/toast.service';
 
             <div class="form-actions">
               <button type="submit" class="btn-primary">
-                Save Changes
+                {{ copy().settingsSaveChanges }}
               </button>
             </div>
           </form>
         </div>
 
         <div class="section">
-          <h2>Account Information</h2>
+          <h2>{{ copy().settingsAccountTitle }}</h2>
           <div class="info-grid">
             <div class="info-item">
-              <span class="info-label">User ID</span>
+              <span class="info-label">{{ copy().settingsUserIdLabel }}</span>
               <span class="info-value">{{ userId() }}</span>
             </div>
             <div class="info-item">
-              <span class="info-label">Role</span>
+              <span class="info-label">{{ copy().settingsRoleLabel }}</span>
               <span class="info-value">{{ userRole() }}</span>
             </div>
             <div class="info-item">
-              <span class="info-label">Member Since</span>
+              <span class="info-label">{{ copy().settingsMemberSinceLabel }}</span>
               <span class="info-value">{{ memberSince() }}</span>
             </div>
           </div>
@@ -280,7 +281,9 @@ import { ToastService } from '../../services/toast.service';
 export class SettingsComponent {
   private authService = inject(AuthService);
   private toastService = inject(ToastService);
+  private languageService = inject(LanguageService);
   private user = this.authService.getCurrentUser();
+  protected copy = this.languageService.copy;
 
   protected formData = {
     name: this.user()?.name || '',
@@ -288,20 +291,20 @@ export class SettingsComponent {
     avatar: this.user()?.avatar || ''
   };
 
-  protected userId = computed(() => this.user()?.id || 'N/A');
-  protected userRole = computed(() => this.user()?.role || 'N/A');
+  protected userId = computed(() => this.user()?.id || this.copy().commonNotAvailable);
+  protected userRole = computed(() => this.user()?.role || this.copy().commonNotAvailable);
   protected memberSince = computed(() => {
     const date = this.user()?.createdAt;
-    return date ? new Date(date).toLocaleDateString('en-US', {
+    return date ? new Date(date).toLocaleDateString(this.languageService.locale(), {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
-    }) : 'N/A';
+    }) : this.copy().commonNotAvailable;
   });
 
   protected onSave(): void {
     this.authService.updateProfile(this.formData);
-    this.toastService.success('Profile updated successfully');
+    this.toastService.success(this.copy().settingsProfileUpdatedToast);
   }
 
   protected onImageError(event: Event): void {

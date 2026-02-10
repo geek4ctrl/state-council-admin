@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ConfirmationService } from '../../services/confirmation.service';
 import { CommonModule } from '@angular/common';
+import { LanguageService } from '../../services/language.service';
 
 interface NavItem {
   label: string;
@@ -17,19 +18,19 @@ interface NavItem {
     <aside class="sidebar" [class.open]="isOpen()" role="navigation" aria-label="Main navigation">
       <div class="sidebar-header">
         <div class="logo">
-          <h1>State Council Admin</h1>
+          <h1>{{ copy().sidebarTitle }}</h1>
         </div>
         <button
           class="close-btn"
           (click)="close.emit()"
-          aria-label="Close navigation menu"
+          [attr.aria-label]="copy().sidebarCloseLabel"
         >
           ✕
         </button>
       </div>
 
       <nav class="nav-menu">
-        @for (item of navItems; track item.route) {
+        @for (item of navItems(); track item.route) {
           <a
             [routerLink]="item.route"
             routerLinkActive="active"
@@ -46,10 +47,10 @@ interface NavItem {
         <button
           (click)="onLogout()"
           class="logout-btn"
-          aria-label="Log out of your account"
+          [attr.aria-label]="copy().sidebarLogoutLabel"
         >
           <span class="nav-icon" aria-hidden="true">🚪</span>
-          <span class="nav-label">Log Out</span>
+          <span class="nav-label">{{ copy().sidebarLogoutLabel }}</span>
         </button>
       </div>
     </aside>
@@ -180,19 +181,21 @@ export class SidebarComponent {
 
   private authService = inject(AuthService);
   private confirmationService = inject(ConfirmationService);
+  private languageService = inject(LanguageService);
+  protected copy = this.languageService.copy;
 
-  protected navItems: NavItem[] = [
-    { label: 'Dashboard', route: '/dashboard', icon: '📊' },
-    { label: 'Posts', route: '/posts', icon: '📝' },
-    { label: 'Settings', route: '/settings', icon: '⚙️' }
-  ];
+  protected navItems = computed<NavItem[]>(() => [
+    { label: this.copy().sidebarNavDashboard, route: '/dashboard', icon: '📊' },
+    { label: this.copy().sidebarNavPosts, route: '/posts', icon: '📝' },
+    { label: this.copy().sidebarNavSettings, route: '/settings', icon: '⚙️' }
+  ]);
 
   protected async onLogout(): Promise<void> {
     const confirmed = await this.confirmationService.confirm({
-      title: 'Logout',
-      message: 'Are you sure you want to log out?',
-      confirmText: 'Logout',
-      cancelText: 'Cancel',
+      title: this.copy().sidebarLogoutTitle,
+      message: this.copy().sidebarLogoutMessage,
+      confirmText: this.copy().sidebarLogoutConfirm,
+      cancelText: this.copy().commonCancel,
       confirmButtonClass: 'danger'
     });
 
