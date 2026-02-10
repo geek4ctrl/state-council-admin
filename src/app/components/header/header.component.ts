@@ -11,14 +11,14 @@ import { ThemeService } from '../../services/theme.service';
       <button
         class="hamburger"
         (click)="toggleSidebar.emit()"
-        aria-label="Toggle navigation menu"
+        [attr.aria-label]="copy().headerMenuToggleLabel"
         aria-expanded="false"
       >
         <span></span>
         <span></span>
         <span></span>
       </button>
-      <h2 class="greeting">Hello, {{ userName() }}</h2>
+      <h2 class="greeting">{{ copy().headerGreetingPrefix }}, {{ userName() }}</h2>
       <div class="header-actions">
         <button
           class="theme-toggle"
@@ -28,7 +28,7 @@ import { ThemeService } from '../../services/theme.service';
         >
           <span class="theme-icon" aria-hidden="true">{{ themeIcon() }}</span>
         </button>
-        <div class="language-toggle" role="group" aria-label="Language">
+        <div class="language-toggle" role="group" [attr.aria-label]="copy().headerLanguageLabel">
           <button
             class="language-option"
             type="button"
@@ -193,7 +193,7 @@ export class HeaderComponent {
 
   protected userName = computed(() => {
     const user = this.authService.getCurrentUser()();
-    return user?.name || 'Guest';
+    return user?.name || this.copy().headerGuestName;
   });
 
   protected themeIcon = computed(() =>
