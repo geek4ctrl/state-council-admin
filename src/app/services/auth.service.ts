@@ -10,6 +10,7 @@ type ApiUser = {
   email: string;
   avatar?: string;
   role?: 'admin' | 'user' | string;
+  locked?: boolean;
   createdAt?: string;
 };
 
@@ -60,6 +61,7 @@ export class AuthService {
         email: apiUser.email,
         avatar: apiUser.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin',
         role: apiUser.role === 'admin' ? 'admin' : 'user',
+        locked: Boolean(apiUser.locked),
         createdAt: apiUser.createdAt ? new Date(apiUser.createdAt) : new Date()
       };
 
@@ -88,6 +90,7 @@ export class AuthService {
           email: apiUser.email,
           avatar: apiUser.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin',
           role: apiUser.role === 'admin' ? 'admin' : 'user',
+          locked: Boolean(apiUser.locked),
           createdAt: apiUser.createdAt ? new Date(apiUser.createdAt) : new Date()
         };
 
@@ -154,6 +157,7 @@ export class AuthService {
           const parsed = JSON.parse(stored);
           this.currentUser.set({
             ...parsed,
+            locked: Boolean(parsed.locked),
             createdAt: new Date(parsed.createdAt)
           });
         } catch (e) {
