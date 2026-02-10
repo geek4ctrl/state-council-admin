@@ -133,7 +133,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .page-header h1 {
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 400;
       margin: 0;
       color: var(--text-muted);
@@ -183,7 +183,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
       color: var(--primary);
       padding: 6px 14px;
       border-radius: 14px;
-      font-size: 11px;
+      font-size: 9px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -195,7 +195,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .post-title {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
       margin: 0 0 8px 0;
       color: var(--text);
@@ -203,7 +203,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .post-date {
-      font-size: 13px;
+      font-size: 11px;
       color: var(--text-subtle);
       margin: 0 0 12px 0;
       display: flex;
@@ -213,11 +213,11 @@ import { ConfirmationService } from '../../services/confirmation.service';
 
     .post-date::before {
       content: '📅';
-      font-size: 12px;
+      font-size: 10px;
     }
 
     .post-excerpt {
-      font-size: 14px;
+      font-size: 12px;
       color: var(--text-muted);
       margin: 0 0 16px 0;
       line-height: 1.6;
@@ -237,7 +237,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .post-time, .post-location {
-      font-size: 13px;
+      font-size: 11px;
       color: var(--text-subtle);
     }
 
@@ -259,7 +259,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
       border: none;
       padding: 10px 20px;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       display: flex;
@@ -281,7 +281,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
       border: 1px solid color-mix(in srgb, var(--primary) 35%, var(--border));
       padding: 8px 16px;
       border-radius: 6px;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
@@ -300,7 +300,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
     .btn-icon {
       background: none;
       border: none;
-      font-size: 18px;
+      font-size: 16px;
       cursor: pointer;
       padding: 8px;
       border-radius: 6px;
@@ -322,7 +322,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .icon {
-      font-size: 18px;
+      font-size: 16px;
     }
 
     .empty-state {
@@ -339,7 +339,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .empty-state p {
-      font-size: 16px;
+      font-size: 14px;
       color: var(--text-subtle);
       margin-bottom: 24px;
       font-weight: 400;
@@ -371,7 +371,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
       }
 
       .page-header h1 {
-        font-size: 24px;
+        font-size: 22px;
       }
 
       .btn-primary {
@@ -388,11 +388,11 @@ import { ConfirmationService } from '../../services/confirmation.service';
       }
 
       .post-title {
-        font-size: 18px;
+        font-size: 16px;
       }
 
       .post-category {
-        font-size: 10px;
+        font-size: 8px;
         padding: 3px 10px;
       }
 
@@ -424,7 +424,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
       border: none;
       padding: 12px 24px;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
@@ -456,13 +456,13 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .current-page {
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--text);
     }
 
     .post-count {
-      font-size: 12px;
+      font-size: 10px;
       color: var(--text-subtle);
     }
 
@@ -582,3 +582,4 @@ export class PostsComponent implements OnInit {
     img.src = 'https://placehold.co/600x400/e5e7eb/6b7280?text=Image+Not+Available';
   }
 }
+

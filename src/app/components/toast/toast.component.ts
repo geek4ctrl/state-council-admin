@@ -97,12 +97,12 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .toast-icon {
-      font-size: 20px;
+      font-size: 18px;
       line-height: 1;
     }
 
     .toast-message {
-      font-size: 14px;
+      font-size: 12px;
       color: var(--text);
       line-height: 1.5;
       white-space: normal;
@@ -112,7 +112,7 @@ import { ToastService } from '../../services/toast.service';
     .toast-close {
       background: none;
       border: none;
-      font-size: 18px;
+      font-size: 16px;
       color: var(--text-subtle);
       cursor: pointer;
       padding: 4px;
@@ -157,3 +157,4 @@ export class ToastComponent {
     this.toastService.remove(id);
   }
 }
+

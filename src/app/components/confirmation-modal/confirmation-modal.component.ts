@@ -98,7 +98,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .modal-header h2 {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 600;
       color: var(--text);
       margin: 0;
@@ -107,7 +107,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
     .modal-close {
       background: none;
       border: none;
-      font-size: 24px;
+      font-size: 22px;
       color: var(--text-subtle);
       cursor: pointer;
       padding: 4px;
@@ -124,7 +124,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .modal-body p {
-      font-size: 15px;
+      font-size: 13px;
       color: var(--text-muted);
       line-height: 1.6;
       margin: 0;
@@ -141,7 +141,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
     .btn-secondary {
       padding: 10px 24px;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
@@ -216,3 +216,4 @@ export class ConfirmationModalComponent {
     this.confirmationService.handleCancel();
   }
 }
+

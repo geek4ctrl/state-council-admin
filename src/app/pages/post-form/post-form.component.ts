@@ -196,7 +196,7 @@ import { BlogCategory } from '../../models/blog.model';
       background: none;
       border: none;
       color: var(--text-muted);
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       padding: 8px 0;
@@ -210,7 +210,7 @@ import { BlogCategory } from '../../models/blog.model';
     }
 
     .form-header h1 {
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 400;
       margin: 0;
       color: var(--text-muted);
@@ -229,7 +229,7 @@ import { BlogCategory } from '../../models/blog.model';
       }
 
       .form-header h1 {
-        font-size: 28px;
+        font-size: 26px;
       }
     }
 
@@ -239,7 +239,7 @@ import { BlogCategory } from '../../models/blog.model';
       }
 
       .form-header h1 {
-        font-size: 24px;
+        font-size: 22px;
       }
 
       .form-actions {
@@ -289,7 +289,7 @@ import { BlogCategory } from '../../models/blog.model';
     }
 
     label {
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--text-muted);
       margin-bottom: 8px;
@@ -299,7 +299,7 @@ import { BlogCategory } from '../../models/blog.model';
       padding: 10px 12px;
       border: 1px solid var(--border);
       border-radius: 6px;
-      font-size: 14px;
+      font-size: 12px;
       font-family: inherit;
       transition: border-color 0.2s;
       background: var(--surface);
@@ -358,7 +358,7 @@ import { BlogCategory } from '../../models/blog.model';
       border: none;
       padding: 12px 32px;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
@@ -377,7 +377,7 @@ import { BlogCategory } from '../../models/blog.model';
       border: 1px solid var(--border);
       padding: 12px 24px;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
@@ -495,3 +495,4 @@ export class PostFormComponent implements OnInit {
     img.src = 'https://placehold.co/600x400/e5e7eb/6b7280?text=Preview+Not+Available';
   }
 }
+

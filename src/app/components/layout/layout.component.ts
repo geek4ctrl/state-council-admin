@@ -30,6 +30,11 @@ import { CommonModule } from '@angular/common';
       display: flex;
       min-height: 100vh;
       background: var(--bg);
+      background-image:
+        radial-gradient(circle at 10% 15%, rgba(124, 109, 243, 0.2), transparent 40%),
+        radial-gradient(circle at 85% 10%, rgba(34, 211, 238, 0.16), transparent 45%),
+        radial-gradient(circle at 20% 80%, rgba(52, 211, 153, 0.12), transparent 50%),
+        linear-gradient(180deg, rgba(15, 23, 42, 0.25) 0%, rgba(15, 23, 42, 0) 50%);
       position: relative;
       overflow: hidden;
     }
@@ -40,22 +45,23 @@ import { CommonModule } from '@angular/common';
       position: fixed;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
-      opacity: 0.05;
+      opacity: 0.08;
+      filter: blur(4px);
       pointer-events: none;
       z-index: 0;
     }
 
     .layout::before {
-      width: 800px;
-      height: 800px;
+      width: 720px;
+      height: 720px;
       top: -400px;
-      right: -200px;
+      right: -240px;
       transform: rotate(-20deg);
     }
 
     .layout::after {
-      width: 600px;
-      height: 600px;
+      width: 520px;
+      height: 520px;
       bottom: -300px;
       left: 100px;
       background: linear-gradient(135deg, var(--accent-2) 0%, var(--accent-1) 100%);
@@ -69,6 +75,7 @@ import { CommonModule } from '@angular/common';
       right: 0;
       bottom: 0;
       background: var(--overlay);
+      backdrop-filter: blur(6px);
       z-index: 99;
     }
 

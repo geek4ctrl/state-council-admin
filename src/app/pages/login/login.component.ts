@@ -17,7 +17,7 @@ import { ThemeService } from '../../services/theme.service';
           <circle cx="20" cy="20" r="18" fill="#0891b2"/>
           <path d="M15 15 L20 20 L25 15" stroke="white" stroke-width="2" fill="none"/>
           <path d="M15 23 L25 23" stroke="white" stroke-width="2"/>
-          <text x="45" y="27" font-family="Sora, sans-serif" font-size="18" font-weight="600" fill="#0891b2">{{ copy().logoText }}</text>
+          <text x="45" y="27" font-family="Sora, sans-serif" font-size="16" font-weight="600" fill="#0891b2">{{ copy().logoText }}</text>
         </svg>
       </div>
       <div class="utility-toggles">
@@ -276,7 +276,7 @@ import { ThemeService } from '../../services/theme.service';
       color: var(--text);
       padding: 8px 14px;
       border-radius: 999px;
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 600;
       letter-spacing: 0.3px;
       line-height: 1;
@@ -300,7 +300,7 @@ import { ThemeService } from '../../services/theme.service';
       color: var(--text);
       padding: 6px 12px;
       border-radius: 999px;
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.4px;
       line-height: 1;
@@ -359,14 +359,14 @@ import { ThemeService } from '../../services/theme.service';
     }
 
     .login-header h1 {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 400;
       color: var(--text-muted);
       margin: 0 0 8px 0;
     }
 
     .login-header p {
-      font-size: 14px;
+      font-size: 12px;
       color: var(--text-subtle);
       margin: 0;
     }
@@ -385,7 +385,7 @@ import { ThemeService } from '../../services/theme.service';
     }
 
     label {
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 400;
       color: var(--text-subtle);
       text-transform: uppercase;
@@ -397,7 +397,7 @@ import { ThemeService } from '../../services/theme.service';
       padding: 12px 16px;
       border: none;
       border-bottom: 1px solid var(--border);
-      font-size: 15px;
+      font-size: 13px;
       font-family: inherit;
       transition: border-color 0.2s;
       background: transparent;
@@ -424,7 +424,7 @@ import { ThemeService } from '../../services/theme.service';
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 13px;
+      font-size: 11px;
       color: var(--text-muted);
       cursor: pointer;
     }
@@ -436,7 +436,7 @@ import { ThemeService } from '../../services/theme.service';
     }
 
     .forgot-link {
-      font-size: 13px;
+      font-size: 11px;
       color: var(--primary);
       text-decoration: none;
     }
@@ -450,7 +450,7 @@ import { ThemeService } from '../../services/theme.service';
       color: var(--danger);
       padding: 12px 16px;
       border-radius: 6px;
-      font-size: 13px;
+      font-size: 11px;
       border-left: 3px solid var(--danger);
     }
 
@@ -460,7 +460,7 @@ import { ThemeService } from '../../services/theme.service';
       border: none;
       padding: 14px;
       border-radius: 25px;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       letter-spacing: 0.5px;
       cursor: pointer;
@@ -486,7 +486,7 @@ import { ThemeService } from '../../services/theme.service';
     }
 
     .demo-title {
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 600;
       color: #0891b2;
       margin: 0 0 8px 0;
@@ -495,7 +495,7 @@ import { ThemeService } from '../../services/theme.service';
     }
 
     .demo-item {
-      font-size: 13px;
+      font-size: 11px;
       color: #164e63;
       margin: 4px 0;
     }
@@ -507,7 +507,7 @@ import { ThemeService } from '../../services/theme.service';
 
     .new-user {
       text-align: center;
-      font-size: 14px;
+      font-size: 12px;
       color: var(--text-muted);
     }
 
@@ -519,7 +519,7 @@ import { ThemeService } from '../../services/theme.service';
       font-weight: 500;
       cursor: pointer;
       padding: 0;
-      font-size: 14px;
+      font-size: 12px;
     }
 
     .link-button:hover {
@@ -528,7 +528,7 @@ import { ThemeService } from '../../services/theme.service';
 
     .footer-text {
       text-align: center;
-      font-size: 12px;
+      font-size: 10px;
       color: var(--text-muted);
       margin-top: 24px;
       max-width: 440px;
@@ -545,7 +545,7 @@ import { ThemeService } from '../../services/theme.service';
 
     .copyright {
       text-align: center;
-      font-size: 12px;
+      font-size: 10px;
       color: var(--text-subtle);
       margin-top: 16px;
     }
@@ -608,7 +608,7 @@ import { ThemeService } from '../../services/theme.service';
       }
 
       .login-header h1 {
-        font-size: 24px;
+        font-size: 22px;
       }
 
       .login-form {
@@ -714,3 +714,4 @@ export class LoginComponent {
     this.isLoading.set(false);
   }
 }
+

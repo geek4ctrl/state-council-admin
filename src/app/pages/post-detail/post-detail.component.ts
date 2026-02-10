@@ -99,7 +99,7 @@ import { ToastService } from '../../services/toast.service';
       background: none;
       border: none;
       color: var(--primary);
-      font-size: 14px;
+      font-size: 12px;
       cursor: pointer;
       padding: 8px 0;
     }
@@ -116,7 +116,7 @@ import { ToastService } from '../../services/toast.service';
     .btn-secondary, .btn-danger {
       padding: 10px 20px;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
@@ -155,13 +155,13 @@ import { ToastService } from '../../services/toast.service';
       color: white;
       padding: 8px 16px;
       border-radius: 20px;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 600;
       margin-bottom: 24px;
     }
 
     h1 {
-      font-size: 36px;
+      font-size: 34px;
       font-weight: 700;
       margin: 0 0 24px 0;
       color: var(--text);
@@ -172,7 +172,7 @@ import { ToastService } from '../../services/toast.service';
       display: flex;
       flex-wrap: wrap;
       gap: 24px;
-      font-size: 14px;
+      font-size: 12px;
       color: var(--text-muted);
       margin-bottom: 32px;
       padding-bottom: 24px;
@@ -196,7 +196,7 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .post-excerpt {
-      font-size: 18px;
+      font-size: 16px;
       color: var(--text-muted);
       font-weight: 500;
       margin-bottom: 24px;
@@ -204,7 +204,7 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .post-text {
-      font-size: 16px;
+      font-size: 14px;
       color: var(--text);
       line-height: 1.8;
       white-space: pre-wrap;
@@ -239,7 +239,7 @@ import { ToastService } from '../../services/toast.service';
       color: var(--success);
       padding: 8px 16px;
       border-radius: 6px;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 600;
     }
 
@@ -249,7 +249,7 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .post-dates {
-      font-size: 13px;
+      font-size: 11px;
       color: var(--text-muted);
       margin: 0;
     }
@@ -260,7 +260,7 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .error-state h2 {
-      font-size: 24px;
+      font-size: 22px;
       margin-bottom: 24px;
       color: #6c757d;
     }
@@ -271,7 +271,7 @@ import { ToastService } from '../../services/toast.service';
       border: none;
       padding: 12px 32px;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
     }
@@ -367,3 +367,4 @@ export class PostDetailComponent implements OnInit {
     }
   }
 }
+
