@@ -2,6 +2,7 @@ import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { User, UserProfile } from '../models/user.model';
+import { environment } from '../../environments/environment';
 
 type ApiUser = {
   id: string;
@@ -26,7 +27,7 @@ export class AuthService {
   private currentUser = signal<User | null>(null);
   private storageKey = 'currentUser';
   private tokenKey = 'authToken';
-  private apiBase = 'http://localhost:3001';
+  private apiBase = environment.apiBaseUrl;
 
   constructor() {
     this.loadFromStorage();
@@ -55,7 +56,7 @@ export class AuthService {
 
       const user: User = {
         id: apiUser.id,
-        name: apiUser.name,
+        name: apiUser.name ?? this.deriveName(apiUser.email),
         email: apiUser.email,
         avatar: apiUser.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin',
         role: apiUser.role === 'admin' ? 'admin' : 'user',
@@ -83,7 +84,7 @@ export class AuthService {
       if (token && apiUser) {
         const user: User = {
           id: apiUser.id,
-          name: apiUser.name,
+          name: apiUser.name ?? this.deriveName(apiUser.email),
           email: apiUser.email,
           avatar: apiUser.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin',
           role: apiUser.role === 'admin' ? 'admin' : 'user',
@@ -160,5 +161,20 @@ export class AuthService {
         }
       }
     }
+  }
+
+  private deriveName(email?: string): string {
+    if (!email) {
+      return 'User';
+    }
+    const [namePart] = email.split('@');
+    if (!namePart) {
+      return 'User';
+    }
+    return namePart
+      .split(/[._-]+/)
+      .filter(Boolean)
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(' ');
   }
 }

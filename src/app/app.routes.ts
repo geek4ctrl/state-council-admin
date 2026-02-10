@@ -34,6 +34,10 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/post-detail/post-detail.component').then(m => m.PostDetailComponent)
       },
       {
+        path: 'users',
+        loadComponent: () => import('./pages/users/users.component').then(m => m.UsersComponent)
+      },
+      {
         path: 'services',
         loadComponent: () => import('./pages/placeholder/placeholder.component').then(m => m.PlaceholderComponent)
       },

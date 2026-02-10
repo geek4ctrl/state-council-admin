@@ -26,20 +26,20 @@ import { LanguageService } from '../../services/language.service';
     }
 
     .placeholder-icon {
-      font-size: 64px;
+      font-size: 62px;
       display: block;
       margin-bottom: 24px;
     }
 
     h1 {
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 600;
       margin: 0 0 16px 0;
       color: #212529;
     }
 
     p {
-      font-size: 16px;
+      font-size: 14px;
       color: #6c757d;
       margin: 0;
     }
@@ -49,3 +49,4 @@ export class PlaceholderComponent {
   private languageService = inject(LanguageService);
   protected copy = this.languageService.copy;
 }
+

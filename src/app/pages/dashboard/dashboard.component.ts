@@ -52,6 +52,7 @@ import { ToastService } from '../../services/toast.service';
           }
         </div>
       </div>
+
     </div>
   `,
   styles: [`
@@ -61,7 +62,7 @@ import { ToastService } from '../../services/toast.service';
     }
 
     h1 {
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 400;
       margin: 0 0 32px 0;
       color: var(--text-muted);
@@ -74,6 +75,7 @@ import { ToastService } from '../../services/toast.service';
       box-shadow: var(--shadow-soft);
     }
 
+
     .section-header {
       display: flex;
       justify-content: space-between;
@@ -84,17 +86,18 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .section-header h2 {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 600;
       margin: 0;
       color: var(--text);
     }
 
+
     .btn-link {
       background: none;
       border: none;
       color: var(--primary);
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       transition: color 0.2s;
@@ -156,7 +159,7 @@ import { ToastService } from '../../services/toast.service';
       color: var(--primary);
       padding: 4px 12px;
       border-radius: 14px;
-      font-size: 11px;
+      font-size: 9px;
       font-weight: 700;
       margin-bottom: 10px;
       text-transform: uppercase;
@@ -165,7 +168,7 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .recent-post-content h3 {
-      font-size: 17px;
+      font-size: 15px;
       font-weight: 600;
       margin: 0 0 8px 0;
       color: var(--text);
@@ -173,7 +176,7 @@ import { ToastService } from '../../services/toast.service';
     }
 
     .recent-post-date {
-      font-size: 13px;
+      font-size: 11px;
       color: var(--text-subtle);
       margin: 0;
       display: flex;
@@ -183,15 +186,16 @@ import { ToastService } from '../../services/toast.service';
 
     .recent-post-date::before {
       content: '📅';
-      font-size: 12px;
+      font-size: 10px;
     }
 
     .empty-message {
       text-align: center;
       color: var(--text-subtle);
       padding: 64px 20px;
-      font-size: 16px;
+      font-size: 14px;
     }
+
 
     @media (max-width: 768px) {
       .recent-post-item {
@@ -207,16 +211,18 @@ import { ToastService } from '../../services/toast.service';
       .recent-section {
         padding: 24px;
       }
+
     }
 
     @media (max-width: 640px) {
       h1 {
-        font-size: 24px;
+        font-size: 22px;
       }
 
       .recent-section {
         padding: 20px;
       }
+
 
       .section-header {
         flex-direction: column;
@@ -225,7 +231,7 @@ import { ToastService } from '../../services/toast.service';
       }
 
       .section-header h2 {
-        font-size: 18px;
+        font-size: 16px;
       }
 
       .recent-post-item {
@@ -237,11 +243,11 @@ import { ToastService } from '../../services/toast.service';
       }
 
       .recent-post-content h3 {
-        font-size: 16px;
+        font-size: 14px;
       }
 
       .recent-post-category {
-        font-size: 10px;
+        font-size: 8px;
         padding: 3px 10px;
       }
     }
@@ -269,7 +275,6 @@ export class DashboardComponent implements OnInit {
   protected recentPosts = computed(() =>
     [...this.blogs()]
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-      .slice(0, 5)
   );
 
   async ngOnInit(): Promise<void> {
@@ -281,6 +286,7 @@ export class DashboardComponent implements OnInit {
     } catch {
       this.toastService.error(this.copy().dashboardLoadError);
     }
+
   }
 
   protected formatDate(date: Date): string {
@@ -300,3 +306,4 @@ export class DashboardComponent implements OnInit {
     img.src = 'https://placehold.co/600x400/e5e7eb/6b7280?text=Image+Not+Available';
   }
 }
+

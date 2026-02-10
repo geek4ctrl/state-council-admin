@@ -59,8 +59,10 @@ interface NavItem {
     .sidebar {
       width: 240px;
       height: 100vh;
-      background: var(--surface);
+      background: linear-gradient(180deg, var(--surface) 0%, var(--surface-alt) 100%);
       border-right: 1px solid var(--border);
+      box-shadow: var(--shadow-strong);
+      backdrop-filter: blur(16px);
       display: flex;
       flex-direction: column;
       position: fixed;
@@ -75,6 +77,7 @@ interface NavItem {
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--border);
+      background: linear-gradient(120deg, rgba(124, 109, 243, 0.15), rgba(34, 211, 238, 0.08));
     }
 
     .logo {
@@ -83,9 +86,10 @@ interface NavItem {
     }
 
     .logo h1 {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 600;
-      color: var(--primary);
+      color: var(--text);
+      letter-spacing: 0.3px;
       margin: 0;
     }
 
@@ -93,7 +97,7 @@ interface NavItem {
       display: none;
       background: none;
       border: none;
-      font-size: 24px;
+      font-size: 22px;
       color: var(--text-muted);
       cursor: pointer;
       padding: 20px;
@@ -120,14 +124,14 @@ interface NavItem {
 
     .nav-menu {
       flex: 1;
-      padding: 20px 0;
+      padding: 16px 12px 24px;
       overflow-y: auto;
     }
 
     .nav-item, .logout-btn {
       display: flex;
       align-items: center;
-      padding: 12px 20px;
+      padding: 12px 14px;
       color: var(--text);
       text-decoration: none;
       transition: all 0.2s;
@@ -136,25 +140,29 @@ interface NavItem {
       background: none;
       width: 100%;
       text-align: left;
-      font-size: 15px;
+      font-size: 13px;
+      border-radius: 12px;
+      margin-bottom: 6px;
     }
 
     .nav-item:hover, .logout-btn:hover {
-      background: var(--surface-alt);
-      color: var(--primary);
+      background: color-mix(in srgb, var(--primary) 12%, transparent);
+      color: var(--text);
+      transform: translateX(2px);
     }
 
     .nav-item.active {
-      background: color-mix(in srgb, var(--primary) 12%, transparent);
-      color: var(--primary);
-      border-right: 3px solid var(--primary);
+      background: linear-gradient(120deg, rgba(124, 109, 243, 0.25), rgba(34, 211, 238, 0.08));
+      color: var(--text);
+      box-shadow: inset 0 0 0 1px rgba(124, 109, 243, 0.3);
     }
 
     .nav-icon {
-      font-size: 18px;
+      font-size: 16px;
       margin-right: 12px;
       width: 24px;
       text-align: center;
+      opacity: 0.9;
     }
 
     .nav-label {
@@ -171,7 +179,7 @@ interface NavItem {
     }
 
     .logout-btn:hover {
-      background: color-mix(in srgb, var(--danger) 12%, transparent);
+      background: color-mix(in srgb, var(--danger) 14%, transparent);
     }
   `]
 })
@@ -187,6 +195,7 @@ export class SidebarComponent {
   protected navItems = computed<NavItem[]>(() => [
     { label: this.copy().sidebarNavDashboard, route: '/dashboard', icon: '📊' },
     { label: this.copy().sidebarNavPosts, route: '/posts', icon: '📝' },
+    { label: this.copy().sidebarNavUsers, route: '/users', icon: '👥' },
     { label: this.copy().sidebarNavSettings, route: '/settings', icon: '⚙️' }
   ]);
 
@@ -205,3 +214,4 @@ export class SidebarComponent {
     }
   }
 }
+

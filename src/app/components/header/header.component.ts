@@ -55,8 +55,8 @@ import { ThemeService } from '../../services/theme.service';
   `,
   styles: [`
     .header {
-      height: 64px;
-      background: var(--surface);
+      height: 72px;
+      background: linear-gradient(180deg, rgba(18, 24, 33, 0.92), rgba(18, 24, 33, 0.82));
       border-bottom: 1px solid var(--border);
       padding: 0 32px;
       display: flex;
@@ -65,6 +65,8 @@ import { ThemeService } from '../../services/theme.service';
       position: sticky;
       top: 0;
       z-index: 10;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 20px rgba(2, 6, 23, 0.35);
     }
 
     .hamburger {
@@ -90,11 +92,12 @@ import { ThemeService } from '../../services/theme.service';
     }
 
     .greeting {
-      font-size: 24px;
-      font-weight: 400;
+      font-size: 20px;
+      font-weight: 500;
       margin: 0;
       color: var(--text);
       flex: 1;
+      letter-spacing: 0.2px;
     }
 
     .header-actions {
@@ -107,14 +110,15 @@ import { ThemeService } from '../../services/theme.service';
       border: 1px solid var(--border);
       background: var(--surface-alt);
       color: var(--text);
-      padding: 6px 12px;
+      padding: 8px 14px;
       border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
       line-height: 1;
       cursor: pointer;
       transition: all 0.2s;
+      box-shadow: inset 0 0 0 1px rgba(124, 109, 243, 0.15);
     }
 
     .language-toggle {
@@ -125,15 +129,16 @@ import { ThemeService } from '../../services/theme.service';
       background: var(--surface-alt);
       padding: 2px;
       gap: 2px;
+      box-shadow: inset 0 0 0 1px rgba(124, 109, 243, 0.15);
     }
 
     .language-option {
       border: none;
       background: transparent;
       color: var(--text);
-      padding: 6px 12px;
+      padding: 7px 12px;
       border-radius: 999px;
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.4px;
       line-height: 1;
@@ -146,9 +151,9 @@ import { ThemeService } from '../../services/theme.service';
     }
 
     .language-option.is-active {
-      background: var(--primary);
+      background: linear-gradient(120deg, rgba(124, 109, 243, 0.9), rgba(34, 211, 238, 0.7));
       color: #ffffff;
-      box-shadow: 0 2px 6px rgba(8, 145, 178, 0.25);
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.35);
     }
 
     .theme-icon {
@@ -160,6 +165,7 @@ import { ThemeService } from '../../services/theme.service';
     .theme-toggle:hover {
       border-color: var(--primary);
       color: var(--primary);
+      transform: translateY(-1px);
     }
 
     .language-toggle:hover {
@@ -175,11 +181,11 @@ import { ThemeService } from '../../services/theme.service';
     @media (max-width: 640px) {
       .header {
         padding: 0 16px;
-        height: 56px;
+        height: 62px;
       }
 
       .greeting {
-        font-size: 18px;
+        font-size: 16px;
       }
     }
   `]
@@ -214,3 +220,4 @@ export class HeaderComponent {
     this.languageService.setLanguage(value);
   }
 }
+
