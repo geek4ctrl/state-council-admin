@@ -1,4 +1,4 @@
-import { Component, computed, signal, inject, OnInit } from '@angular/core';
+import { Component, computed, signal, inject, OnInit, effect } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { BlogService } from '../../services/blog.service';
@@ -20,6 +20,51 @@ import { ConfirmationService } from '../../services/confirmation.service';
         >
           <span class="icon" aria-hidden="true">+</span> {{ copy().postsNewButton }}
         </button>
+      </div>
+
+      <div class="filters" role="search" aria-label="Post filters">
+        <div class="filter-group">
+          <label for="post-search">Search</label>
+          <input
+            id="post-search"
+            type="search"
+            [value]="searchQuery()"
+            (input)="onSearchChange($event)"
+            placeholder="Search posts"
+          />
+        </div>
+
+        <div class="filter-group">
+          <label for="post-status">Status</label>
+          <select id="post-status" [value]="statusFilter()" (change)="onStatusChange($event)">
+            <option value="">All statuses</option>
+            <option value="draft">Draft</option>
+            <option value="review">Review</option>
+            <option value="published">Published</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="post-author">Author</label>
+          <select id="post-author" [value]="authorFilter()" (change)="onAuthorChange($event)">
+            <option value="">All authors</option>
+            @for (author of authorOptions(); track author) {
+              <option [value]="author">{{ author }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="post-from">From</label>
+          <input id="post-from" type="date" [value]="dateFrom()" (input)="onDateFromChange($event)" />
+        </div>
+
+        <div class="filter-group">
+          <label for="post-to">To</label>
+          <input id="post-to" type="date" [value]="dateTo()" (input)="onDateToChange($event)" />
+        </div>
+
+        <button class="btn-secondary btn-reset" type="button" (click)="resetFilters()">Reset</button>
       </div>
 
       <div class="posts-grid" role="list" aria-labelledby="page-title">
@@ -143,6 +188,56 @@ import { ConfirmationService } from '../../services/confirmation.service';
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
       gap: 24px;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: var(--surface);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .filter-group label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--text-subtle);
+    }
+
+    .filter-group input,
+    .filter-group select {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 12px;
+      background: var(--surface);
+      color: var(--text);
+      transition: border-color 0.2s;
+    }
+
+    .filter-group input:focus,
+    .filter-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: var(--ring);
+    }
+
+    .btn-reset {
+      align-self: end;
+      justify-self: end;
+      height: 36px;
     }
 
     .post-card {
@@ -495,10 +590,61 @@ export class PostsComponent implements OnInit {
   protected copy = this.languageService.copy;
 
   protected blogs = this.blogService.getBlogs();
+  protected searchQuery = signal('');
+  protected statusFilter = signal('');
+  protected authorFilter = signal('');
+  protected dateFrom = signal('');
+  protected dateTo = signal('');
   protected currentPage = signal(1);
   protected itemsPerPage = 6;
 
-  protected totalBlogs = computed(() => this.blogs().length);
+  protected authorOptions = computed(() => {
+    const names = this.blogs()
+      .map((blog) => blog.authorName)
+      .filter((name): name is string => Boolean(name));
+    return Array.from(new Set(names)).sort((a, b) => a.localeCompare(b));
+  });
+
+  protected filteredBlogs = computed(() => {
+    const query = this.searchQuery().toLowerCase().trim();
+    const status = this.statusFilter();
+    const author = this.authorFilter();
+    const from = this.dateFrom();
+    const to = this.dateTo();
+
+    return this.blogs().filter((blog) => {
+      if (status && blog.status !== status) {
+        return false;
+      }
+
+      if (author && blog.authorName !== author) {
+        return false;
+      }
+
+      if (!this.matchesDateRange(blog.date, from, to)) {
+        return false;
+      }
+
+      if (!query) {
+        return true;
+      }
+
+      const haystack = [
+        blog.title,
+        blog.excerpt,
+        blog.content,
+        blog.authorName,
+        blog.location,
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+
+      return haystack.includes(query);
+    });
+  });
+
+  protected totalBlogs = computed(() => this.filteredBlogs().length);
   protected totalPages = computed(() => Math.ceil(this.totalBlogs() / this.itemsPerPage));
   protected startIndex = computed(() => (this.currentPage() - 1) * this.itemsPerPage);
   protected endIndex = computed(() => Math.min(this.startIndex() + this.itemsPerPage, this.totalBlogs()));
@@ -506,7 +652,16 @@ export class PostsComponent implements OnInit {
   protected paginatedBlogs = computed(() => {
     const start = this.startIndex();
     const end = this.endIndex();
-    return this.blogs().slice(start, end);
+    return this.filteredBlogs().slice(start, end);
+  });
+
+  private filterEffect = effect(() => {
+    this.searchQuery();
+    this.statusFilter();
+    this.authorFilter();
+    this.dateFrom();
+    this.dateTo();
+    this.currentPage.set(1);
   });
 
   async ngOnInit(): Promise<void> {
@@ -550,6 +705,40 @@ export class PostsComponent implements OnInit {
     this.router.navigate(['/posts/new']);
   }
 
+  protected onSearchChange(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.searchQuery.set(value);
+  }
+
+  protected onStatusChange(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value;
+    this.statusFilter.set(value);
+  }
+
+  protected onAuthorChange(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value;
+    this.authorFilter.set(value);
+  }
+
+  protected onDateFromChange(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.dateFrom.set(value);
+  }
+
+  protected onDateToChange(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.dateTo.set(value);
+  }
+
+  protected resetFilters(): void {
+    this.searchQuery.set('');
+    this.statusFilter.set('');
+    this.authorFilter.set('');
+    this.dateFrom.set('');
+    this.dateTo.set('');
+    this.currentPage.set(1);
+  }
+
   protected onEdit(id: string): void {
     this.router.navigate(['/posts/edit', id]);
   }
@@ -580,6 +769,29 @@ export class PostsComponent implements OnInit {
   protected onImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
     img.src = 'https://placehold.co/600x400/e5e7eb/6b7280?text=Image+Not+Available';
+  }
+
+  private matchesDateRange(date: Date, from: string, to: string): boolean {
+    if (!from && !to) {
+      return true;
+    }
+
+    const value = date.getTime();
+    if (from) {
+      const fromDate = new Date(`${from}T00:00:00`).getTime();
+      if (value < fromDate) {
+        return false;
+      }
+    }
+
+    if (to) {
+      const toDate = new Date(`${to}T23:59:59`).getTime();
+      if (value > toDate) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
 

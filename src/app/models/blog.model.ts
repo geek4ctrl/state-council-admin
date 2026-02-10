@@ -4,6 +4,7 @@ export interface Blog {
   content: string;
   excerpt: string;
   category: BlogCategory;
+  status: BlogStatus;
   imageUrl: string;
   date: Date;
   time: string;
@@ -18,6 +19,8 @@ export interface Blog {
 }
 
 export type BlogCategory = 'Event' | 'Announcement' | 'News';
+
+export type BlogStatus = 'draft' | 'review' | 'published';
 
 export interface CreateBlogDto {
   title: string;
