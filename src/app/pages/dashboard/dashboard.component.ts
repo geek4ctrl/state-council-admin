@@ -2,6 +2,7 @@ import { Component, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { BlogService } from '../../services/blog.service';
+import { LanguageService } from '../../services/language.service';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
@@ -9,17 +10,17 @@ import { ToastService } from '../../services/toast.service';
   imports: [CommonModule, RouterLink],
   template: `
     <div class="dashboard" role="main">
-      <h1 id="dashboard-title">Dashboard</h1>
+      <h1 id="dashboard-title">{{ copy().dashboardTitle }}</h1>
 
       <div class="recent-section">
         <div class="section-header">
-          <h2 id="recent-posts-title">Recent Posts</h2>
+          <h2 id="recent-posts-title">{{ copy().dashboardRecentPosts }}</h2>
           <button
             class="btn-link"
             (click)="viewAllPosts()"
-            aria-label="View all blog posts"
+            [attr.aria-label]="copy().dashboardViewAllAriaLabel"
           >
-            View All →
+            {{ copy().dashboardViewAllText }}
           </button>
         </div>
 
@@ -29,17 +30,17 @@ import { ToastService } from '../../services/toast.service';
               class="recent-post-item"
               [routerLink]="['/posts', blog.id]"
               role="listitem"
-              [attr.aria-label]="'View post: ' + blog.title"
+              [attr.aria-label]="copy().dashboardViewPostPrefix + ' ' + blog.title"
             >
               <img
                 [src]="blog.imageUrl"
-                [alt]="'Cover image for ' + blog.title"
+                [alt]="copy().dashboardCoverAltPrefix + ' ' + blog.title"
                 loading="lazy"
                 decoding="async"
                 (error)="onImageError($event)"
               />
               <div class="recent-post-content">
-                <span class="recent-post-category" aria-label="Category">{{ blog.category }}</span>
+                <span class="recent-post-category" [attr.aria-label]="copy().dashboardCategoryLabel">{{ blog.category }}</span>
                 <h3>{{ blog.title }}</h3>
                 <p class="recent-post-date">
                   <time [attr.datetime]="blog.date.toISOString()">{{ formatDate(blog.date) }}</time>
@@ -47,7 +48,7 @@ import { ToastService } from '../../services/toast.service';
               </div>
             </a>
           } @empty {
-            <p class="empty-message" role="status">No posts yet</p>
+            <p class="empty-message" role="status">{{ copy().dashboardEmptyText }}</p>
           }
         </div>
       </div>
@@ -248,9 +249,12 @@ import { ToastService } from '../../services/toast.service';
 })
 export class DashboardComponent implements OnInit {
   private blogService = inject(BlogService);
+  private languageService = inject(LanguageService);
   private router = inject(Router);
   private blogs = this.blogService.getBlogs();
   private toastService = inject(ToastService);
+
+  protected copy = this.languageService.copy;
 
   protected totalPosts = computed(() => this.blogs().length);
   protected eventCount = computed(() =>
@@ -272,15 +276,15 @@ export class DashboardComponent implements OnInit {
     try {
       const loaded = await this.blogService.loadBlogs();
       if (!loaded) {
-        this.toastService.error('Failed to load recent posts.');
+        this.toastService.error(this.copy().dashboardLoadError);
       }
     } catch {
-      this.toastService.error('Failed to load recent posts.');
+      this.toastService.error(this.copy().dashboardLoadError);
     }
   }
 
   protected formatDate(date: Date): string {
-    return new Date(date).toLocaleDateString('en-US', {
+    return new Date(date).toLocaleDateString(this.languageService.locale(), {
       year: 'numeric',
       month: 'short',
       day: 'numeric'

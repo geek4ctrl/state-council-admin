@@ -1,5 +1,6 @@
 import { Component, computed, inject, output } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { LanguageService } from '../../services/language.service';
 import { ThemeService } from '../../services/theme.service';
 
 @Component({
@@ -27,6 +28,28 @@ import { ThemeService } from '../../services/theme.service';
         >
           <span class="theme-icon" aria-hidden="true">{{ themeIcon() }}</span>
         </button>
+        <div class="language-toggle" role="group" aria-label="Language">
+          <button
+            class="language-option"
+            type="button"
+            [class.is-active]="languageService.languageName() === 'en'"
+            [attr.aria-pressed]="languageService.languageName() === 'en'"
+            [attr.aria-label]="copy().switchToEnglishLabel"
+            (click)="setLanguage('en')"
+          >
+            EN
+          </button>
+          <button
+            class="language-option"
+            type="button"
+            [class.is-active]="languageService.languageName() === 'fr'"
+            [attr.aria-pressed]="languageService.languageName() === 'fr'"
+            [attr.aria-label]="copy().switchToFrenchLabel"
+            (click)="setLanguage('fr')"
+          >
+            FR
+          </button>
+        </div>
       </div>
     </header>
   `,
@@ -94,6 +117,40 @@ import { ThemeService } from '../../services/theme.service';
       transition: all 0.2s;
     }
 
+    .language-toggle {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface-alt);
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .language-option {
+      border: none;
+      background: transparent;
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      line-height: 1;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .language-option:hover {
+      color: var(--primary);
+    }
+
+    .language-option.is-active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(8, 145, 178, 0.25);
+    }
+
     .theme-icon {
       display: inline-flex;
       align-items: center;
@@ -103,6 +160,10 @@ import { ThemeService } from '../../services/theme.service';
     .theme-toggle:hover {
       border-color: var(--primary);
       color: var(--primary);
+    }
+
+    .language-toggle:hover {
+      border-color: var(--primary);
     }
 
     @media (max-width: 1024px) {
@@ -126,7 +187,9 @@ import { ThemeService } from '../../services/theme.service';
 export class HeaderComponent {
   toggleSidebar = output<void>();
   private authService = inject(AuthService);
+  protected languageService = inject(LanguageService);
   private themeService = inject(ThemeService);
+  protected copy = this.languageService.copy;
 
   protected userName = computed(() => {
     const user = this.authService.getCurrentUser()();
@@ -138,10 +201,16 @@ export class HeaderComponent {
   );
 
   protected themeAriaLabel = computed(() =>
-    this.themeService.themeName() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
+    this.themeService.themeName() === 'dark'
+      ? this.copy().themeSwitchToLight
+      : this.copy().themeSwitchToDark
   );
 
   protected toggleTheme(): void {
     this.themeService.toggleTheme();
+  }
+
+  protected setLanguage(value: 'en' | 'fr'): void {
+    this.languageService.setLanguage(value);
   }
 }

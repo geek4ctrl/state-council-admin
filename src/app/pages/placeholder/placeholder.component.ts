@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-placeholder',
@@ -7,8 +8,8 @@ import { Component } from '@angular/core';
     <div class="placeholder-page">
       <div class="placeholder-content">
         <span class="placeholder-icon">🚧</span>
-        <h1>Coming Soon</h1>
-        <p>This feature is under development</p>
+        <h1>{{ copy().placeholderTitle }}</h1>
+        <p>{{ copy().placeholderSubtitle }}</p>
       </div>
     </div>
   `,
@@ -44,4 +45,7 @@ import { Component } from '@angular/core';
     }
   `]
 })
-export class PlaceholderComponent {}
+export class PlaceholderComponent {
+  private languageService = inject(LanguageService);
+  protected copy = this.languageService.copy;
+}

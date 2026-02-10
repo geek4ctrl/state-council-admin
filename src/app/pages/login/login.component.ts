@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { LanguageService } from '../../services/language.service';
 import { ToastService } from '../../services/toast.service';
 import { ThemeService } from '../../services/theme.service';
 
@@ -16,35 +17,50 @@ import { ThemeService } from '../../services/theme.service';
           <circle cx="20" cy="20" r="18" fill="#0891b2"/>
           <path d="M15 15 L20 20 L25 15" stroke="white" stroke-width="2" fill="none"/>
           <path d="M15 23 L25 23" stroke="white" stroke-width="2"/>
-          <text x="45" y="27" font-family="Sora, sans-serif" font-size="18" font-weight="600" fill="#0891b2">State Council</text>
+          <text x="45" y="27" font-family="Sora, sans-serif" font-size="18" font-weight="600" fill="#0891b2">{{ copy().logoText }}</text>
         </svg>
       </div>
-      <button
-        class="theme-toggle"
-        type="button"
-        (click)="toggleTheme()"
-        [attr.aria-label]="themeAriaLabel()"
-      >
-        <span class="theme-icon" aria-hidden="true">{{ themeIcon() }}</span>
-      </button>
+      <div class="utility-toggles">
+        <button
+          class="theme-toggle"
+          type="button"
+          (click)="toggleTheme()"
+          [attr.aria-label]="themeAriaLabel()"
+        >
+          <span class="theme-icon" aria-hidden="true">{{ themeIcon() }}</span>
+        </button>
+        <button
+          class="language-toggle"
+          type="button"
+          (click)="toggleLanguage()"
+          [attr.aria-label]="languageAriaLabel()"
+        >
+          {{ languageLabel() }}
+        </button>
+      </div>
 
       <div class="login-container">
         <div class="login-card">
           <div class="login-header">
-            <h1>{{ isRegisterMode() ? 'Create your account' : 'Welcome to State Council' }}</h1>
-            <p>{{ isRegisterMode() ? 'Fill in your details to get started' : 'Please login to your account' }}</p>
+            @if (isRegisterMode()) {
+              <h1>{{ copy().loginRegisterTitle }}</h1>
+              <p>{{ copy().loginRegisterSubtitle }}</p>
+            } @else {
+              <h1>{{ copy().loginWelcomeTitle }}</h1>
+              <p>{{ copy().loginWelcomeSubtitle }}</p>
+            }
           </div>
 
           @if (isRegisterMode()) {
-            <form (ngSubmit)="onRegister()" class="login-form" role="form" aria-label="Create account form">
+            <form (ngSubmit)="onRegister()" class="login-form" role="form" [attr.aria-label]="copy().registerFormLabel">
               <div class="form-group">
-                <label for="registerEmail">Email Address</label>
+                <label for="registerEmail">{{ copy().emailAddressLabel }}</label>
                 <input
                   type="email"
                   id="registerEmail"
                   [(ngModel)]="registerEmail"
                   name="registerEmail"
-                  placeholder="you@example.com"
+                  [placeholder]="copy().emailPlaceholder"
                   required
                   autocomplete="email"
                   aria-required="true"
@@ -52,13 +68,13 @@ import { ThemeService } from '../../services/theme.service';
               </div>
 
               <div class="form-group">
-                <label for="registerPassword">Password</label>
+                <label for="registerPassword">{{ copy().passwordLabel }}</label>
                 <input
                   type="password"
                   id="registerPassword"
                   [(ngModel)]="registerPassword"
                   name="registerPassword"
-                  placeholder="Create a password"
+                  [placeholder]="copy().createPasswordPlaceholder"
                   required
                   autocomplete="new-password"
                   aria-required="true"
@@ -66,13 +82,13 @@ import { ThemeService } from '../../services/theme.service';
               </div>
 
               <div class="form-group">
-                <label for="registerConfirm">Confirm Password</label>
+                <label for="registerConfirm">{{ copy().confirmPasswordLabel }}</label>
                 <input
                   type="password"
                   id="registerConfirm"
                   [(ngModel)]="registerConfirm"
                   name="registerConfirm"
-                  placeholder="Confirm your password"
+                  [placeholder]="copy().confirmPasswordPlaceholder"
                   required
                   autocomplete="new-password"
                   aria-required="true"
@@ -90,27 +106,30 @@ import { ThemeService } from '../../services/theme.service';
                 class="btn-login"
                 [disabled]="isLoading()"
                 [attr.aria-busy]="isLoading()"
-                aria-label="Create your account"
+                [attr.aria-label]="copy().createAccountAriaLabel"
               >
-                {{ isLoading() ? 'CREATING ACCOUNT...' : 'CREATE ACCOUNT' }}
+                @if (isLoading()) {
+                  <span>{{ copy().createAccountLoading }}</span>
+                } @else {
+                  <span>{{ copy().createAccountText }}</span>
+                }
               </button>
 
               <div class="new-user">
-                <span>Already have an account?
-                  <button type="button" class="link-button" (click)="setRegisterMode(false)">Sign In</button>
-                </span>
+                <span>{{ copy().existingAccountText }}</span>
+                <button type="button" class="link-button" (click)="setRegisterMode(false)">{{ copy().signInText }}</button>
               </div>
             </form>
           } @else {
-            <form (ngSubmit)="onLogin()" class="login-form" role="form" aria-label="Login form">
+            <form (ngSubmit)="onLogin()" class="login-form" role="form" [attr.aria-label]="copy().loginFormLabel">
               <div class="form-group">
-                <label for="email">Email Address</label>
+                <label for="email">{{ copy().emailAddressLabel }}</label>
                 <input
                   type="email"
                   id="email"
                   [(ngModel)]="email"
                   name="email"
-                  placeholder="admin@statecounciladmin.com"
+                  [placeholder]="copy().emailAdminPlaceholder"
                   required
                   autocomplete="email"
                   aria-required="true"
@@ -119,13 +138,13 @@ import { ThemeService } from '../../services/theme.service';
               </div>
 
               <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">{{ copy().passwordLabel }}</label>
                 <input
                   type="password"
                   id="password"
                   [(ngModel)]="password"
                   name="password"
-                  placeholder="••••••••••"
+                  [placeholder]="copy().passwordPlaceholder"
                   required
                   autocomplete="current-password"
                   aria-required="true"
@@ -139,11 +158,11 @@ import { ThemeService } from '../../services/theme.service';
                     [(ngModel)]="rememberMe"
                     name="rememberMe"
                     id="rememberMe"
-                    aria-label="Remember me"
+                    [attr.aria-label]="copy().rememberMeText"
                   />
-                  <span>Remember me</span>
+                  <span>{{ copy().rememberMeText }}</span>
                 </label>
-                <a href="#" class="forgot-link" role="button" aria-label="Forgot your password">Forgot your password?</a>
+                <a href="#" class="forgot-link" role="button" [attr.aria-label]="copy().forgotPasswordText">{{ copy().forgotPasswordText }}</a>
               </div>
 
               @if (errorMessage()) {
@@ -157,27 +176,31 @@ import { ThemeService } from '../../services/theme.service';
                 class="btn-login"
                 [disabled]="isLoading()"
                 [attr.aria-busy]="isLoading()"
-                aria-label="Login to your account"
+                [attr.aria-label]="copy().loginAriaLabel"
               >
-                {{ isLoading() ? 'SIGNING IN...' : 'LOGIN' }}
+                @if (isLoading()) {
+                  <span>{{ copy().loginLoading }}</span>
+                } @else {
+                  <span>{{ copy().loginText }}</span>
+                }
               </button>
 
               <div class="new-user">
-                <span>New User?
-                  <button type="button" class="link-button" (click)="setRegisterMode(true)">Create an Account</button>
-                </span>
+                <span>{{ copy().newUserText }}</span>
+                <button type="button" class="link-button" (click)="setRegisterMode(true)">{{ copy().createAccountLink }}</button>
               </div>
             </form>
           }
         </div>
 
         <footer class="footer-text" role="contentinfo">
-          Registering to this website, you accept our
-          <a href="#" aria-label="Read our terms of use">Terms of use</a> and our <a href="#" aria-label="Read our privacy policy">Privacy policy</a>
+          {{ copy().footerPrefix }}
+          <a href="#" [attr.aria-label]="copy().termsUseLabel">{{ copy().termsUseText }}</a>{{ copy().footerMiddle }}
+          <a href="#" [attr.aria-label]="copy().privacyPolicyLabel">{{ copy().privacyPolicyText }}</a>
         </footer>
 
         <div class="copyright" role="contentinfo">
-          © 2026 State Council. All rights reserved
+          {{ copy().copyrightText }}
         </div>
       </div>
     </div>
@@ -224,10 +247,17 @@ import { ThemeService } from '../../services/theme.service';
       z-index: 10;
     }
 
-    .theme-toggle {
+    .utility-toggles {
       position: absolute;
       top: 28px;
       right: 32px;
+      display: flex;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .theme-toggle,
+    .language-toggle {
       border: 1px solid var(--border);
       background: var(--surface);
       color: var(--text);
@@ -239,7 +269,6 @@ import { ThemeService } from '../../services/theme.service';
       line-height: 1;
       cursor: pointer;
       transition: all 0.2s;
-      z-index: 10;
     }
 
     .theme-icon {
@@ -248,7 +277,8 @@ import { ThemeService } from '../../services/theme.service';
       justify-content: center;
     }
 
-    .theme-toggle:hover {
+    .theme-toggle:hover,
+    .language-toggle:hover {
       border-color: var(--primary);
       color: var(--primary);
     }
@@ -495,6 +525,14 @@ import { ThemeService } from '../../services/theme.service';
         text-align: center;
       }
 
+      .utility-toggles {
+        position: relative;
+        top: 0;
+        right: 0;
+        justify-content: center;
+        margin: 0 0 12px;
+      }
+
       .theme-toggle {
         position: relative;
         top: 0;
@@ -538,9 +576,12 @@ import { ThemeService } from '../../services/theme.service';
 })
 export class LoginComponent {
   private authService = inject(AuthService);
+  private languageService = inject(LanguageService);
   private router = inject(Router);
   private toastService = inject(ToastService);
   private themeService = inject(ThemeService);
+
+  protected copy = this.languageService.copy;
 
   protected email = '';
   protected password = '';
@@ -556,11 +597,27 @@ export class LoginComponent {
   );
 
   protected themeAriaLabel = computed(() =>
-    this.themeService.themeName() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
+    this.themeService.themeName() === 'dark'
+      ? this.copy().themeSwitchToLight
+      : this.copy().themeSwitchToDark
+  );
+
+  protected languageLabel = computed(() =>
+    this.languageService.languageName() === 'fr' ? 'EN' : 'FR'
+  );
+
+  protected languageAriaLabel = computed(() =>
+    this.languageService.languageName() === 'fr'
+      ? this.copy().switchToEnglishLabel
+      : this.copy().switchToFrenchLabel
   );
 
   protected toggleTheme(): void {
     this.themeService.toggleTheme();
+  }
+
+  protected toggleLanguage(): void {
+    this.languageService.toggleLanguage();
   }
 
   protected setRegisterMode(isRegister: boolean): void {
@@ -579,13 +636,13 @@ export class LoginComponent {
     const success = await this.authService.login(this.email, this.password);
 
     if (success) {
-      this.toastService.success('Login successful! Welcome back.');
+      this.toastService.success(this.copy().loginSuccessToast);
       this.router.navigate(['/dashboard']);
       return;
     }
 
-    this.errorMessage.set('Invalid email or password. Please use the demo credentials.');
-    this.toastService.error('Invalid email or password. Please try again.');
+    this.errorMessage.set(this.copy().loginInvalidMessage);
+    this.toastService.error(this.copy().loginInvalidToast);
     this.isLoading.set(false);
   }
 
@@ -593,7 +650,7 @@ export class LoginComponent {
     this.errorMessage.set('');
 
     if (this.registerPassword !== this.registerConfirm) {
-      this.errorMessage.set('Passwords do not match.');
+      this.errorMessage.set(this.copy().registerPasswordMismatch);
       return;
     }
 
@@ -605,15 +662,15 @@ export class LoginComponent {
     );
 
     if (success) {
-      this.toastService.success('Account created successfully. Please sign in.');
+      this.toastService.success(this.copy().registerSuccessToast);
       this.email = this.registerEmail.trim();
       this.password = '';
       this.setRegisterMode(false);
       return;
     }
 
-    this.errorMessage.set('Unable to create account. Please try again.');
-    this.toastService.error('Registration failed. Please try again.');
+    this.errorMessage.set(this.copy().registerErrorMessage);
+    this.toastService.error(this.copy().registerErrorToast);
     this.isLoading.set(false);
   }
 }

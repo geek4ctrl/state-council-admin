@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BlogService } from '../../services/blog.service';
 import { AuthService } from '../../services/auth.service';
+import { LanguageService } from '../../services/language.service';
 import { ToastService } from '../../services/toast.service';
 import { BlogCategory } from '../../models/blog.model';
 
@@ -13,54 +14,58 @@ import { BlogCategory } from '../../models/blog.model';
   template: `
     <div class="post-form-page">
       <div class="form-header">
-        <button class="btn-back" (click)="onBack()">« Back</button>
-        <h1>{{ isEditMode() ? 'Edit Post' : 'New Post' }}</h1>
+        <button class="btn-back" (click)="onBack()">{{ copy().postFormBack }}</button>
+        @if (isEditMode()) {
+          <h1>{{ copy().postFormEditTitle }}</h1>
+        } @else {
+          <h1>{{ copy().postFormNewTitle }}</h1>
+        }
       </div>
 
       <div class="form-container">
         <form (ngSubmit)="onSubmit()">
           <div class="form-section">
             <div class="form-group">
-              <label for="category">Category</label>
+              <label for="category">{{ copy().postFormCategoryLabel }}</label>
               <select
                 id="category"
                 [(ngModel)]="formData.category"
                 name="category"
                 required
               >
-                <option value="Event">Event</option>
-                <option value="Announcement">Announcement</option>
-                <option value="News">News</option>
+                <option value="Event">{{ copy().postFormCategoryEvent }}</option>
+                <option value="Announcement">{{ copy().postFormCategoryAnnouncement }}</option>
+                <option value="News">{{ copy().postFormCategoryNews }}</option>
               </select>
             </div>
 
             <div class="form-group full-width">
-              <label for="title">Title</label>
+              <label for="title">{{ copy().postFormTitleLabel }}</label>
               <input
                 type="text"
                 id="title"
                 [(ngModel)]="formData.title"
                 name="title"
-                placeholder="Enter post title"
+                [placeholder]="copy().postFormTitlePlaceholder"
                 required
               />
             </div>
 
             <div class="form-group full-width">
-              <label for="imageUrl">Image URL</label>
+              <label for="imageUrl">{{ copy().postFormImageUrlLabel }}</label>
               <input
                 type="url"
                 id="imageUrl"
                 [(ngModel)]="formData.imageUrl"
                 name="imageUrl"
-                placeholder="https://example.com/image.jpg"
+                [placeholder]="copy().postFormImagePlaceholder"
                 required
               />
               @if (formData.imageUrl) {
                 <div class="image-preview">
                   <img
                     [src]="formData.imageUrl"
-                    alt="Preview"
+                    [alt]="copy().postFormImagePreviewAlt"
                     loading="eager"
                     decoding="async"
                     (error)="onImageError($event)"
@@ -70,32 +75,32 @@ import { BlogCategory } from '../../models/blog.model';
             </div>
 
             <div class="form-group full-width">
-              <label for="excerpt">Excerpt</label>
+              <label for="excerpt">{{ copy().postFormExcerptLabel }}</label>
               <textarea
                 id="excerpt"
                 [(ngModel)]="formData.excerpt"
                 name="excerpt"
                 rows="2"
-                placeholder="Brief description..."
+                [placeholder]="copy().postFormExcerptPlaceholder"
                 required
               ></textarea>
             </div>
 
             <div class="form-group full-width">
-              <label for="content">Content</label>
+              <label for="content">{{ copy().postFormContentLabel }}</label>
               <textarea
                 id="content"
                 [(ngModel)]="formData.content"
                 name="content"
                 rows="8"
-                placeholder="Write your post content here..."
+                [placeholder]="copy().postFormContentPlaceholder"
                 required
               ></textarea>
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="date">Date</label>
+                <label for="date">{{ copy().postFormDateLabel }}</label>
                 <input
                   type="date"
                   id="date"
@@ -106,37 +111,37 @@ import { BlogCategory } from '../../models/blog.model';
               </div>
 
               <div class="form-group">
-                <label for="time">Time</label>
+                <label for="time">{{ copy().postFormTimeLabel }}</label>
                 <input
                   type="text"
                   id="time"
                   [(ngModel)]="formData.time"
                   name="time"
-                  placeholder="2:00 PM"
+                  [placeholder]="copy().postFormTimePlaceholder"
                   required
                 />
               </div>
             </div>
 
             <div class="form-group full-width">
-              <label for="location">Location (Optional)</label>
+              <label for="location">{{ copy().postFormLocationLabel }}</label>
               <input
                 type="text"
                 id="location"
                 [(ngModel)]="formData.location"
                 name="location"
-                placeholder="Event location"
+                [placeholder]="copy().postFormLocationPlaceholder"
               />
             </div>
 
             <div class="form-group full-width">
-              <label for="externalLink">External Link (Optional)</label>
+              <label for="externalLink">{{ copy().postFormExternalLinkLabel }}</label>
               <input
                 type="url"
                 id="externalLink"
                 [(ngModel)]="formData.externalLink"
                 name="externalLink"
-                placeholder="https://example.com"
+                [placeholder]="copy().postFormExternalLinkPlaceholder"
               />
             </div>
 
@@ -147,7 +152,7 @@ import { BlogCategory } from '../../models/blog.model';
                   [(ngModel)]="formData.showOnHomePage"
                   name="showOnHomePage"
                 />
-                <span>Show on home page</span>
+                <span>{{ copy().postFormShowHome }}</span>
               </label>
 
               <label class="checkbox-label">
@@ -156,17 +161,21 @@ import { BlogCategory } from '../../models/blog.model';
                   [(ngModel)]="formData.showOnRegistration"
                   name="showOnRegistration"
                 />
-                <span>Show on Registration</span>
+                <span>{{ copy().postFormShowRegistration }}</span>
               </label>
             </div>
           </div>
 
           <div class="form-actions">
             <button type="button" class="btn-secondary" (click)="onBack()">
-              Cancel
+              {{ copy().postFormCancel }}
             </button>
             <button type="submit" class="btn-primary">
-              {{ isEditMode() ? 'Update Post' : 'Publish' }}
+              @if (isEditMode()) {
+                <span>{{ copy().postFormUpdate }}</span>
+              } @else {
+                <span>{{ copy().postFormPublish }}</span>
+              }
             </button>
           </div>
         </form>
@@ -383,9 +392,12 @@ import { BlogCategory } from '../../models/blog.model';
 export class PostFormComponent implements OnInit {
   private blogService = inject(BlogService);
   private authService = inject(AuthService);
+  private languageService = inject(LanguageService);
   private toastService = inject(ToastService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+
+  protected copy = this.languageService.copy;
 
   protected isEditMode = signal(false);
   protected dateString = '';
@@ -441,10 +453,10 @@ export class PostFormComponent implements OnInit {
         return;
       }
 
-      this.toastService.error('Post not found');
+      this.toastService.error(this.copy().postFormNotFound);
       this.router.navigate(['/posts']);
     } catch {
-      this.toastService.error('Failed to load post');
+      this.toastService.error(this.copy().postFormLoadError);
       this.router.navigate(['/posts']);
     }
   }
@@ -455,22 +467,22 @@ export class PostFormComponent implements OnInit {
 
     const user = this.authService.getCurrentUser()();
     if (!user) {
-      this.toastService.error('You must be logged in to create a post');
+      this.toastService.error(this.copy().postFormAuthRequired);
       return;
     }
 
     try {
       if (this.isEditMode() && this.editId) {
         await this.blogService.updateBlog(this.editId, this.formData);
-        this.toastService.success('Post updated successfully');
+        this.toastService.success(this.copy().postFormUpdateSuccess);
       } else {
         await this.blogService.createBlog(this.formData, user.id, user.name);
-        this.toastService.success('Post created successfully');
+        this.toastService.success(this.copy().postFormCreateSuccess);
       }
 
       this.router.navigate(['/posts']);
     } catch {
-      this.toastService.error('Failed to save post. Please try again.');
+      this.toastService.error(this.copy().postFormSaveError);
     }
   }
 
