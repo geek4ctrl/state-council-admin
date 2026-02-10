@@ -174,6 +174,7 @@ export class BlogService {
       content,
       excerpt,
       category,
+      status: (post.status ?? 'draft') as Blog['status'],
       imageUrl,
       date: new Date(dateRaw),
       time: post.time ?? derivedTime,
