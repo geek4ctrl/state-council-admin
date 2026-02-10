@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BlogService } from '../../services/blog.service';
 import { Blog } from '../../models/blog.model';
 import { ConfirmationService } from '../../services/confirmation.service';
+import { LanguageService } from '../../services/language.service';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
@@ -13,10 +14,10 @@ import { ToastService } from '../../services/toast.service';
     @if (blog(); as blog) {
       <div class="post-detail">
         <div class="post-header">
-          <button class="btn-back" (click)="onBack()">« Back to Posts</button>
+          <button class="btn-back" (click)="onBack()">{{ copy().postDetailBack }}</button>
           <div class="post-actions">
-            <button class="btn-secondary" (click)="onEdit()">Edit Post</button>
-            <button class="btn-danger" (click)="onDelete()">Delete</button>
+            <button class="btn-secondary" (click)="onEdit()">{{ copy().postDetailEdit }}</button>
+            <button class="btn-danger" (click)="onDelete()">{{ copy().postDetailDelete }}</button>
           </div>
         </div>
 
@@ -52,32 +53,32 @@ import { ToastService } from '../../services/toast.service';
           @if (blog.externalLink) {
             <div class="post-link">
               <a [href]="blog.externalLink" target="_blank" rel="noopener">
-                🔗 External Link
+                {{ copy().postDetailExternalLink }}
               </a>
             </div>
           }
 
           <div class="post-flags">
             @if (blog.showOnHomePage) {
-              <span class="flag">✓ Shown on Home Page</span>
+              <span class="flag">{{ copy().postDetailShownHome }}</span>
             }
             @if (blog.showOnRegistration) {
-              <span class="flag">✓ Shown on Registration</span>
+              <span class="flag">{{ copy().postDetailShownRegistration }}</span>
             }
           </div>
 
           <div class="post-footer">
             <p class="post-dates">
-              Created: {{ formatDateTime(blog.createdAt) }} |
-              Updated: {{ formatDateTime(blog.updatedAt) }}
+              {{ copy().postDetailCreated }} {{ formatDateTime(blog.createdAt) }} |
+              {{ copy().postDetailUpdated }} {{ formatDateTime(blog.updatedAt) }}
             </p>
           </div>
         </div>
       </div>
     } @else {
       <div class="error-state">
-        <h2>Post not found</h2>
-        <button class="btn-primary" (click)="onBack()">Go Back</button>
+        <h2>{{ copy().postDetailNotFound }}</h2>
+        <button class="btn-primary" (click)="onBack()">{{ copy().postDetailGoBack }}</button>
       </div>
     }
   `,
@@ -282,10 +283,13 @@ import { ToastService } from '../../services/toast.service';
 })
 export class PostDetailComponent implements OnInit {
   private blogService = inject(BlogService);
+  private languageService = inject(LanguageService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private confirmationService = inject(ConfirmationService);
   private toastService = inject(ToastService);
+
+  protected copy = this.languageService.copy;
 
   protected blog = signal<Blog | undefined>(undefined);
 
@@ -296,14 +300,14 @@ export class PostDetailComponent implements OnInit {
         const foundBlog = await this.blogService.fetchBlogById(id);
         this.blog.set(foundBlog);
       } catch {
-        this.toastService.error('Failed to load post');
+        this.toastService.error(this.copy().postDetailLoadError);
         this.blog.set(undefined);
       }
     }
   }
 
   protected formatDate(date: Date): string {
-    return new Date(date).toLocaleDateString('en-US', {
+    return new Date(date).toLocaleDateString(this.languageService.locale(), {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
@@ -311,7 +315,7 @@ export class PostDetailComponent implements OnInit {
   }
 
   protected formatDateTime(date: Date): string {
-    return new Date(date).toLocaleString('en-US', {
+    return new Date(date).toLocaleString(this.languageService.locale(), {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -343,10 +347,10 @@ export class PostDetailComponent implements OnInit {
     }
 
     const confirmed = await this.confirmationService.confirm({
-      title: 'Delete Post',
-      message: 'Are you sure you want to delete this post? This action cannot be undone.',
-      confirmText: 'Delete',
-      cancelText: 'Cancel',
+      title: this.copy().postsDeleteTitle,
+      message: this.copy().postsDeleteMessage,
+      confirmText: this.copy().postsDeleteConfirm,
+      cancelText: this.copy().commonCancel,
       confirmButtonClass: 'danger'
     });
 
@@ -356,10 +360,10 @@ export class PostDetailComponent implements OnInit {
 
     try {
       await this.blogService.deleteBlog(blog.id);
-      this.toastService.success('Post deleted successfully');
+      this.toastService.success(this.copy().postsDeleteSuccess);
       this.router.navigate(['/posts']);
     } catch {
-      this.toastService.error('Failed to delete post');
+      this.toastService.error(this.copy().postsDeleteError);
     }
   }
 }

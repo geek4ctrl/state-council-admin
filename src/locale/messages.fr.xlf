@@ -1,0 +1,684 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" target-language="fr" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="navToggleLabel" datatype="html">
+        <source>Toggle navigation menu</source>
+        <target>Basculer le menu de navigation</target>
+      </trans-unit>
+      <trans-unit id="headerGreeting" datatype="html">
+        <source>Hello, <x id="INTERPOLATION"/></source>
+        <target>Bonjour, <x id="INTERPOLATION"/></target>
+      </trans-unit>
+      <trans-unit id="themeSwitchToLight" datatype="html">
+        <source>Switch to light theme</source>
+        <target>Passer au theme clair</target>
+      </trans-unit>
+      <trans-unit id="themeSwitchToDark" datatype="html">
+        <source>Switch to dark theme</source>
+        <target>Passer au theme sombre</target>
+      </trans-unit>
+      <trans-unit id="headerGuest" datatype="html">
+        <source>Guest</source>
+        <target>Invite</target>
+      </trans-unit>
+
+      <trans-unit id="sidebarNavLabel" datatype="html">
+        <source>Main navigation</source>
+        <target>Navigation principale</target>
+      </trans-unit>
+      <trans-unit id="sidebarTitle" datatype="html">
+        <source>State Council Admin</source>
+        <target>Administration du Conseil d'Etat</target>
+      </trans-unit>
+      <trans-unit id="sidebarCloseLabel" datatype="html">
+        <source>Close navigation menu</source>
+        <target>Fermer le menu de navigation</target>
+      </trans-unit>
+      <trans-unit id="sidebarLogoutLabel" datatype="html">
+        <source>Log out of your account</source>
+        <target>Se deconnecter de votre compte</target>
+      </trans-unit>
+      <trans-unit id="sidebarLogoutText" datatype="html">
+        <source>Log Out</source>
+        <target>Se deconnecter</target>
+      </trans-unit>
+      <trans-unit id="navDashboard" datatype="html">
+        <source>Dashboard</source>
+        <target>Tableau de bord</target>
+      </trans-unit>
+      <trans-unit id="navPosts" datatype="html">
+        <source>Posts</source>
+        <target>Articles</target>
+      </trans-unit>
+      <trans-unit id="navSettings" datatype="html">
+        <source>Settings</source>
+        <target>Parametres</target>
+      </trans-unit>
+      <trans-unit id="confirmLogoutTitle" datatype="html">
+        <source>Logout</source>
+        <target>Deconnexion</target>
+      </trans-unit>
+      <trans-unit id="confirmLogoutMessage" datatype="html">
+        <source>Are you sure you want to log out?</source>
+        <target>Voulez-vous vraiment vous deconnecter ?</target>
+      </trans-unit>
+      <trans-unit id="confirmLogoutConfirm" datatype="html">
+        <source>Logout</source>
+        <target>Se deconnecter</target>
+      </trans-unit>
+      <trans-unit id="confirmCancel" datatype="html">
+        <source>Cancel</source>
+        <target>Annuler</target>
+      </trans-unit>
+      <trans-unit id="confirmDefault" datatype="html">
+        <source>Confirm</source>
+        <target>Confirmer</target>
+      </trans-unit>
+
+      <trans-unit id="modalCloseLabel" datatype="html">
+        <source>Close modal</source>
+        <target>Fermer la fenetre</target>
+      </trans-unit>
+      <trans-unit id="modalCancelLabel" datatype="html">
+        <source>Cancel action</source>
+        <target>Annuler l'action</target>
+      </trans-unit>
+      <trans-unit id="modalConfirmAria" datatype="html">
+        <source>Confirm: <x id="INTERPOLATION"/></source>
+        <target>Confirmer : <x id="INTERPOLATION"/></target>
+      </trans-unit>
+
+      <trans-unit id="toastRegionLabel" datatype="html">
+        <source>Notifications</source>
+        <target>Notifications</target>
+      </trans-unit>
+      <trans-unit id="toastCloseLabel" datatype="html">
+        <source>Close notification</source>
+        <target>Fermer la notification</target>
+      </trans-unit>
+
+      <trans-unit id="placeholderTitle" datatype="html">
+        <source>Coming Soon</source>
+        <target>Bientot disponible</target>
+      </trans-unit>
+      <trans-unit id="placeholderSubtitle" datatype="html">
+        <source>This feature is under development</source>
+        <target>Cette fonctionnalite est en cours de developpement</target>
+      </trans-unit>
+
+      <trans-unit id="loginLogoText" datatype="html">
+        <source>State Council</source>
+        <target>Conseil d'Etat</target>
+      </trans-unit>
+      <trans-unit id="loginRegisterTitle" datatype="html">
+        <source>Create your account</source>
+        <target>Creez votre compte</target>
+      </trans-unit>
+      <trans-unit id="loginRegisterSubtitle" datatype="html">
+        <source>Fill in your details to get started</source>
+        <target>Renseignez vos informations pour commencer</target>
+      </trans-unit>
+      <trans-unit id="loginWelcomeTitle" datatype="html">
+        <source>Welcome to State Council</source>
+        <target>Bienvenue au Conseil d'Etat</target>
+      </trans-unit>
+      <trans-unit id="loginWelcomeSubtitle" datatype="html">
+        <source>Please login to your account</source>
+        <target>Veuillez vous connecter a votre compte</target>
+      </trans-unit>
+      <trans-unit id="registerFormLabel" datatype="html">
+        <source>Create account form</source>
+        <target>Formulaire de creation de compte</target>
+      </trans-unit>
+      <trans-unit id="emailAddressLabel" datatype="html">
+        <source>Email Address</source>
+        <target>Adresse e-mail</target>
+      </trans-unit>
+      <trans-unit id="emailPlaceholder" datatype="html">
+        <source>you@example.com</source>
+        <target>vous@exemple.com</target>
+      </trans-unit>
+      <trans-unit id="passwordLabel" datatype="html">
+        <source>Password</source>
+        <target>Mot de passe</target>
+      </trans-unit>
+      <trans-unit id="createPasswordPlaceholder" datatype="html">
+        <source>Create a password</source>
+        <target>Creez un mot de passe</target>
+      </trans-unit>
+      <trans-unit id="confirmPasswordLabel" datatype="html">
+        <source>Confirm Password</source>
+        <target>Confirmez le mot de passe</target>
+      </trans-unit>
+      <trans-unit id="confirmPasswordPlaceholder" datatype="html">
+        <source>Confirm your password</source>
+        <target>Confirmez votre mot de passe</target>
+      </trans-unit>
+      <trans-unit id="createAccountLabel" datatype="html">
+        <source>Create your account</source>
+        <target>Creez votre compte</target>
+      </trans-unit>
+      <trans-unit id="createAccountLoading" datatype="html">
+        <source>CREATING ACCOUNT...</source>
+        <target>CREATION DU COMPTE...</target>
+      </trans-unit>
+      <trans-unit id="createAccountText" datatype="html">
+        <source>CREATE ACCOUNT</source>
+        <target>CREER UN COMPTE</target>
+      </trans-unit>
+      <trans-unit id="existingAccountText" datatype="html">
+        <source>Already have an account?</source>
+        <target>Vous avez deja un compte ?</target>
+      </trans-unit>
+      <trans-unit id="signInButton" datatype="html">
+        <source>Sign In</source>
+        <target>Se connecter</target>
+      </trans-unit>
+      <trans-unit id="loginFormLabel" datatype="html">
+        <source>Login form</source>
+        <target>Formulaire de connexion</target>
+      </trans-unit>
+      <trans-unit id="emailAdminPlaceholder" datatype="html">
+        <source>admin@statecounciladmin.com</source>
+        <target>admin@statecounciladmin.com</target>
+      </trans-unit>
+      <trans-unit id="passwordPlaceholder" datatype="html">
+        <source>••••••••••</source>
+        <target>••••••••••</target>
+      </trans-unit>
+      <trans-unit id="rememberMeLabel" datatype="html">
+        <source>Remember me</source>
+        <target>Se souvenir de moi</target>
+      </trans-unit>
+      <trans-unit id="rememberMeText" datatype="html">
+        <source>Remember me</source>
+        <target>Se souvenir de moi</target>
+      </trans-unit>
+      <trans-unit id="forgotPasswordLabel" datatype="html">
+        <source>Forgot your password</source>
+        <target>Mot de passe oublie</target>
+      </trans-unit>
+      <trans-unit id="forgotPasswordText" datatype="html">
+        <source>Forgot your password?</source>
+        <target>Mot de passe oublie ?</target>
+      </trans-unit>
+      <trans-unit id="loginAccountLabel" datatype="html">
+        <source>Login to your account</source>
+        <target>Se connecter a votre compte</target>
+      </trans-unit>
+      <trans-unit id="loginLoading" datatype="html">
+        <source>SIGNING IN...</source>
+        <target>CONNEXION...</target>
+      </trans-unit>
+      <trans-unit id="loginText" datatype="html">
+        <source>LOGIN</source>
+        <target>SE CONNECTER</target>
+      </trans-unit>
+      <trans-unit id="newUserText" datatype="html">
+        <source>New User?</source>
+        <target>Nouveau utilisateur ?</target>
+      </trans-unit>
+      <trans-unit id="createAccountLink" datatype="html">
+        <source>Create an Account</source>
+        <target>Creer un compte</target>
+      </trans-unit>
+      <trans-unit id="loginFooterText" datatype="html">
+        <source>Registering to this website, you accept our <x id="START_TAG_A"/><x id="INTERPOLATION"/><x id="CLOSE_TAG_A"/> and our <x id="START_TAG_A_1"/><x id="INTERPOLATION_1"/><x id="CLOSE_TAG_A_1"/></source>
+        <target>En vous inscrivant sur ce site, vous acceptez nos <x id="START_TAG_A"/><x id="INTERPOLATION"/><x id="CLOSE_TAG_A"/> et notre <x id="START_TAG_A_1"/><x id="INTERPOLATION_1"/><x id="CLOSE_TAG_A_1"/></target>
+      </trans-unit>
+      <trans-unit id="termsUseLabel" datatype="html">
+        <source>Read our terms of use</source>
+        <target>Lire nos conditions d'utilisation</target>
+      </trans-unit>
+      <trans-unit id="privacyPolicyLabel" datatype="html">
+        <source>Read our privacy policy</source>
+        <target>Lire notre politique de confidentialite</target>
+      </trans-unit>
+      <trans-unit id="loginCopyright" datatype="html">
+        <source>© 2026 State Council. All rights reserved</source>
+        <target>© 2026 State Council. Tous droits reserves</target>
+      </trans-unit>
+
+      <trans-unit id="loginSuccessToast" datatype="html">
+        <source>Login successful! Welcome back.</source>
+        <target>Connexion reussie ! Bon retour.</target>
+      </trans-unit>
+      <trans-unit id="loginInvalidMessage" datatype="html">
+        <source>Invalid email or password.</source>
+        <target>Adresse e-mail ou mot de passe invalide.</target>
+      </trans-unit>
+      <trans-unit id="loginInvalidToast" datatype="html">
+        <source>Invalid email or password. Please try again.</source>
+        <target>Adresse e-mail ou mot de passe invalide. Veuillez reessayer.</target>
+      </trans-unit>
+      <trans-unit id="registerPasswordMismatch" datatype="html">
+        <source>Passwords do not match.</source>
+        <target>Les mots de passe ne correspondent pas.</target>
+      </trans-unit>
+      <trans-unit id="registerSuccessToast" datatype="html">
+        <source>Account created successfully. Please sign in.</source>
+        <target>Compte cree avec succes. Veuillez vous connecter.</target>
+      </trans-unit>
+      <trans-unit id="registerErrorMessage" datatype="html">
+        <source>Unable to create account. Please try again.</source>
+        <target>Impossible de creer le compte. Veuillez reessayer.</target>
+      </trans-unit>
+      <trans-unit id="registerErrorToast" datatype="html">
+        <source>Registration failed. Please try again.</source>
+        <target>Echec de l'inscription. Veuillez reessayer.</target>
+      </trans-unit>
+
+      <trans-unit id="dashboardTitle" datatype="html">
+        <source>Dashboard</source>
+        <target>Tableau de bord</target>
+      </trans-unit>
+      <trans-unit id="dashboardRecentPosts" datatype="html">
+        <source>Recent Posts</source>
+        <target>Articles recents</target>
+      </trans-unit>
+      <trans-unit id="dashboardViewAllLabel" datatype="html">
+        <source>View all blog posts</source>
+        <target>Voir tous les articles</target>
+      </trans-unit>
+      <trans-unit id="dashboardViewAllText" datatype="html">
+        <source>View All →</source>
+        <target>Voir tout →</target>
+      </trans-unit>
+      <trans-unit id="dashboardViewPostLabel" datatype="html">
+        <source>View post: <x id="INTERPOLATION"/></source>
+        <target>Voir l'article : <x id="INTERPOLATION"/></target>
+      </trans-unit>
+      <trans-unit id="dashboardCoverAlt" datatype="html">
+        <source>Cover image for <x id="INTERPOLATION"/></source>
+        <target>Image de couverture pour <x id="INTERPOLATION"/></target>
+      </trans-unit>
+      <trans-unit id="dashboardCategoryLabel" datatype="html">
+        <source>Category</source>
+        <target>Categorie</target>
+      </trans-unit>
+      <trans-unit id="dashboardEmptyPosts" datatype="html">
+        <source>No posts yet</source>
+        <target>Aucun article pour le moment</target>
+      </trans-unit>
+      <trans-unit id="dashboardLoadError" datatype="html">
+        <source>Failed to load recent posts.</source>
+        <target>Impossible de charger les articles recents.</target>
+      </trans-unit>
+
+      <trans-unit id="postsTitle" datatype="html">
+        <source>All Posts</source>
+        <target>Tous les articles</target>
+      </trans-unit>
+      <trans-unit id="postsCreateLabel" datatype="html">
+        <source>Create a new blog post</source>
+        <target>Creer un nouvel article</target>
+      </trans-unit>
+      <trans-unit id="postsNewButton" datatype="html">
+        <source>New Post</source>
+        <target>Nouvel article</target>
+      </trans-unit>
+      <trans-unit id="postsCoverAlt" datatype="html">
+        <source>Cover image for <x id="INTERPOLATION"/></source>
+        <target>Image de couverture pour <x id="INTERPOLATION"/></target>
+      </trans-unit>
+      <trans-unit id="postsCategoryLabel" datatype="html">
+        <source>Category</source>
+        <target>Categorie</target>
+      </trans-unit>
+      <trans-unit id="postsMetaLabel" datatype="html">
+        <source>Post metadata</source>
+        <target>Metadonnees de l'article</target>
+      </trans-unit>
+      <trans-unit id="postsTimeLabel" datatype="html">
+        <source>Time</source>
+        <target>Heure</target>
+      </trans-unit>
+      <trans-unit id="postsLocationLabel" datatype="html">
+        <source>Location</source>
+        <target>Lieu</target>
+      </trans-unit>
+      <trans-unit id="postsViewDetailsLabel" datatype="html">
+        <source>View details for <x id="INTERPOLATION"/></source>
+        <target>Voir les details pour <x id="INTERPOLATION"/></target>
+      </trans-unit>
+      <trans-unit id="postsViewDetailsText" datatype="html">
+        <source>View Details</source>
+        <target>Voir les details</target>
+      </trans-unit>
+      <trans-unit id="postsActionsLabel" datatype="html">
+        <source>Post actions</source>
+        <target>Actions de l'article</target>
+      </trans-unit>
+      <trans-unit id="postsEditLabel" datatype="html">
+        <source>Edit <x id="INTERPOLATION"/></source>
+        <target>Modifier <x id="INTERPOLATION"/></target>
+      </trans-unit>
+      <trans-unit id="postsDeleteLabel" datatype="html">
+        <source>Delete <x id="INTERPOLATION"/></source>
+        <target>Supprimer <x id="INTERPOLATION"/></target>
+      </trans-unit>
+      <trans-unit id="postsEmptyText" datatype="html">
+        <source>No posts yet. Create your first post!</source>
+        <target>Aucun article. Creez votre premier article !</target>
+      </trans-unit>
+      <trans-unit id="postsCreateFirstLabel" datatype="html">
+        <source>Create your first post</source>
+        <target>Creer votre premier article</target>
+      </trans-unit>
+      <trans-unit id="postsCreateFirstButton" datatype="html">
+        <source>Create Post</source>
+        <target>Creer un article</target>
+      </trans-unit>
+      <trans-unit id="postsPaginationLabel" datatype="html">
+        <source>Posts pagination</source>
+        <target>Pagination des articles</target>
+      </trans-unit>
+      <trans-unit id="postsPrevLabel" datatype="html">
+        <source>Go to previous page</source>
+        <target>Aller a la page precedente</target>
+      </trans-unit>
+      <trans-unit id="postsPrevText" datatype="html">
+        <source>Previous</source>
+        <target>Precedent</target>
+      </trans-unit>
+      <trans-unit id="postsPageCount" datatype="html">
+        <source>Page <x id="INTERPOLATION"/> of <x id="INTERPOLATION_1"/></source>
+        <target>Page <x id="INTERPOLATION"/> sur <x id="INTERPOLATION_1"/></target>
+      </trans-unit>
+      <trans-unit id="postsRangeCount" datatype="html">
+        <source><x id="INTERPOLATION"/>-<x id="INTERPOLATION_1"/> of <x id="INTERPOLATION_2"/> posts</source>
+        <target><x id="INTERPOLATION"/>-<x id="INTERPOLATION_1"/> sur <x id="INTERPOLATION_2"/> articles</target>
+      </trans-unit>
+      <trans-unit id="postsNextLabel" datatype="html">
+        <source>Go to next page</source>
+        <target>Aller a la page suivante</target>
+      </trans-unit>
+      <trans-unit id="postsNextText" datatype="html">
+        <source>Next</source>
+        <target>Suivant</target>
+      </trans-unit>
+      <trans-unit id="postsLoadError" datatype="html">
+        <source>Failed to load posts. Please try again.</source>
+        <target>Impossible de charger les articles. Veuillez reessayer.</target>
+      </trans-unit>
+      <trans-unit id="postsDeleteTitle" datatype="html">
+        <source>Delete Post</source>
+        <target>Supprimer l'article</target>
+      </trans-unit>
+      <trans-unit id="postsDeleteMessage" datatype="html">
+        <source>Are you sure you want to delete this post? This action cannot be undone.</source>
+        <target>Voulez-vous vraiment supprimer cet article ? Cette action est irreversible.</target>
+      </trans-unit>
+      <trans-unit id="postsDeleteConfirm" datatype="html">
+        <source>Delete</source>
+        <target>Supprimer</target>
+      </trans-unit>
+      <trans-unit id="postsDeleteSuccess" datatype="html">
+        <source>Post deleted successfully</source>
+        <target>Article supprime avec succes</target>
+      </trans-unit>
+      <trans-unit id="postsDeleteError" datatype="html">
+        <source>Failed to delete post</source>
+        <target>Echec de la suppression de l'article</target>
+      </trans-unit>
+
+      <trans-unit id="postDetailBack" datatype="html">
+        <source>« Back to Posts</source>
+        <target>« Retour aux articles</target>
+      </trans-unit>
+      <trans-unit id="postDetailEdit" datatype="html">
+        <source>Edit Post</source>
+        <target>Modifier l'article</target>
+      </trans-unit>
+      <trans-unit id="postDetailDelete" datatype="html">
+        <source>Delete</source>
+        <target>Supprimer</target>
+      </trans-unit>
+      <trans-unit id="postDetailExternalLink" datatype="html">
+        <source>🔗 External Link</source>
+        <target>🔗 Lien externe</target>
+      </trans-unit>
+      <trans-unit id="postDetailShownHome" datatype="html">
+        <source>✓ Shown on Home Page</source>
+        <target>✓ Affiche sur la page d'accueil</target>
+      </trans-unit>
+      <trans-unit id="postDetailShownRegistration" datatype="html">
+        <source>✓ Shown on Registration</source>
+        <target>✓ Affiche a l'inscription</target>
+      </trans-unit>
+      <trans-unit id="postDetailCreated" datatype="html">
+        <source>Created:</source>
+        <target>Cree :</target>
+      </trans-unit>
+      <trans-unit id="postDetailUpdated" datatype="html">
+        <source>Updated:</source>
+        <target>Mis a jour :</target>
+      </trans-unit>
+      <trans-unit id="postDetailNotFound" datatype="html">
+        <source>Post not found</source>
+        <target>Article introuvable</target>
+      </trans-unit>
+      <trans-unit id="postDetailGoBack" datatype="html">
+        <source>Go Back</source>
+        <target>Retour</target>
+      </trans-unit>
+      <trans-unit id="postDetailLoadError" datatype="html">
+        <source>Failed to load post</source>
+        <target>Impossible de charger l'article</target>
+      </trans-unit>
+
+      <trans-unit id="postFormBack" datatype="html">
+        <source>« Back</source>
+        <target>« Retour</target>
+      </trans-unit>
+      <trans-unit id="postFormEditTitle" datatype="html">
+        <source>Edit Post</source>
+        <target>Modifier l'article</target>
+      </trans-unit>
+      <trans-unit id="postFormNewTitle" datatype="html">
+        <source>New Post</source>
+        <target>Nouvel article</target>
+      </trans-unit>
+      <trans-unit id="postFormCategory" datatype="html">
+        <source>Category</source>
+        <target>Categorie</target>
+      </trans-unit>
+      <trans-unit id="postFormCategoryEvent" datatype="html">
+        <source>Event</source>
+        <target>Evenement</target>
+      </trans-unit>
+      <trans-unit id="postFormCategoryAnnouncement" datatype="html">
+        <source>Announcement</source>
+        <target>Annonce</target>
+      </trans-unit>
+      <trans-unit id="postFormCategoryNews" datatype="html">
+        <source>News</source>
+        <target>Actualites</target>
+      </trans-unit>
+      <trans-unit id="postFormTitle" datatype="html">
+        <source>Title</source>
+        <target>Titre</target>
+      </trans-unit>
+      <trans-unit id="postFormTitlePlaceholder" datatype="html">
+        <source>Enter post title</source>
+        <target>Saisissez le titre de l'article</target>
+      </trans-unit>
+      <trans-unit id="postFormImageUrl" datatype="html">
+        <source>Image URL</source>
+        <target>URL de l'image</target>
+      </trans-unit>
+      <trans-unit id="postFormImagePlaceholder" datatype="html">
+        <source>https://example.com/image.jpg</source>
+        <target>https://exemple.com/image.jpg</target>
+      </trans-unit>
+      <trans-unit id="postFormImagePreview" datatype="html">
+        <source>Preview</source>
+        <target>Apercu</target>
+      </trans-unit>
+      <trans-unit id="postFormExcerpt" datatype="html">
+        <source>Excerpt</source>
+        <target>Extrait</target>
+      </trans-unit>
+      <trans-unit id="postFormExcerptPlaceholder" datatype="html">
+        <source>Brief description...</source>
+        <target>Description breve...</target>
+      </trans-unit>
+      <trans-unit id="postFormContent" datatype="html">
+        <source>Content</source>
+        <target>Contenu</target>
+      </trans-unit>
+      <trans-unit id="postFormContentPlaceholder" datatype="html">
+        <source>Write your post content here...</source>
+        <target>Ecrivez le contenu de votre article ici...</target>
+      </trans-unit>
+      <trans-unit id="postFormDate" datatype="html">
+        <source>Date</source>
+        <target>Date</target>
+      </trans-unit>
+      <trans-unit id="postFormTime" datatype="html">
+        <source>Time</source>
+        <target>Heure</target>
+      </trans-unit>
+      <trans-unit id="postFormTimePlaceholder" datatype="html">
+        <source>2:00 PM</source>
+        <target>14:00</target>
+      </trans-unit>
+      <trans-unit id="postFormLocation" datatype="html">
+        <source>Location (Optional)</source>
+        <target>Lieu (optionnel)</target>
+      </trans-unit>
+      <trans-unit id="postFormLocationPlaceholder" datatype="html">
+        <source>Event location</source>
+        <target>Lieu de l'evenement</target>
+      </trans-unit>
+      <trans-unit id="postFormExternalLink" datatype="html">
+        <source>External Link (Optional)</source>
+        <target>Lien externe (optionnel)</target>
+      </trans-unit>
+      <trans-unit id="postFormExternalLinkPlaceholder" datatype="html">
+        <source>https://example.com</source>
+        <target>https://exemple.com</target>
+      </trans-unit>
+      <trans-unit id="postFormShowHome" datatype="html">
+        <source>Show on home page</source>
+        <target>Afficher sur la page d'accueil</target>
+      </trans-unit>
+      <trans-unit id="postFormShowRegistration" datatype="html">
+        <source>Show on Registration</source>
+        <target>Afficher a l'inscription</target>
+      </trans-unit>
+      <trans-unit id="postFormCancel" datatype="html">
+        <source>Cancel</source>
+        <target>Annuler</target>
+      </trans-unit>
+      <trans-unit id="postFormUpdate" datatype="html">
+        <source>Update Post</source>
+        <target>Mettre a jour</target>
+      </trans-unit>
+      <trans-unit id="postFormPublish" datatype="html">
+        <source>Publish</source>
+        <target>Publier</target>
+      </trans-unit>
+      <trans-unit id="postFormNotFound" datatype="html">
+        <source>Post not found</source>
+        <target>Article introuvable</target>
+      </trans-unit>
+      <trans-unit id="postFormLoadError" datatype="html">
+        <source>Failed to load post</source>
+        <target>Impossible de charger l'article</target>
+      </trans-unit>
+      <trans-unit id="postFormAuthRequired" datatype="html">
+        <source>You must be logged in to create a post</source>
+        <target>Vous devez etre connecte pour creer un article</target>
+      </trans-unit>
+      <trans-unit id="postFormUpdateSuccess" datatype="html">
+        <source>Post updated successfully</source>
+        <target>Article mis a jour avec succes</target>
+      </trans-unit>
+      <trans-unit id="postFormCreateSuccess" datatype="html">
+        <source>Post created successfully</source>
+        <target>Article cree avec succes</target>
+      </trans-unit>
+      <trans-unit id="postFormSaveError" datatype="html">
+        <source>Failed to save post. Please try again.</source>
+        <target>Echec de l'enregistrement. Veuillez reessayer.</target>
+      </trans-unit>
+
+      <trans-unit id="settingsTitle" datatype="html">
+        <source>Settings</source>
+        <target>Parametres</target>
+      </trans-unit>
+      <trans-unit id="settingsProfile" datatype="html">
+        <source>Profile Information</source>
+        <target>Informations du profil</target>
+      </trans-unit>
+      <trans-unit id="settingsAvatarAlt" datatype="html">
+        <source>Avatar</source>
+        <target>Avatar</target>
+      </trans-unit>
+      <trans-unit id="settingsProfilePicture" datatype="html">
+        <source>Profile Picture</source>
+        <target>Photo de profil</target>
+      </trans-unit>
+      <trans-unit id="settingsAvatarPlaceholder" datatype="html">
+        <source>Avatar URL</source>
+        <target>URL de l'avatar</target>
+      </trans-unit>
+      <trans-unit id="settingsFullName" datatype="html">
+        <source>Full Name</source>
+        <target>Nom complet</target>
+      </trans-unit>
+      <trans-unit id="settingsSaveChanges" datatype="html">
+        <source>Save Changes</source>
+        <target>Enregistrer les modifications</target>
+      </trans-unit>
+      <trans-unit id="settingsAccountInfo" datatype="html">
+        <source>Account Information</source>
+        <target>Informations du compte</target>
+      </trans-unit>
+      <trans-unit id="settingsUserId" datatype="html">
+        <source>User ID</source>
+        <target>ID utilisateur</target>
+      </trans-unit>
+      <trans-unit id="settingsRole" datatype="html">
+        <source>Role</source>
+        <target>Role</target>
+      </trans-unit>
+      <trans-unit id="settingsMemberSince" datatype="html">
+        <source>Member Since</source>
+        <target>Membre depuis</target>
+      </trans-unit>
+      <trans-unit id="settingsNotAvailable" datatype="html">
+        <source>N/A</source>
+        <target>N/A</target>
+      </trans-unit>
+      <trans-unit id="settingsSaveSuccess" datatype="html">
+        <source>Profile updated successfully</source>
+        <target>Profil mis a jour avec succes</target>
+      </trans-unit>
+
+      <trans-unit id="httpNetworkError" datatype="html">
+        <source>Network error. Please check your connection and try again.</source>
+        <target>Erreur reseau. Verifiez votre connexion et reessayez.</target>
+      </trans-unit>
+      <trans-unit id="httpGenericError" datatype="html">
+        <source>Something went wrong. Please try again.</source>
+        <target>Une erreur est survenue. Veuillez reessayer.</target>
+      </trans-unit>
+
+      <trans-unit id="blogUntitled" datatype="html">
+        <source>Untitled Post</source>
+        <target>Article sans titre</target>
+      </trans-unit>
+      <trans-unit id="blogTimeNotAvailable" datatype="html">
+        <source>N/A</source>
+        <target>N/A</target>
+      </trans-unit>
+      <trans-unit id="blogAuthorUnknown" datatype="html">
+        <source>Unknown</source>
+        <target>Inconnu</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
