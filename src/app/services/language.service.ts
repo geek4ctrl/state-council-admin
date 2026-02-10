@@ -58,6 +58,16 @@ type AppCopy = {
   dashboardCategoryLabel: string;
   dashboardEmptyText: string;
   dashboardLoadError: string;
+  dashboardUsersTitle: string;
+  dashboardUsersCountSuffix: string;
+  dashboardUsersLoading: string;
+  dashboardUsersEmpty: string;
+  dashboardUsersError: string;
+  dashboardUsersRestricted: string;
+  dashboardUsersNameLabel: string;
+  dashboardUsersEmailLabel: string;
+  dashboardUsersRoleLabel: string;
+  dashboardUsersJoinedLabel: string;
   postsTitle: string;
   postsNewButton: string;
   postsCreateAriaLabel: string;
@@ -154,6 +164,7 @@ type AppCopy = {
   sidebarCloseLabel: string;
   sidebarNavDashboard: string;
   sidebarNavPosts: string;
+  sidebarNavUsers: string;
   sidebarNavSettings: string;
   sidebarLogoutLabel: string;
   sidebarLogoutTitle: string;
@@ -214,7 +225,7 @@ const translations: Record<Language, AppCopy> = {
     registerErrorMessage: 'Unable to create account. Please try again.',
     registerErrorToast: 'Registration failed. Please try again.',
     dashboardTitle: 'Dashboard',
-    dashboardRecentPosts: 'Recent Posts',
+    dashboardRecentPosts: 'All Posts',
     dashboardViewAllText: 'View All →',
     dashboardViewAllAriaLabel: 'View all blog posts',
     dashboardViewPostPrefix: 'View post:',
@@ -222,6 +233,16 @@ const translations: Record<Language, AppCopy> = {
     dashboardCategoryLabel: 'Category',
     dashboardEmptyText: 'No posts yet',
     dashboardLoadError: 'Failed to load recent posts.',
+    dashboardUsersTitle: 'Users',
+    dashboardUsersCountSuffix: 'users',
+    dashboardUsersLoading: 'Loading users...',
+    dashboardUsersEmpty: 'No users found.',
+    dashboardUsersError: 'Failed to load users.',
+    dashboardUsersRestricted: 'Admin access required to view users.',
+    dashboardUsersNameLabel: 'Name',
+    dashboardUsersEmailLabel: 'Email',
+    dashboardUsersRoleLabel: 'Role',
+    dashboardUsersJoinedLabel: 'Joined',
     postsTitle: 'All Posts',
     postsNewButton: 'New Post',
     postsCreateAriaLabel: 'Create a new blog post',
@@ -318,6 +339,7 @@ const translations: Record<Language, AppCopy> = {
     sidebarCloseLabel: 'Close navigation menu',
     sidebarNavDashboard: 'Dashboard',
     sidebarNavPosts: 'Posts',
+    sidebarNavUsers: 'Users',
     sidebarNavSettings: 'Settings',
     sidebarLogoutLabel: 'Log out',
     sidebarLogoutTitle: 'Log out',
@@ -376,7 +398,7 @@ const translations: Record<Language, AppCopy> = {
     registerErrorMessage: 'Impossible de creer le compte. Veuillez reessayer.',
     registerErrorToast: 'Echec de l\'inscription. Veuillez reessayer.',
     dashboardTitle: 'Tableau de bord',
-    dashboardRecentPosts: 'Articles recents',
+    dashboardRecentPosts: 'Tous les articles',
     dashboardViewAllText: 'Voir tout →',
     dashboardViewAllAriaLabel: 'Voir tous les articles',
     dashboardViewPostPrefix: 'Voir l\'article :',
@@ -384,6 +406,16 @@ const translations: Record<Language, AppCopy> = {
     dashboardCategoryLabel: 'Categorie',
     dashboardEmptyText: 'Aucun article pour le moment',
     dashboardLoadError: 'Impossible de charger les articles recents.',
+    dashboardUsersTitle: 'Utilisateurs',
+    dashboardUsersCountSuffix: 'utilisateurs',
+    dashboardUsersLoading: 'Chargement des utilisateurs...',
+    dashboardUsersEmpty: 'Aucun utilisateur trouve.',
+    dashboardUsersError: 'Impossible de charger les utilisateurs.',
+    dashboardUsersRestricted: 'Acces admin requis pour voir les utilisateurs.',
+    dashboardUsersNameLabel: 'Nom',
+    dashboardUsersEmailLabel: 'E-mail',
+    dashboardUsersRoleLabel: 'Role',
+    dashboardUsersJoinedLabel: 'Inscription',
     postsTitle: 'Tous les articles',
     postsNewButton: 'Nouvel article',
     postsCreateAriaLabel: 'Creer un nouvel article',
@@ -480,6 +512,7 @@ const translations: Record<Language, AppCopy> = {
     sidebarCloseLabel: 'Fermer le menu de navigation',
     sidebarNavDashboard: 'Tableau de bord',
     sidebarNavPosts: 'Articles',
+    sidebarNavUsers: 'Utilisateurs',
     sidebarNavSettings: 'Parametres',
     sidebarLogoutLabel: 'Se deconnecter',
     sidebarLogoutTitle: 'Deconnexion',

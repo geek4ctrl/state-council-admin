@@ -3,11 +3,13 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { firstValueFrom } from 'rxjs';
 import { Blog, CreateBlogDto } from '../models/blog.model';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 type ApiPost = {
   id: number | string;
   title?: string;
   content?: string;
+  status?: 'draft' | 'review' | 'published' | string | null;
   excerpt?: string | null;
   category?: string | null;
   image_url?: string | null;
@@ -47,7 +49,7 @@ export class BlogService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
   private blogs = signal<Blog[]>([]);
-  private apiBase = 'http://localhost:3001';
+  private apiBase = environment.apiBaseUrl;
 
   constructor() {
     void this.loadBlogs();
@@ -112,13 +114,17 @@ export class BlogService {
   }
 
   async createBlog(dto: CreateBlogDto, authorId: string, authorName: string): Promise<Blog> {
-    const created = await firstValueFrom(
-      this.http.post<ApiPost>(
+    const response = await firstValueFrom(
+      this.http.post<ApiPost | ApiPostResponse>(
         `${this.apiBase}/api/posts`,
         this.toApiPayload(dto, authorId, authorName),
         { headers: this.getAuthHeaders() }
       )
     );
+    const created = this.extractPost(response);
+    if (!created) {
+      throw new Error('Missing post payload from create response.');
+    }
 
     const mapped = this.mapApiPost(created);
     this.blogs.update(blogs => [...blogs, mapped]);
@@ -126,13 +132,17 @@ export class BlogService {
   }
 
   async updateBlog(id: string, updates: Partial<CreateBlogDto>): Promise<Blog> {
-    const updated = await firstValueFrom(
-      this.http.put<ApiPost>(
+    const response = await firstValueFrom(
+      this.http.put<ApiPost | ApiPostResponse>(
         `${this.apiBase}/api/posts/${id}`,
         this.toApiUpdatePayload(updates),
         { headers: this.getAuthHeaders() }
       )
     );
+    const updated = this.extractPost(response);
+    if (!updated) {
+      throw new Error('Missing post payload from update response.');
+    }
 
     const mapped = this.mapApiPost(updated);
     this.blogs.update(blogs => blogs.map(blog => (blog.id === mapped.id ? mapped : blog)));
@@ -150,12 +160,13 @@ export class BlogService {
   private mapApiPost(post: ApiPost): Blog {
     const title = post.title ?? 'Untitled Post';
     const content = post.content ?? '';
-    const excerpt = post.excerpt ?? '';
+    const excerpt = post.excerpt ?? this.buildExcerpt(content);
     const category = this.normalizeCategory(post.category ?? 'News');
     const imageUrl = post.imageUrl ?? post.image_url ?? 'https://placehold.co/600x400/e5e7eb/6b7280?text=Image+Not+Available';
     const createdAtRaw = post.createdAt ?? post.created_at ?? new Date().toISOString();
     const updatedAtRaw = post.updatedAt ?? post.updated_at ?? createdAtRaw;
     const dateRaw = post.date ?? createdAtRaw;
+    const derivedTime = new Date(dateRaw).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
     return {
       id: String(post.id),
@@ -165,7 +176,7 @@ export class BlogService {
       category,
       imageUrl,
       date: new Date(dateRaw),
-      time: post.time ?? 'N/A',
+      time: post.time ?? derivedTime,
       location: post.location ?? undefined,
       externalLink: post.externalLink ?? post.external_link ?? undefined,
       authorId: String(post.authorId ?? post.author_id ?? 'unknown'),
@@ -205,6 +216,18 @@ export class BlogService {
       return category;
     }
     return 'News';
+  }
+
+  private buildExcerpt(content: string): string {
+    const trimmed = content.trim();
+    if (!trimmed) {
+      return '';
+    }
+    const maxLength = 160;
+    if (trimmed.length <= maxLength) {
+      return trimmed;
+    }
+    return `${trimmed.slice(0, maxLength).trim()}...`;
   }
 
   private toApiPayload(dto: CreateBlogDto, authorId: string, authorName: string) {

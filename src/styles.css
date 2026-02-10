@@ -2,48 +2,58 @@
 
 :root {
   color-scheme: light;
-  --bg: #f4f6f8;
+  --bg: #f5f7fb;
   --surface: #ffffff;
-  --surface-alt: #eef2f5;
-  --text: #111827;
-  --text-muted: #6b7280;
+  --surface-alt: #eef2f6;
+  --surface-elev: #f8fafc;
+  --text: #0f172a;
+  --text-muted: #64748b;
   --text-subtle: #94a3b8;
   --border: #e2e8f0;
-  --primary: #0e8797;
-  --primary-strong: #0a6c7a;
-  --accent-1: #14b8a6;
-  --accent-2: #3b82f6;
+  --border-strong: #cbd5f5;
+  --primary: #0ea5a6;
+  --primary-strong: #0b8c8d;
+  --accent-1: #22d3ee;
+  --accent-2: #6366f1;
+  --accent-3: #34d399;
   --danger: #dc3545;
   --danger-strong: #b02a37;
   --success: #10b981;
   --warning: #f59e0b;
   --info: #3b82f6;
   --overlay: rgba(15, 23, 42, 0.5);
-  --shadow-soft: 0 4px 20px rgba(15, 23, 42, 0.08);
-  --shadow-strong: 0 10px 40px rgba(15, 23, 42, 0.12);
+  --ring: 0 0 0 2px rgba(14, 165, 166, 0.35);
+  --shadow-soft: 0 6px 24px rgba(15, 23, 42, 0.08);
+  --shadow-strong: 0 18px 48px rgba(15, 23, 42, 0.12);
+  --shadow-card: 0 8px 30px rgba(15, 23, 42, 0.08);
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #0b1116;
-  --surface: #121923;
-  --surface-alt: #1a2431;
+  --bg: #0b0f14;
+  --surface: #121821;
+  --surface-alt: #171f2a;
+  --surface-elev: #1d2633;
   --text: #e5e7eb;
-  --text-muted: #a1a7b3;
-  --text-subtle: #7c8596;
-  --border: #1f2a37;
-  --primary: #41c0c7;
-  --primary-strong: #2aa1a8;
-  --accent-1: #22c1b6;
-  --accent-2: #60a5fa;
+  --text-muted: #b6becd;
+  --text-subtle: #7c8798;
+  --border: rgba(148, 163, 184, 0.14);
+  --border-strong: rgba(148, 163, 184, 0.24);
+  --primary: #7c6df3;
+  --primary-strong: #5f52e6;
+  --accent-1: #22d3ee;
+  --accent-2: #a78bfa;
+  --accent-3: #34d399;
   --danger: #f87171;
   --danger-strong: #ef4444;
   --success: #34d399;
   --warning: #fbbf24;
   --info: #60a5fa;
-  --overlay: rgba(3, 7, 18, 0.65);
-  --shadow-soft: 0 4px 24px rgba(3, 7, 18, 0.35);
-  --shadow-strong: 0 16px 48px rgba(3, 7, 18, 0.45);
+  --overlay: rgba(3, 7, 18, 0.68);
+  --ring: 0 0 0 2px rgba(124, 109, 243, 0.4);
+  --shadow-soft: 0 10px 28px rgba(3, 7, 18, 0.45);
+  --shadow-strong: 0 24px 60px rgba(3, 7, 18, 0.65);
+  --shadow-card: 0 16px 40px rgba(3, 7, 18, 0.55);
 }
 
 * {
@@ -56,7 +66,19 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--bg);
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(124, 109, 243, 0.16), transparent 45%),
+    radial-gradient(circle at 80% 0%, rgba(34, 211, 238, 0.12), transparent 40%),
+    radial-gradient(circle at 10% 80%, rgba(52, 211, 153, 0.12), transparent 45%);
   color: var(--text);
+  font-size: 14px;
+}
+
+button,
+input,
+select,
+textarea {
+  font-size: 14px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -71,6 +93,21 @@ button {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.content > * {
+  animation: floatIn 0.5s ease both;
 }
 
 * {
