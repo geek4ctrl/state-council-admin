@@ -56,7 +56,7 @@ import { ThemeService } from '../../services/theme.service';
   styles: [`
     .header {
       height: 72px;
-      background: linear-gradient(180deg, rgba(18, 24, 33, 0.92), rgba(18, 24, 33, 0.82));
+      background: linear-gradient(180deg, var(--surface) 0%, var(--surface-elev) 100%);
       border-bottom: 1px solid var(--border);
       padding: 0 32px;
       display: flex;
@@ -66,6 +66,11 @@ import { ThemeService } from '../../services/theme.service';
       top: 0;
       z-index: 10;
       backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    :host-context([data-theme="dark"]) .header {
+      background: linear-gradient(180deg, rgba(18, 24, 33, 0.92), rgba(18, 24, 33, 0.82));
       box-shadow: 0 8px 20px rgba(2, 6, 23, 0.35);
     }
 
