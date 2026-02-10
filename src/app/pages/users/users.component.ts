@@ -15,7 +15,41 @@ import { AuthService } from '../../services/auth.service';
       <div class="users-section" aria-labelledby="users-title">
         <div class="section-header">
           <h2>{{ copy().dashboardUsersTitle }}</h2>
-          <span class="users-count">{{ users().length }} {{ copy().dashboardUsersCountSuffix }}</span>
+          <span class="users-count">{{ filteredUsers().length }} {{ copy().dashboardUsersCountSuffix }}</span>
+        </div>
+
+        <div class="filters" role="search" aria-label="User filters">
+          <div class="filter-group">
+            <label for="user-search">Search</label>
+            <input
+              id="user-search"
+              type="search"
+              [value]="searchQuery()"
+              (input)="onSearchChange($event)"
+              placeholder="Search users"
+            />
+          </div>
+
+          <div class="filter-group">
+            <label for="user-role">Role</label>
+            <select id="user-role" [value]="roleFilter()" (change)="onRoleChange($event)">
+              <option value="">All roles</option>
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="user-from">From</label>
+            <input id="user-from" type="date" [value]="dateFrom()" (input)="onDateFromChange($event)" />
+          </div>
+
+          <div class="filter-group">
+            <label for="user-to">To</label>
+            <input id="user-to" type="date" [value]="dateTo()" (input)="onDateToChange($event)" />
+          </div>
+
+          <button class="btn-secondary btn-reset" type="button" (click)="resetFilters()">Reset</button>
         </div>
 
         @if (!isAdmin()) {
@@ -26,7 +60,7 @@ import { AuthService } from '../../services/auth.service';
           <p class="empty-message" role="status">{{ copy().dashboardUsersError }}</p>
         } @else {
           <div class="users-list" role="list" aria-labelledby="users-title">
-            @for (user of users(); track user.id) {
+            @for (user of filteredUsers(); track user.id) {
               <div class="user-card" role="listitem">
                 <img
                   class="user-avatar"
@@ -114,6 +148,73 @@ import { AuthService } from '../../services/auth.service';
     .users-list {
       display: grid;
       gap: 16px;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: var(--surface);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .filter-group label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--text-subtle);
+    }
+
+    .filter-group input,
+    .filter-group select {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 12px;
+      background: var(--surface);
+      color: var(--text);
+      transition: border-color 0.2s;
+    }
+
+    .filter-group input:focus,
+    .filter-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: var(--ring);
+    }
+
+    .btn-reset {
+      align-self: end;
+      justify-self: end;
+      height: 36px;
+    }
+
+    .btn-secondary {
+      background: var(--surface-alt);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: color-mix(in srgb, var(--primary) 10%, var(--surface-alt));
+      border-color: var(--primary);
     }
 
     .user-card {
@@ -223,10 +324,38 @@ export class UsersComponent implements OnInit {
   private toastService = inject(ToastService);
 
   protected users = this.userService.getUsers();
+  protected searchQuery = signal('');
+  protected roleFilter = signal('');
+  protected dateFrom = signal('');
+  protected dateTo = signal('');
   protected copy = this.languageService.copy;
   protected usersLoading = signal(false);
   protected usersError = signal(false);
   protected isAdmin = computed(() => this.authService.getCurrentUser()()?.role === 'admin');
+
+  protected filteredUsers = computed(() => {
+    const query = this.searchQuery().toLowerCase().trim();
+    const role = this.roleFilter();
+    const from = this.dateFrom();
+    const to = this.dateTo();
+
+    return this.users().filter((user) => {
+      if (role && user.role !== role) {
+        return false;
+      }
+
+      if (!this.matchesDateRange(user.createdAt, from, to)) {
+        return false;
+      }
+
+      if (!query) {
+        return true;
+      }
+
+      const haystack = `${user.name} ${user.email}`.toLowerCase();
+      return haystack.includes(query);
+    });
+  });
 
   async ngOnInit(): Promise<void> {
     await this.loadUsers();
@@ -260,6 +389,56 @@ export class UsersComponent implements OnInit {
       month: 'short',
       day: 'numeric'
     });
+  }
+
+  protected onSearchChange(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.searchQuery.set(value);
+  }
+
+  protected onRoleChange(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value;
+    this.roleFilter.set(value);
+  }
+
+  protected onDateFromChange(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.dateFrom.set(value);
+  }
+
+  protected onDateToChange(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.dateTo.set(value);
+  }
+
+  protected resetFilters(): void {
+    this.searchQuery.set('');
+    this.roleFilter.set('');
+    this.dateFrom.set('');
+    this.dateTo.set('');
+  }
+
+  private matchesDateRange(date: Date, from: string, to: string): boolean {
+    if (!from && !to) {
+      return true;
+    }
+
+    const value = date.getTime();
+    if (from) {
+      const fromDate = new Date(`${from}T00:00:00`).getTime();
+      if (value < fromDate) {
+        return false;
+      }
+    }
+
+    if (to) {
+      const toDate = new Date(`${to}T23:59:59`).getTime();
+      if (value > toDate) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
 
