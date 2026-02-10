@@ -4,15 +4,17 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 import { HeaderComponent } from '../header/header.component';
 import { ToastComponent } from '../toast/toast.component';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
+import { PasswordResetModalComponent } from '../password-reset-modal/password-reset-modal.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-layout',
-  imports: [CommonModule, RouterOutlet, SidebarComponent, HeaderComponent, ToastComponent, ConfirmationModalComponent],
+  imports: [CommonModule, RouterOutlet, SidebarComponent, HeaderComponent, ToastComponent, ConfirmationModalComponent, PasswordResetModalComponent],
   template: `
     <div class="layout">
       <app-toast />
       <app-confirmation-modal />
+      <app-password-reset-modal />
       <app-sidebar [isOpen]="sidebarOpen()" (close)="closeSidebar()" />
       @if (sidebarOpen()) {
         <div class="overlay" (click)="closeSidebar()"></div>

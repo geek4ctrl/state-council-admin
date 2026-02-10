@@ -4,6 +4,8 @@ import { UserService } from '../../services/user.service';
 import { LanguageService } from '../../services/language.service';
 import { ToastService } from '../../services/toast.service';
 import { AuthService } from '../../services/auth.service';
+import { ConfirmationService } from '../../services/confirmation.service';
+import { PasswordResetService } from '../../services/password-reset.service';
 
 @Component({
   selector: 'app-users',
@@ -84,6 +86,31 @@ import { AuthService } from '../../services/auth.service';
                       {{ formatDate(user.createdAt) }}
                     </time>
                   </span>
+                </div>
+                <div class="user-actions" role="group" aria-label="User actions">
+                  <button
+                    class="btn-action"
+                    type="button"
+                    (click)="onToggleRole(user)"
+                    [disabled]="isSelf(user)"
+                  >
+                    {{ user.role === 'admin' ? 'Make User' : 'Make Admin' }}
+                  </button>
+                  <button
+                    class="btn-action"
+                    type="button"
+                    (click)="onToggleLock(user)"
+                    [disabled]="isSelf(user)"
+                  >
+                    {{ user.locked ? 'Unlock' : 'Lock' }}
+                  </button>
+                  <button
+                    class="btn-action"
+                    type="button"
+                    (click)="onResetPassword(user)"
+                  >
+                    Reset Password
+                  </button>
                 </div>
               </div>
             } @empty {
@@ -219,7 +246,7 @@ import { AuthService } from '../../services/auth.service';
 
     .user-card {
       display: grid;
-      grid-template-columns: 48px minmax(0, 1fr) minmax(120px, auto) minmax(140px, auto);
+      grid-template-columns: 48px minmax(0, 1fr) minmax(120px, auto) minmax(140px, auto) minmax(180px, auto);
       align-items: center;
       gap: 16px;
       padding: 16px;
@@ -280,6 +307,35 @@ import { AuthService } from '../../services/auth.service';
       text-transform: capitalize;
     }
 
+    .user-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn-action {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-action:hover:not(:disabled) {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-action:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     @media (max-width: 768px) {
       .users-section {
         padding: 24px;
@@ -322,6 +378,8 @@ export class UsersComponent implements OnInit {
   private languageService = inject(LanguageService);
   private authService = inject(AuthService);
   private toastService = inject(ToastService);
+  private confirmationService = inject(ConfirmationService);
+  private passwordResetService = inject(PasswordResetService);
 
   protected users = this.userService.getUsers();
   protected searchQuery = signal('');
@@ -332,6 +390,7 @@ export class UsersComponent implements OnInit {
   protected usersLoading = signal(false);
   protected usersError = signal(false);
   protected isAdmin = computed(() => this.authService.getCurrentUser()()?.role === 'admin');
+  private currentUserId = computed(() => this.authService.getCurrentUser()()?.id ?? '');
 
   protected filteredUsers = computed(() => {
     const query = this.searchQuery().toLowerCase().trim();
@@ -389,6 +448,75 @@ export class UsersComponent implements OnInit {
       month: 'short',
       day: 'numeric'
     });
+  }
+
+  protected isSelf(user: { id: string }): boolean {
+    return user.id === this.currentUserId();
+  }
+
+  protected async onToggleRole(user: { id: string; role: 'admin' | 'user'; email: string }): Promise<void> {
+    const nextRole = user.role === 'admin' ? 'user' : 'admin';
+    const confirmed = await this.confirmationService.confirm({
+      title: 'Update role',
+      message: `Change ${user.email} to ${nextRole}?`,
+      confirmText: 'Update',
+      cancelText: this.copy().commonCancel
+    });
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await this.userService.updateRole(user.id, nextRole);
+      this.toastService.success('Role updated successfully.');
+    } catch {
+      this.toastService.error('Failed to update role.');
+    }
+  }
+
+  protected async onToggleLock(user: { id: string; locked: boolean; email: string }): Promise<void> {
+    const nextLocked = !user.locked;
+    const actionLabel = nextLocked ? 'lock' : 'unlock';
+    const confirmed = await this.confirmationService.confirm({
+      title: 'Update account access',
+      message: `Are you sure you want to ${actionLabel} ${user.email}?`,
+      confirmText: nextLocked ? 'Lock' : 'Unlock',
+      cancelText: this.copy().commonCancel,
+      confirmButtonClass: nextLocked ? 'danger' : 'primary'
+    });
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await this.userService.setLocked(user.id, nextLocked);
+      this.toastService.success(`User ${nextLocked ? 'locked' : 'unlocked'}.`);
+    } catch {
+      this.toastService.error('Failed to update account access.');
+    }
+  }
+
+  protected async onResetPassword(user: { id: string; email: string }): Promise<void> {
+    const password = await this.passwordResetService.open({
+      title: 'Reset password',
+      message: `Create a temporary password for ${user.email}.`,
+      confirmText: 'Reset',
+      cancelText: this.copy().commonCancel,
+      minLength: 6
+    });
+
+    if (!password) {
+      return;
+    }
+
+    try {
+      await this.userService.resetPassword(user.id, password.trim());
+      this.toastService.success('Password reset successfully.');
+    } catch {
+      this.toastService.error('Failed to reset password.');
+    }
   }
 
   protected onSearchChange(event: Event): void {

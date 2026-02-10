@@ -4,6 +4,7 @@ export interface User {
   email: string;
   avatar?: string;
   role: 'admin' | 'user';
+  locked: boolean;
   createdAt: Date;
 }
 
