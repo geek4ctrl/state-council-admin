@@ -95,28 +95,32 @@ import { LanguageService } from '../../services/language.service';
             <tbody>
               @for (log of logs(); track log.id) {
                 <tr>
-                  <td>
+                  <td [attr.data-label]="copy().auditLogTableTime">
                     <time [attr.datetime]="log.createdAt.toISOString()">
                       {{ formatDate(log.createdAt) }}
                     </time>
                   </td>
-                  <td>
+                  <td [attr.data-label]="copy().auditLogTableActor">
                     <div class="cell-stack">
                       <span class="primary">{{ formatActor(log) }}</span>
                       <span class="secondary" *ngIf="log.actorId">#{{ log.actorId }}</span>
                     </div>
                   </td>
-                  <td>
+                  <td [attr.data-label]="copy().auditLogTableAction">
                     <span class="pill">{{ formatAction(log.action) }}</span>
                   </td>
-                  <td>
+                  <td [attr.data-label]="copy().auditLogTableEntity">
                     <div class="cell-stack">
                       <span class="primary">{{ formatEntity(log.entityType) }}</span>
                       <span class="secondary" *ngIf="log.entityId">#{{ log.entityId }}</span>
                     </div>
                   </td>
-                  <td>{{ log.ip ?? copy().commonNotAvailable }}</td>
-                  <td class="details">{{ formatDetails(log.details) }}</td>
+                  <td [attr.data-label]="copy().auditLogTableIp">
+                    <span class="cell-value">{{ log.ip ?? copy().commonNotAvailable }}</span>
+                  </td>
+                  <td class="details" [attr.data-label]="copy().auditLogTableDetails">
+                    <span class="cell-value">{{ formatDetails(log.details) }}</span>
+                  </td>
                 </tr>
               }
             </tbody>
@@ -349,6 +353,90 @@ import { LanguageService } from '../../services/language.service';
     .pagination-info {
       font-size: 11px;
       color: var(--text-subtle);
+    }
+
+    @media (max-width: 640px) {
+      .filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .btn-reset {
+        justify-self: end;
+        grid-column: 2 / -1;
+      }
+
+      .table-wrapper {
+        padding: 0;
+        border: none;
+        box-shadow: none;
+        background: transparent;
+      }
+
+      .audit-table {
+        min-width: 0;
+      }
+
+      .audit-table,
+      .audit-table thead,
+      .audit-table tbody,
+      .audit-table tr,
+      .audit-table th,
+      .audit-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .audit-table thead {
+        display: none;
+      }
+
+      .audit-table tr {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 14px 16px;
+        margin-bottom: 12px;
+        box-shadow: var(--shadow-card);
+      }
+
+      .audit-table td {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding: 10px 0;
+        border: none;
+        font-size: 12px;
+      }
+
+      .audit-table td::before {
+        content: attr(data-label);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        color: var(--text-subtle);
+      }
+
+      .audit-table td > * {
+        min-width: 0;
+      }
+
+      .pill {
+        align-self: flex-start;
+      }
+
+      .cell-stack .primary {
+        font-size: 12px;
+      }
+
+      .cell-stack .secondary {
+        font-size: 10px;
+      }
+
+      .details {
+        max-width: none;
+      }
     }
   `]
 })

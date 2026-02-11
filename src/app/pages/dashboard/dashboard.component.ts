@@ -318,6 +318,9 @@ import { ToastService } from '../../services/toast.service';
     @media (max-width: 640px) {
       h1 {
         font-size: 22px;
+        color: var(--text);
+        font-weight: 600;
+        text-shadow: 0 2px 10px rgba(15, 23, 42, 0.12);
       }
 
       .recent-section {
