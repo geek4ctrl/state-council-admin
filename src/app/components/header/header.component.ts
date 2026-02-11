@@ -187,10 +187,30 @@ import { ThemeService } from '../../services/theme.service';
       .header {
         padding: 0 16px;
         height: 62px;
+        gap: 12px;
       }
 
       .greeting {
         font-size: 16px;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .header-actions {
+        margin-left: auto;
+        gap: 8px;
+      }
+
+      .theme-toggle {
+        padding: 6px 10px;
+        font-size: 9px;
+      }
+
+      .language-option {
+        padding: 6px 10px;
+        font-size: 9px;
       }
     }
   `]
