@@ -38,6 +38,10 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/users/users.component').then(m => m.UsersComponent)
       },
       {
+        path: 'audit-log',
+        loadComponent: () => import('./pages/audit-log/audit-log.component').then(m => m.AuditLogComponent)
+      },
+      {
         path: 'services',
         loadComponent: () => import('./pages/placeholder/placeholder.component').then(m => m.PlaceholderComponent)
       },
