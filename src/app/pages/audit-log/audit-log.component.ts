@@ -17,12 +17,13 @@ import { LanguageService } from '../../services/language.service';
         <span class="log-count">{{ total() }} {{ copy().auditLogCountSuffix }}</span>
       </div>
 
-      <div class="filters" role="search" aria-label="Audit log filters">
+      <div class="filters filter-panel" role="search" aria-label="Audit log filters">
         <div class="filter-group">
           <label for="audit-search">{{ copy().auditLogSearchLabel }}</label>
           <input
             id="audit-search"
             type="search"
+            class="filter-control"
             [value]="searchQuery()"
             (input)="onSearchChange($event)"
             [placeholder]="copy().auditLogSearchPlaceholder"
@@ -31,7 +32,7 @@ import { LanguageService } from '../../services/language.service';
 
         <div class="filter-group">
           <label for="audit-action">{{ copy().auditLogActionLabel }}</label>
-          <select id="audit-action" [value]="actionFilter()" (change)="onActionChange($event)">
+          <select id="audit-action" class="filter-control" [value]="actionFilter()" (change)="onActionChange($event)">
             @for (option of actionOptions(); track option.value) {
               <option [value]="option.value">{{ option.label }}</option>
             }
@@ -40,7 +41,7 @@ import { LanguageService } from '../../services/language.service';
 
         <div class="filter-group">
           <label for="audit-entity">{{ copy().auditLogEntityLabel }}</label>
-          <select id="audit-entity" [value]="entityFilter()" (change)="onEntityChange($event)">
+          <select id="audit-entity" class="filter-control" [value]="entityFilter()" (change)="onEntityChange($event)">
             @for (option of entityOptions(); track option.value) {
               <option [value]="option.value">{{ option.label }}</option>
             }
@@ -52,6 +53,7 @@ import { LanguageService } from '../../services/language.service';
           <input
             id="audit-actor"
             type="text"
+            class="filter-control"
             [value]="actorQuery()"
             (input)="onActorChange($event)"
             [placeholder]="copy().auditLogActorPlaceholder"
@@ -60,12 +62,12 @@ import { LanguageService } from '../../services/language.service';
 
         <div class="filter-group">
           <label for="audit-from">{{ copy().auditLogFromLabel }}</label>
-          <input id="audit-from" type="date" [value]="dateFrom()" (input)="onDateFromChange($event)" />
+          <input id="audit-from" type="date" class="filter-control" [value]="dateFrom()" (input)="onDateFromChange($event)" />
         </div>
 
         <div class="filter-group">
           <label for="audit-to">{{ copy().auditLogToLabel }}</label>
-          <input id="audit-to" type="date" [value]="dateTo()" (input)="onDateToChange($event)" />
+          <input id="audit-to" type="date" class="filter-control" [value]="dateTo()" (input)="onDateToChange($event)" />
         </div>
 
         <button class="btn-secondary btn-reset" type="button" (click)="resetFilters()">
@@ -74,11 +76,11 @@ import { LanguageService } from '../../services/language.service';
       </div>
 
       @if (loading()) {
-        <p class="empty-message" role="status">{{ copy().auditLogLoading }}</p>
+        <p class="empty-message state-message is-loading" data-icon="..." role="status">{{ copy().auditLogLoading }}</p>
       } @else if (error()) {
-        <p class="empty-message" role="status">{{ copy().auditLogLoadError }}</p>
+        <p class="empty-message state-message is-error" data-icon="!" role="status">{{ copy().auditLogLoadError }}</p>
       } @else if (logs().length === 0) {
-        <p class="empty-message" role="status">{{ copy().auditLogEmpty }}</p>
+        <p class="empty-message state-message is-empty" data-icon="-" role="status">{{ copy().auditLogEmpty }}</p>
       } @else {
         <div class="table-wrapper" role="region" aria-labelledby="audit-title">
           <table class="audit-table">
@@ -187,56 +189,6 @@ import { LanguageService } from '../../services/language.service';
       letter-spacing: 0.4px;
     }
 
-    .filters {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
-      padding: 16px;
-      background: var(--surface);
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .filter-group label {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      color: var(--text-subtle);
-    }
-
-    .filter-group input,
-    .filter-group select {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-size: 12px;
-      background: var(--surface);
-      color: var(--text);
-      transition: border-color 0.2s;
-    }
-
-    .filter-group input:focus,
-    .filter-group select:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: var(--ring);
-    }
-
-    .btn-reset {
-      align-self: end;
-      justify-self: end;
-      height: 36px;
-    }
-
     .btn-secondary {
       background: var(--surface-alt);
       color: var(--text);
@@ -252,13 +204,6 @@ import { LanguageService } from '../../services/language.service';
     .btn-secondary:hover {
       background: color-mix(in srgb, var(--primary) 10%, var(--surface-alt));
       border-color: var(--primary);
-    }
-
-    .empty-message {
-      text-align: center;
-      color: var(--text-subtle);
-      padding: 64px 20px;
-      font-size: 14px;
     }
 
     .table-wrapper {

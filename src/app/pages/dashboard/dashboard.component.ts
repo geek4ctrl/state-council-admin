@@ -66,12 +66,13 @@ import { ToastService } from '../../services/toast.service';
                 <span class="recent-post-category" [attr.aria-label]="copy().dashboardCategoryLabel">{{ blog.category }}</span>
                 <h3>{{ blog.title }}</h3>
                 <p class="recent-post-date">
+                  <span class="ui-icon is-calendar" aria-hidden="true"></span>
                   <time [attr.datetime]="blog.date.toISOString()">{{ formatDate(blog.date) }}</time>
                 </p>
               </div>
             </a>
           } @empty {
-            <p class="empty-message" role="status">{{ copy().dashboardEmptyText }}</p>
+            <p class="empty-message state-message is-empty" data-icon="-" role="status">{{ copy().dashboardEmptyText }}</p>
           }
         </div>
       </div>
@@ -282,18 +283,6 @@ import { ToastService } from '../../services/toast.service';
       display: flex;
       align-items: center;
       gap: 6px;
-    }
-
-    .recent-post-date::before {
-      content: '📅';
-      font-size: 10px;
-    }
-
-    .empty-message {
-      text-align: center;
-      color: var(--text-subtle);
-      padding: 64px 20px;
-      font-size: 14px;
     }
 
 
