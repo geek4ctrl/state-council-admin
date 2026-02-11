@@ -475,11 +475,19 @@ import { ConfirmationService } from '../../services/confirmation.service';
       }
 
       .post-card {
-        padding: 16px;
+        padding: 0;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        background: linear-gradient(180deg, var(--surface), var(--surface-elev));
+        box-shadow: var(--shadow-card);
       }
 
       .post-image {
-        height: 180px;
+        height: 200px;
+      }
+
+      .post-content {
+        padding: 18px;
       }
 
       .post-title {
@@ -493,11 +501,32 @@ import { ConfirmationService } from '../../services/confirmation.service';
 
       .post-actions {
         flex-wrap: wrap;
+        gap: 10px;
       }
 
       .btn-secondary {
-        flex: 1;
-        min-width: 120px;
+        flex: 1 1 100%;
+        min-width: 0;
+        padding: 10px 14px;
+        border-radius: 10px;
+      }
+
+      .action-buttons {
+        width: 100%;
+        justify-content: center;
+        gap: 12px;
+      }
+
+      .btn-icon {
+        background: var(--surface-alt);
+        border: 1px solid var(--border);
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+      }
+
+      .btn-icon:hover {
+        transform: translateY(-1px);
       }
     }
 

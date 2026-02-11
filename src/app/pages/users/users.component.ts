@@ -74,6 +74,22 @@ import { PasswordResetService } from '../../services/password-reset.service';
                 <div class="user-meta">
                   <div class="user-name">{{ user.name }}</div>
                   <div class="user-email">{{ user.email }}</div>
+                  <div class="user-chips" role="group" aria-label="User status">
+                    <span
+                      class="chip"
+                      [class.role-admin]="user.role === 'admin'"
+                      [class.role-user]="user.role !== 'admin'"
+                    >
+                      {{ user.role === 'admin' ? 'Admin' : 'User' }}
+                    </span>
+                    <span
+                      class="chip"
+                      [class.is-locked]="user.locked"
+                      [class.is-active]="!user.locked"
+                    >
+                      {{ user.locked ? 'Locked' : 'Active' }}
+                    </span>
+                  </div>
                 </div>
                 <div class="user-info">
                   <span class="user-label">{{ copy().dashboardUsersRoleLabel }}</span>
@@ -287,6 +303,52 @@ import { PasswordResetService } from '../../services/password-reset.service';
       text-overflow: ellipsis;
     }
 
+    .user-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    .chip.role-admin {
+      background: color-mix(in srgb, var(--primary) 18%, transparent);
+      border-color: color-mix(in srgb, var(--primary) 35%, var(--border));
+      color: var(--primary-strong);
+    }
+
+    .chip.role-user {
+      background: color-mix(in srgb, var(--accent-3) 16%, transparent);
+      border-color: color-mix(in srgb, var(--accent-3) 32%, var(--border));
+      color: color-mix(in srgb, var(--accent-3) 70%, var(--text));
+    }
+
+    .chip.is-locked {
+      background: color-mix(in srgb, var(--danger) 18%, transparent);
+      border-color: color-mix(in srgb, var(--danger) 35%, var(--border));
+      color: var(--danger-strong);
+    }
+
+    .chip.is-active {
+      background: color-mix(in srgb, var(--success) 16%, transparent);
+      border-color: color-mix(in srgb, var(--success) 32%, var(--border));
+      color: var(--success);
+    }
+
     .user-info {
       display: flex;
       flex-direction: column;
@@ -369,6 +431,48 @@ import { PasswordResetService } from '../../services/password-reset.service';
 
       .section-header h2 {
         font-size: 16px;
+      }
+
+      .user-card {
+        grid-template-columns: 44px 1fr;
+        padding: 14px;
+        gap: 12px;
+        border-radius: 14px;
+        background: linear-gradient(180deg, var(--surface-alt), color-mix(in srgb, var(--surface) 70%, var(--surface-alt)));
+        box-shadow: var(--shadow-card);
+      }
+
+      .user-avatar {
+        width: 44px;
+        height: 44px;
+      }
+
+      .user-meta {
+        gap: 2px;
+      }
+
+      .user-info {
+        grid-column: 1 / -1;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 8px 10px;
+        border-radius: 10px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+      }
+
+      .user-actions {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+        gap: 10px;
+      }
+
+      .btn-action {
+        flex: 1 1 100%;
+        text-align: center;
+        padding: 10px 12px;
+        border-radius: 10px;
+        font-size: 11px;
       }
     }
   `]
