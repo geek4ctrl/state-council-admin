@@ -26,6 +26,10 @@
   --shadow-soft: 0 6px 24px rgba(15, 23, 42, 0.08);
   --shadow-strong: 0 18px 48px rgba(15, 23, 42, 0.12);
   --shadow-card: 0 8px 30px rgba(15, 23, 42, 0.08);
+  --space-1: 12px;
+  --space-2: 16px;
+  --space-3: 20px;
+  --space-4: 24px;
 }
 
 :root[data-theme="dark"] {
@@ -81,6 +85,19 @@ textarea {
   font-size: 14px;
 }
 
+:focus-visible {
+  outline: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  box-shadow: var(--ring);
+  border-color: var(--primary);
+}
+
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
   font-weight: 600;
@@ -93,6 +110,148 @@ button {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+.filter-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: var(--surface);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+}
+
+.filter-panel .btn-reset {
+  align-self: end;
+  justify-self: end;
+  height: 36px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-group label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text-subtle);
+}
+
+.filter-control {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 12px;
+  background: var(--surface);
+  color: var(--text);
+  transition: border-color 0.2s;
+}
+
+.filter-control:focus-visible {
+  border-color: var(--primary);
+  box-shadow: var(--ring);
+}
+
+.state-message {
+  text-align: center;
+  color: var(--text-subtle);
+  padding: 16px 20px;
+  font-size: 14px;
+  margin: 24px auto;
+  max-width: 520px;
+  background: var(--surface);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.state-message::before {
+  content: attr(data-icon);
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.state-message.is-error {
+  color: var(--danger-strong);
+  background: color-mix(in srgb, var(--danger) 6%, var(--surface));
+  border-color: color-mix(in srgb, var(--danger) 30%, var(--border));
+}
+
+.state-message.is-error::before {
+  background: color-mix(in srgb, var(--danger) 18%, var(--surface));
+  border-color: color-mix(in srgb, var(--danger) 35%, var(--border));
+  color: var(--danger-strong);
+}
+
+.state-message.is-loading::before {
+  background: color-mix(in srgb, var(--info) 16%, var(--surface));
+  border-color: color-mix(in srgb, var(--info) 35%, var(--border));
+  color: var(--info);
+}
+
+.state-message.is-empty::before,
+.state-message.is-restricted::before {
+  background: color-mix(in srgb, var(--accent-2) 12%, var(--surface));
+  border-color: color-mix(in srgb, var(--accent-2) 28%, var(--border));
+  color: var(--text-muted);
+}
+
+.ui-icon {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+}
+
+.ui-icon.is-calendar {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><rect x='3' y='5' width='18' height='16' rx='2'/><rect x='7' y='2' width='2' height='4'/><rect x='15' y='2' width='2' height='4'/><rect x='3' y='9' width='18' height='2'/></svg>");
+  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><rect x='3' y='5' width='18' height='16' rx='2'/><rect x='7' y='2' width='2' height='4'/><rect x='15' y='2' width='2' height='4'/><rect x='3' y='9' width='18' height='2'/></svg>");
+}
+
+.ui-icon.is-clock {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><circle cx='12' cy='12' r='9'/><rect x='11' y='6' width='2' height='7'/><rect x='12' y='11' width='5' height='2'/></svg>");
+  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><circle cx='12' cy='12' r='9'/><rect x='11' y='6' width='2' height='7'/><rect x='12' y='11' width='5' height='2'/></svg>");
+}
+
+.ui-icon.is-location {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z'/><circle cx='12' cy='9' r='2'/></svg>");
+  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z'/><circle cx='12' cy='9' r='2'/></svg>");
+}
+
+.ui-icon.is-edit {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M4 17l3 3 12-12-3-3-12 12z'/><rect x='3' y='18' width='6' height='2'/></svg>");
+  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M4 17l3 3 12-12-3-3-12 12z'/><rect x='3' y='18' width='6' height='2'/></svg>");
+}
+
+.ui-icon.is-trash {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><rect x='6' y='8' width='12' height='12' rx='1'/><rect x='9' y='3' width='6' height='3'/><rect x='4' y='6' width='16' height='2'/></svg>");
+  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><rect x='6' y='8' width='12' height='12' rx='1'/><rect x='9' y='3' width='6' height='3'/><rect x='4' y='6' width='16' height='2'/></svg>");
 }
 
 @keyframes floatIn {
@@ -131,5 +290,29 @@ a {
 
 *::-webkit-scrollbar-thumb:hover {
   background-color: var(--text-muted);
+}
+
+@media (max-width: 640px) {
+  .filter-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .filter-control {
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, var(--surface), var(--surface-elev));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+
+  input.filter-control[type="date"],
+  select.filter-control {
+    appearance: none;
+    background-image: linear-gradient(135deg, transparent 50%, var(--text-subtle) 50%),
+      linear-gradient(225deg, transparent 50%, var(--text-subtle) 50%);
+    background-position: calc(100% - 16px) 50%, calc(100% - 12px) 50%;
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+    padding-right: 30px;
+  }
 }
 

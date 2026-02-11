@@ -22,12 +22,13 @@ import { ConfirmationService } from '../../services/confirmation.service';
         </button>
       </div>
 
-      <div class="filters" role="search" aria-label="Post filters">
+      <div class="filters filter-panel" role="search" aria-label="Post filters">
         <div class="filter-group">
           <label for="post-search">Search</label>
           <input
             id="post-search"
             type="search"
+            class="filter-control"
             [value]="searchQuery()"
             (input)="onSearchChange($event)"
             placeholder="Search posts"
@@ -36,7 +37,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
 
         <div class="filter-group">
           <label for="post-status">Status</label>
-          <select id="post-status" [value]="statusFilter()" (change)="onStatusChange($event)">
+          <select id="post-status" class="filter-control" [value]="statusFilter()" (change)="onStatusChange($event)">
             <option value="">All statuses</option>
             <option value="draft">Draft</option>
             <option value="review">Review</option>
@@ -46,7 +47,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
 
         <div class="filter-group">
           <label for="post-author">Author</label>
-          <select id="post-author" [value]="authorFilter()" (change)="onAuthorChange($event)">
+          <select id="post-author" class="filter-control" [value]="authorFilter()" (change)="onAuthorChange($event)">
             <option value="">All authors</option>
             @for (author of authorOptions(); track author) {
               <option [value]="author">{{ author }}</option>
@@ -56,12 +57,12 @@ import { ConfirmationService } from '../../services/confirmation.service';
 
         <div class="filter-group">
           <label for="post-from">From</label>
-          <input id="post-from" type="date" [value]="dateFrom()" (input)="onDateFromChange($event)" />
+          <input id="post-from" type="date" class="filter-control" [value]="dateFrom()" (input)="onDateFromChange($event)" />
         </div>
 
         <div class="filter-group">
           <label for="post-to">To</label>
-          <input id="post-to" type="date" [value]="dateTo()" (input)="onDateToChange($event)" />
+          <input id="post-to" type="date" class="filter-control" [value]="dateTo()" (input)="onDateToChange($event)" />
         </div>
 
         <button class="btn-secondary btn-reset" type="button" (click)="resetFilters()">Reset</button>
@@ -83,14 +84,21 @@ import { ConfirmationService } from '../../services/confirmation.service';
             <div class="post-content">
               <h3 class="post-title">{{ blog.title }}</h3>
               <p class="post-date">
+                <span class="ui-icon is-calendar" aria-hidden="true"></span>
                 <time [attr.datetime]="blog.date.toISOString()">{{ formatDate(blog.date) }}</time>
               </p>
               <p class="post-excerpt">{{ blog.excerpt }}</p>
 
               <div class="post-meta" [attr.aria-label]="copy().postsMetaLabel">
-                <span class="post-time" [attr.aria-label]="copy().postsTimeLabel"><span aria-hidden="true">⏰</span> {{ blog.time }}</span>
+                <span class="post-time" [attr.aria-label]="copy().postsTimeLabel">
+                  <span class="ui-icon is-clock" aria-hidden="true"></span>
+                  {{ blog.time }}
+                </span>
                 @if (blog.location) {
-                  <span class="post-location" [attr.aria-label]="copy().postsLocationLabel"><span aria-hidden="true">📍</span> {{ blog.location }}</span>
+                  <span class="post-location" [attr.aria-label]="copy().postsLocationLabel">
+                    <span class="ui-icon is-location" aria-hidden="true"></span>
+                    {{ blog.location }}
+                  </span>
                 }
               </div>
 
@@ -108,7 +116,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
                     [routerLink]="['/posts/edit', blog.id]"
                     [attr.aria-label]="copy().postsEditPrefix + ' ' + blog.title"
                   >
-                    <span aria-hidden="true">✏️</span>
+                    <span class="ui-icon is-edit" aria-hidden="true"></span>
                   </a>
                   <button
                     class="btn-icon btn-danger"
@@ -116,7 +124,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
                     [attr.aria-label]="copy().postsDeletePrefix + ' ' + blog.title"
                     type="button"
                   >
-                    <span aria-hidden="true">🗑️</span>
+                    <span class="ui-icon is-trash" aria-hidden="true"></span>
                   </button>
                 </div>
               </div>
@@ -124,7 +132,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
           </article>
         } @empty {
           <div class="empty-state" role="status" aria-live="polite">
-            <p>{{ copy().postsEmptyText }}</p>
+            <p class="state-message is-empty" data-icon="-">{{ copy().postsEmptyText }}</p>
             <button
               class="btn-primary"
               (click)="onCreatePost()"
@@ -190,55 +198,6 @@ import { ConfirmationService } from '../../services/confirmation.service';
       gap: 24px;
     }
 
-    .filters {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
-      padding: 16px;
-      background: var(--surface);
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .filter-group label {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      color: var(--text-subtle);
-    }
-
-    .filter-group input,
-    .filter-group select {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-size: 12px;
-      background: var(--surface);
-      color: var(--text);
-      transition: border-color 0.2s;
-    }
-
-    .filter-group input:focus,
-    .filter-group select:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: var(--ring);
-    }
-
-    .btn-reset {
-      align-self: end;
-      justify-self: end;
-      height: 36px;
-    }
 
     .post-card {
       background: var(--surface);
@@ -306,11 +265,6 @@ import { ConfirmationService } from '../../services/confirmation.service';
       gap: 6px;
     }
 
-    .post-date::before {
-      content: '📅';
-      font-size: 10px;
-    }
-
     .post-excerpt {
       font-size: 12px;
       color: var(--text-muted);
@@ -334,6 +288,9 @@ import { ConfirmationService } from '../../services/confirmation.service';
     .post-time, .post-location {
       font-size: 11px;
       color: var(--text-subtle);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .post-actions {
@@ -431,13 +388,6 @@ import { ConfirmationService } from '../../services/confirmation.service';
       flex-direction: column;
       align-items: center;
       justify-content: center;
-    }
-
-    .empty-state p {
-      font-size: 14px;
-      color: var(--text-subtle);
-      margin-bottom: 24px;
-      font-weight: 400;
     }
 
     .empty-state .btn-primary {
