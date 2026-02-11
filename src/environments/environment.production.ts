@@ -1,3 +1,3 @@
 export const environment = {
-  apiBaseUrl: 'https://api.example.com'
+  apiBaseUrl: 'https://patient-wonder-production.up.railway.app'
 };
