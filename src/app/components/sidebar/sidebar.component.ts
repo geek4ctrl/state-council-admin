@@ -196,6 +196,7 @@ export class SidebarComponent {
     { label: this.copy().sidebarNavDashboard, route: '/dashboard', icon: '📊' },
     { label: this.copy().sidebarNavPosts, route: '/posts', icon: '📝' },
     { label: this.copy().sidebarNavUsers, route: '/users', icon: '👥' },
+    { label: this.copy().sidebarNavAudit, route: '/audit-log', icon: '🧾' },
     { label: this.copy().sidebarNavSettings, route: '/settings', icon: '⚙️' }
   ]);
 

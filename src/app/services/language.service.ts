@@ -165,12 +165,52 @@ type AppCopy = {
   sidebarNavDashboard: string;
   sidebarNavPosts: string;
   sidebarNavUsers: string;
+  sidebarNavAudit: string;
   sidebarNavSettings: string;
   sidebarLogoutLabel: string;
   sidebarLogoutTitle: string;
   sidebarLogoutMessage: string;
   sidebarLogoutConfirm: string;
   sidebarNavAriaLabel: string;
+  auditLogTitle: string;
+  auditLogSubtitle: string;
+  auditLogSearchLabel: string;
+  auditLogSearchPlaceholder: string;
+  auditLogActionLabel: string;
+  auditLogActionAll: string;
+  auditLogActionLogin: string;
+  auditLogActionRegister: string;
+  auditLogActionRoleUpdated: string;
+  auditLogActionLockUpdated: string;
+  auditLogActionPasswordReset: string;
+  auditLogActionPostCreated: string;
+  auditLogActionPostUpdated: string;
+  auditLogActionPostDeleted: string;
+  auditLogEntityLabel: string;
+  auditLogEntityAll: string;
+  auditLogEntityUser: string;
+  auditLogEntityPost: string;
+  auditLogEntityAuth: string;
+  auditLogActorLabel: string;
+  auditLogActorPlaceholder: string;
+  auditLogFromLabel: string;
+  auditLogToLabel: string;
+  auditLogResetFilters: string;
+  auditLogLoading: string;
+  auditLogEmpty: string;
+  auditLogLoadError: string;
+  auditLogTableTime: string;
+  auditLogTableActor: string;
+  auditLogTableAction: string;
+  auditLogTableEntity: string;
+  auditLogTableIp: string;
+  auditLogTableDetails: string;
+  auditLogCountSuffix: string;
+  auditLogPaginationLabel: string;
+  auditLogPrevText: string;
+  auditLogNextText: string;
+  auditLogPageLabel: string;
+  auditLogOfText: string;
   headerGreetingPrefix: string;
   headerGuestName: string;
   headerLanguageLabel: string;
@@ -340,12 +380,52 @@ const translations: Record<Language, AppCopy> = {
     sidebarNavDashboard: 'Dashboard',
     sidebarNavPosts: 'Posts',
     sidebarNavUsers: 'Users',
+    sidebarNavAudit: 'Audit Log',
     sidebarNavSettings: 'Settings',
     sidebarLogoutLabel: 'Log out',
     sidebarLogoutTitle: 'Log out',
     sidebarLogoutMessage: 'Are you sure you want to log out?',
     sidebarLogoutConfirm: 'Log out',
     sidebarNavAriaLabel: 'Main navigation',
+    auditLogTitle: 'Audit Log',
+    auditLogSubtitle: 'Track admin actions for compliance and review',
+    auditLogSearchLabel: 'Search',
+    auditLogSearchPlaceholder: 'Search audit logs',
+    auditLogActionLabel: 'Action',
+    auditLogActionAll: 'All actions',
+    auditLogActionLogin: 'Login',
+    auditLogActionRegister: 'Register',
+    auditLogActionRoleUpdated: 'Role updated',
+    auditLogActionLockUpdated: 'Lock updated',
+    auditLogActionPasswordReset: 'Password reset',
+    auditLogActionPostCreated: 'Post created',
+    auditLogActionPostUpdated: 'Post updated',
+    auditLogActionPostDeleted: 'Post deleted',
+    auditLogEntityLabel: 'Entity',
+    auditLogEntityAll: 'All entities',
+    auditLogEntityUser: 'User',
+    auditLogEntityPost: 'Post',
+    auditLogEntityAuth: 'Auth',
+    auditLogActorLabel: 'Actor',
+    auditLogActorPlaceholder: 'Admin email or ID',
+    auditLogFromLabel: 'From',
+    auditLogToLabel: 'To',
+    auditLogResetFilters: 'Reset',
+    auditLogLoading: 'Loading audit logs...',
+    auditLogEmpty: 'No audit activity yet.',
+    auditLogLoadError: 'Failed to load audit logs.',
+    auditLogTableTime: 'Time',
+    auditLogTableActor: 'Actor',
+    auditLogTableAction: 'Action',
+    auditLogTableEntity: 'Entity',
+    auditLogTableIp: 'IP',
+    auditLogTableDetails: 'Details',
+    auditLogCountSuffix: 'events',
+    auditLogPaginationLabel: 'Audit log pagination',
+    auditLogPrevText: 'Previous',
+    auditLogNextText: 'Next',
+    auditLogPageLabel: 'Page',
+    auditLogOfText: 'of',
     headerGreetingPrefix: 'Hello',
     headerGuestName: 'Guest',
     headerLanguageLabel: 'Language',
@@ -513,12 +593,52 @@ const translations: Record<Language, AppCopy> = {
     sidebarNavDashboard: 'Tableau de bord',
     sidebarNavPosts: 'Articles',
     sidebarNavUsers: 'Utilisateurs',
+    sidebarNavAudit: 'Journal d\'audit',
     sidebarNavSettings: 'Parametres',
     sidebarLogoutLabel: 'Se deconnecter',
     sidebarLogoutTitle: 'Deconnexion',
     sidebarLogoutMessage: 'Voulez-vous vraiment vous deconnecter ?',
     sidebarLogoutConfirm: 'Se deconnecter',
     sidebarNavAriaLabel: 'Navigation principale',
+    auditLogTitle: 'Journal d\'audit',
+    auditLogSubtitle: 'Suivi des actions admin pour conformite et controle',
+    auditLogSearchLabel: 'Recherche',
+    auditLogSearchPlaceholder: 'Rechercher dans le journal',
+    auditLogActionLabel: 'Action',
+    auditLogActionAll: 'Toutes les actions',
+    auditLogActionLogin: 'Connexion',
+    auditLogActionRegister: 'Inscription',
+    auditLogActionRoleUpdated: 'Role mis a jour',
+    auditLogActionLockUpdated: 'Verrou mis a jour',
+    auditLogActionPasswordReset: 'Mot de passe reinitialise',
+    auditLogActionPostCreated: 'Article cree',
+    auditLogActionPostUpdated: 'Article mis a jour',
+    auditLogActionPostDeleted: 'Article supprime',
+    auditLogEntityLabel: 'Entite',
+    auditLogEntityAll: 'Toutes les entites',
+    auditLogEntityUser: 'Utilisateur',
+    auditLogEntityPost: 'Article',
+    auditLogEntityAuth: 'Auth',
+    auditLogActorLabel: 'Auteur',
+    auditLogActorPlaceholder: 'Email admin ou ID',
+    auditLogFromLabel: 'Du',
+    auditLogToLabel: 'Au',
+    auditLogResetFilters: 'Reinitialiser',
+    auditLogLoading: 'Chargement du journal...',
+    auditLogEmpty: 'Aucune activite pour le moment.',
+    auditLogLoadError: 'Impossible de charger le journal.',
+    auditLogTableTime: 'Heure',
+    auditLogTableActor: 'Auteur',
+    auditLogTableAction: 'Action',
+    auditLogTableEntity: 'Entite',
+    auditLogTableIp: 'IP',
+    auditLogTableDetails: 'Details',
+    auditLogCountSuffix: 'evenements',
+    auditLogPaginationLabel: 'Pagination du journal',
+    auditLogPrevText: 'Precedent',
+    auditLogNextText: 'Suivant',
+    auditLogPageLabel: 'Page',
+    auditLogOfText: 'sur',
     headerGreetingPrefix: 'Bonjour',
     headerGuestName: 'Invite',
     headerLanguageLabel: 'Langue',
@@ -535,7 +655,7 @@ export class LanguageService {
   private language = signal<Language>('en');
 
   readonly languageName = this.language.asReadonly();
-  readonly copy = computed(() => translations[this.language()]);
+  readonly copy = computed<AppCopy>(() => translations[this.language()]);
   readonly locale = computed(() => (this.language() === 'fr' ? 'fr-FR' : 'en-US'));
 
   constructor() {
