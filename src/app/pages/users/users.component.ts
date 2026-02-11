@@ -433,6 +433,25 @@ import { PasswordResetService } from '../../services/password-reset.service';
         font-size: 16px;
       }
 
+      .filter-group input,
+      .filter-group select {
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: linear-gradient(180deg, var(--surface), var(--surface-elev));
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      }
+
+      .filter-group input[type="date"],
+      .filter-group select {
+        appearance: none;
+        background-image: linear-gradient(135deg, transparent 50%, var(--text-subtle) 50%),
+          linear-gradient(225deg, transparent 50%, var(--text-subtle) 50%);
+        background-position: calc(100% - 16px) 50%, calc(100% - 12px) 50%;
+        background-size: 6px 6px, 6px 6px;
+        background-repeat: no-repeat;
+        padding-right: 30px;
+      }
+
       .user-card {
         grid-template-columns: 44px 1fr;
         padding: 14px;
