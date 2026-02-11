@@ -58,6 +58,10 @@ type AppCopy = {
   dashboardCategoryLabel: string;
   dashboardEmptyText: string;
   dashboardLoadError: string;
+  dashboardStatsTotalLabel: string;
+  dashboardStatsEventsLabel: string;
+  dashboardStatsAnnouncementsLabel: string;
+  dashboardStatsNewsLabel: string;
   dashboardUsersTitle: string;
   dashboardUsersCountSuffix: string;
   dashboardUsersLoading: string;
@@ -273,6 +277,10 @@ const translations: Record<Language, AppCopy> = {
     dashboardCategoryLabel: 'Category',
     dashboardEmptyText: 'No posts yet',
     dashboardLoadError: 'Failed to load recent posts.',
+    dashboardStatsTotalLabel: 'Total',
+    dashboardStatsEventsLabel: 'Events',
+    dashboardStatsAnnouncementsLabel: 'Announcements',
+    dashboardStatsNewsLabel: 'News',
     dashboardUsersTitle: 'Users',
     dashboardUsersCountSuffix: 'users',
     dashboardUsersLoading: 'Loading users...',
@@ -486,6 +494,10 @@ const translations: Record<Language, AppCopy> = {
     dashboardCategoryLabel: 'Categorie',
     dashboardEmptyText: 'Aucun article pour le moment',
     dashboardLoadError: 'Impossible de charger les articles recents.',
+    dashboardStatsTotalLabel: 'Total',
+    dashboardStatsEventsLabel: 'Evenements',
+    dashboardStatsAnnouncementsLabel: 'Annonces',
+    dashboardStatsNewsLabel: 'Actualites',
     dashboardUsersTitle: 'Utilisateurs',
     dashboardUsersCountSuffix: 'utilisateurs',
     dashboardUsersLoading: 'Chargement des utilisateurs...',

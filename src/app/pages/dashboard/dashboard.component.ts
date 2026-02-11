@@ -24,6 +24,29 @@ import { ToastService } from '../../services/toast.service';
           </button>
         </div>
 
+        <div class="stats-strip" role="list" aria-label="Post stats">
+          <div class="stat" role="listitem">
+            <span class="stat-icon is-total" aria-hidden="true">T</span>
+            <span class="stat-label">{{ copy().dashboardStatsTotalLabel }}</span>
+            <span class="stat-value">{{ totalPosts() }}</span>
+          </div>
+          <div class="stat" role="listitem">
+            <span class="stat-icon is-events" aria-hidden="true">E</span>
+            <span class="stat-label">{{ copy().dashboardStatsEventsLabel }}</span>
+            <span class="stat-value">{{ eventCount() }}</span>
+          </div>
+          <div class="stat" role="listitem">
+            <span class="stat-icon is-announcements" aria-hidden="true">A</span>
+            <span class="stat-label">{{ copy().dashboardStatsAnnouncementsLabel }}</span>
+            <span class="stat-value">{{ announcementCount() }}</span>
+          </div>
+          <div class="stat" role="listitem">
+            <span class="stat-icon is-news" aria-hidden="true">N</span>
+            <span class="stat-label">{{ copy().dashboardStatsNewsLabel }}</span>
+            <span class="stat-value">{{ newsCount() }}</span>
+          </div>
+        </div>
+
         <div class="recent-posts" role="list" aria-labelledby="recent-posts-title">
           @for (blog of recentPosts(); track blog.id) {
             <a
@@ -106,6 +129,83 @@ import { ToastService } from '../../services/toast.service';
     .btn-link:hover {
       color: var(--primary-strong);
       text-decoration: underline;
+    }
+
+    .stats-strip {
+      display: none;
+      gap: 10px;
+      margin-bottom: 18px;
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--surface-elev), var(--surface));
+      box-shadow: var(--shadow-soft);
+    }
+
+    .stat {
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: color-mix(in srgb, var(--surface) 70%, transparent);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: flex-start;
+    }
+
+    .stat-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      color: var(--text);
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .stat-icon.is-total {
+      background: color-mix(in srgb, var(--primary) 18%, transparent);
+      border-color: color-mix(in srgb, var(--primary) 35%, var(--border));
+      color: var(--primary-strong);
+    }
+
+    .stat-icon.is-events {
+      background: color-mix(in srgb, var(--accent-1) 22%, transparent);
+      border-color: color-mix(in srgb, var(--accent-1) 36%, var(--border));
+      color: color-mix(in srgb, var(--accent-1) 70%, var(--text));
+    }
+
+    .stat-icon.is-announcements {
+      background: color-mix(in srgb, var(--accent-2) 20%, transparent);
+      border-color: color-mix(in srgb, var(--accent-2) 36%, var(--border));
+      color: color-mix(in srgb, var(--accent-2) 70%, var(--text));
+    }
+
+    .stat-icon.is-news {
+      background: color-mix(in srgb, var(--accent-3) 20%, transparent);
+      border-color: color-mix(in srgb, var(--accent-3) 36%, var(--border));
+      color: color-mix(in srgb, var(--accent-3) 70%, var(--text));
+    }
+
+    .stat-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+    }
+
+    .stat-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
     }
 
     .recent-posts {
@@ -205,7 +305,8 @@ import { ToastService } from '../../services/toast.service';
 
       .recent-post-item img {
         width: 100%;
-        height: 180px;
+        height: 200px;
+        border-radius: 12px;
       }
 
       .recent-section {
@@ -220,7 +321,7 @@ import { ToastService } from '../../services/toast.service';
       }
 
       .recent-section {
-        padding: 20px;
+        padding: 18px;
       }
 
 
@@ -234,12 +335,21 @@ import { ToastService } from '../../services/toast.service';
         font-size: 16px;
       }
 
+      .stats-strip {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .recent-post-item {
-        padding: 16px 0;
+        padding: 16px;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        background: linear-gradient(180deg, var(--surface), var(--surface-elev));
+        box-shadow: var(--shadow-card);
       }
 
       .recent-post-item img {
-        height: 160px;
+        height: 180px;
       }
 
       .recent-post-content h3 {
@@ -249,6 +359,15 @@ import { ToastService } from '../../services/toast.service';
       .recent-post-category {
         font-size: 8px;
         padding: 3px 10px;
+      }
+
+      .recent-posts {
+        gap: 14px;
+      }
+
+      .recent-post-item:hover,
+      .recent-post-item:focus {
+        padding-left: 16px;
       }
     }
   `]

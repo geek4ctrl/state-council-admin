@@ -571,8 +571,10 @@ import { ThemeService } from '../../services/theme.service';
         position: relative;
         top: 0;
         left: 0;
-        padding: 20px;
+        padding: 18px 16px 6px;
         text-align: center;
+        display: flex;
+        justify-content: center;
       }
 
       .utility-toggles {
@@ -580,14 +582,29 @@ import { ThemeService } from '../../services/theme.service';
         top: 0;
         right: 0;
         justify-content: center;
-        margin: 0 0 12px;
+        align-items: center;
+        flex-wrap: nowrap;
+        width: fit-content;
+        margin: 6px auto 18px;
+        padding: 6px 8px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: color-mix(in srgb, var(--surface) 88%, transparent);
+        box-shadow: var(--shadow-soft);
       }
 
       .theme-toggle {
         position: relative;
         top: 0;
         right: 0;
-        margin: 0 0 12px;
+        margin: 0;
+        padding: 6px 10px;
+        font-size: 9px;
+      }
+
+      .language-option {
+        padding: 6px 10px;
+        font-size: 9px;
       }
 
       .logo svg {
@@ -601,6 +618,8 @@ import { ThemeService } from '../../services/theme.service';
 
       .login-card {
         max-width: 100%;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-card);
       }
 
       .login-header {
