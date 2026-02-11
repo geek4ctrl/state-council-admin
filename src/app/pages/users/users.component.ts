@@ -20,12 +20,13 @@ import { PasswordResetService } from '../../services/password-reset.service';
           <span class="users-count">{{ filteredUsers().length }} {{ copy().dashboardUsersCountSuffix }}</span>
         </div>
 
-        <div class="filters" role="search" aria-label="User filters">
+        <div class="filters filter-panel" role="search" aria-label="User filters">
           <div class="filter-group">
             <label for="user-search">Search</label>
             <input
               id="user-search"
               type="search"
+              class="filter-control"
               [value]="searchQuery()"
               (input)="onSearchChange($event)"
               placeholder="Search users"
@@ -34,7 +35,7 @@ import { PasswordResetService } from '../../services/password-reset.service';
 
           <div class="filter-group">
             <label for="user-role">Role</label>
-            <select id="user-role" [value]="roleFilter()" (change)="onRoleChange($event)">
+            <select id="user-role" class="filter-control" [value]="roleFilter()" (change)="onRoleChange($event)">
               <option value="">All roles</option>
               <option value="admin">Admin</option>
               <option value="user">User</option>
@@ -43,23 +44,23 @@ import { PasswordResetService } from '../../services/password-reset.service';
 
           <div class="filter-group">
             <label for="user-from">From</label>
-            <input id="user-from" type="date" [value]="dateFrom()" (input)="onDateFromChange($event)" />
+            <input id="user-from" type="date" class="filter-control" [value]="dateFrom()" (input)="onDateFromChange($event)" />
           </div>
 
           <div class="filter-group">
             <label for="user-to">To</label>
-            <input id="user-to" type="date" [value]="dateTo()" (input)="onDateToChange($event)" />
+            <input id="user-to" type="date" class="filter-control" [value]="dateTo()" (input)="onDateToChange($event)" />
           </div>
 
           <button class="btn-secondary btn-reset" type="button" (click)="resetFilters()">Reset</button>
         </div>
 
         @if (!isAdmin()) {
-          <p class="empty-message" role="status">{{ copy().dashboardUsersRestricted }}</p>
+          <p class="empty-message state-message is-restricted" data-icon="i" role="status">{{ copy().dashboardUsersRestricted }}</p>
         } @else if (usersLoading()) {
-          <p class="empty-message" role="status">{{ copy().dashboardUsersLoading }}</p>
+          <p class="empty-message state-message is-loading" data-icon="..." role="status">{{ copy().dashboardUsersLoading }}</p>
         } @else if (usersError()) {
-          <p class="empty-message" role="status">{{ copy().dashboardUsersError }}</p>
+          <p class="empty-message state-message is-error" data-icon="!" role="status">{{ copy().dashboardUsersError }}</p>
         } @else {
           <div class="users-list" role="list" aria-labelledby="users-title">
             @for (user of filteredUsers(); track user.id) {
@@ -130,7 +131,7 @@ import { PasswordResetService } from '../../services/password-reset.service';
                 </div>
               </div>
             } @empty {
-              <p class="empty-message" role="status">{{ copy().dashboardUsersEmpty }}</p>
+              <p class="empty-message state-message is-empty" data-icon="-" role="status">{{ copy().dashboardUsersEmpty }}</p>
             }
           </div>
         }
@@ -181,66 +182,9 @@ import { PasswordResetService } from '../../services/password-reset.service';
       letter-spacing: 0.4px;
     }
 
-    .empty-message {
-      text-align: center;
-      color: var(--text-subtle);
-      padding: 64px 20px;
-      font-size: 14px;
-    }
-
     .users-list {
       display: grid;
       gap: 16px;
-    }
-
-    .filters {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
-      padding: 16px;
-      background: var(--surface);
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .filter-group label {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      color: var(--text-subtle);
-    }
-
-    .filter-group input,
-    .filter-group select {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-size: 12px;
-      background: var(--surface);
-      color: var(--text);
-      transition: border-color 0.2s;
-    }
-
-    .filter-group input:focus,
-    .filter-group select:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: var(--ring);
-    }
-
-    .btn-reset {
-      align-self: end;
-      justify-self: end;
-      height: 36px;
     }
 
     .btn-secondary {
@@ -431,25 +375,6 @@ import { PasswordResetService } from '../../services/password-reset.service';
 
       .section-header h2 {
         font-size: 16px;
-      }
-
-      .filter-group input,
-      .filter-group select {
-        padding: 10px 12px;
-        border-radius: 10px;
-        background: linear-gradient(180deg, var(--surface), var(--surface-elev));
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
-      }
-
-      .filter-group input[type="date"],
-      .filter-group select {
-        appearance: none;
-        background-image: linear-gradient(135deg, transparent 50%, var(--text-subtle) 50%),
-          linear-gradient(225deg, transparent 50%, var(--text-subtle) 50%);
-        background-position: calc(100% - 16px) 50%, calc(100% - 12px) 50%;
-        background-size: 6px 6px, 6px 6px;
-        background-repeat: no-repeat;
-        padding-right: 30px;
       }
 
       .user-card {
