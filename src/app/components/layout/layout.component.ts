@@ -32,41 +32,8 @@ import { CommonModule } from '@angular/common';
       display: flex;
       min-height: 100vh;
       background: var(--bg);
-      background-image:
-        radial-gradient(circle at 10% 15%, rgba(124, 109, 243, 0.2), transparent 40%),
-        radial-gradient(circle at 85% 10%, rgba(34, 211, 238, 0.16), transparent 45%),
-        radial-gradient(circle at 20% 80%, rgba(52, 211, 153, 0.12), transparent 50%),
-        linear-gradient(180deg, rgba(15, 23, 42, 0.25) 0%, rgba(15, 23, 42, 0) 50%);
       position: relative;
       overflow: hidden;
-    }
-
-    .layout::before,
-    .layout::after {
-      content: '';
-      position: fixed;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
-      opacity: 0.08;
-      filter: blur(4px);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .layout::before {
-      width: 720px;
-      height: 720px;
-      top: -400px;
-      right: -240px;
-      transform: rotate(-20deg);
-    }
-
-    .layout::after {
-      width: 520px;
-      height: 520px;
-      bottom: -300px;
-      left: 100px;
-      background: linear-gradient(135deg, var(--accent-2) 0%, var(--accent-1) 100%);
     }
 
     .overlay {
@@ -110,16 +77,6 @@ import { CommonModule } from '@angular/common';
     @media (max-width: 768px) {
       .content {
         padding: 20px 16px;
-      }
-
-      .layout::before {
-        width: 600px;
-        height: 600px;
-      }
-
-      .layout::after {
-        width: 400px;
-        height: 400px;
       }
     }
 

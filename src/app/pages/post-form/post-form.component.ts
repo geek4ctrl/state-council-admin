@@ -25,18 +25,34 @@ import { BlogCategory } from '../../models/blog.model';
       <div class="form-container">
         <form (ngSubmit)="onSubmit()">
           <div class="form-section">
-            <div class="form-group">
-              <label for="category">{{ copy().postFormCategoryLabel }}</label>
-              <select
-                id="category"
-                [(ngModel)]="formData.category"
-                name="category"
-                required
-              >
-                <option value="Event">{{ copy().postFormCategoryEvent }}</option>
-                <option value="Announcement">{{ copy().postFormCategoryAnnouncement }}</option>
-                <option value="News">{{ copy().postFormCategoryNews }}</option>
-              </select>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="category">{{ copy().postFormCategoryLabel }}</label>
+                <select
+                  id="category"
+                  [(ngModel)]="formData.category"
+                  name="category"
+                  required
+                >
+                  <option value="Event">{{ copy().postFormCategoryEvent }}</option>
+                  <option value="Announcement">{{ copy().postFormCategoryAnnouncement }}</option>
+                  <option value="News">{{ copy().postFormCategoryNews }}</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="status">Status</label>
+                <select
+                  id="status"
+                  [(ngModel)]="formData.status"
+                  name="status"
+                  required
+                >
+                  <option value="draft">Draft</option>
+                  <option value="review">Review</option>
+                  <option value="published">Published</option>
+                </select>
+              </div>
             </div>
 
             <div class="form-group full-width">
@@ -413,7 +429,8 @@ export class PostFormComponent implements OnInit {
     location: '',
     externalLink: '',
     showOnHomePage: false,
-    showOnRegistration: false
+    showOnRegistration: false,
+    status: 'draft' as 'draft' | 'review' | 'published'
   };
 
   private editId: string | null = null;
@@ -447,7 +464,8 @@ export class PostFormComponent implements OnInit {
           location: blog.location || '',
           externalLink: blog.externalLink || '',
           showOnHomePage: blog.showOnHomePage,
-          showOnRegistration: blog.showOnRegistration
+          showOnRegistration: blog.showOnRegistration,
+          status: blog.status
         };
         this.dateString = new Date(blog.date).toISOString().split('T')[0];
         return;
