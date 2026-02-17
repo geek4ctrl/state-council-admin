@@ -229,30 +229,7 @@ import { ThemeService } from '../../services/theme.service';
       overflow: hidden;
     }
 
-    .login-page::before,
-    .login-page::after {
-      content: '';
-      position: absolute;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
-      opacity: 0.1;
-    }
 
-    .login-page::before {
-      width: 800px;
-      height: 800px;
-      top: -400px;
-      left: -200px;
-      transform: rotate(-20deg);
-    }
-
-    .login-page::after {
-      width: 600px;
-      height: 600px;
-      bottom: -300px;
-      right: -150px;
-      background: linear-gradient(135deg, var(--accent-2) 0%, var(--accent-1) 100%);
-    }
 
     .logo {
       position: absolute;

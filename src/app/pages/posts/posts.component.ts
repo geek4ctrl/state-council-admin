@@ -89,6 +89,50 @@ import { ConfirmationService } from '../../services/confirmation.service';
               </p>
               <p class="post-excerpt">{{ blog.excerpt }}</p>
 
+              <div class="status-selector" [attr.aria-label]="'Post status: ' + blog.status">
+                <button
+                  class="post-status-badge"
+                  [class]="'status-' + blog.status"
+                  (click)="toggleStatusDropdown(blog.id)"
+                  type="button"
+                  title="Click to change status"
+                >
+                  {{ blog.status | uppercase }}
+                  <span class="dropdown-arrow" aria-hidden="true">▼</span>
+                </button>
+                @if (statusDropdownOpen() === blog.id) {
+                  <div class="status-dropdown" role="menu">
+                    <button
+                      class="status-option"
+                      [class.is-active]="blog.status === 'draft'"
+                      (click)="changePostStatus(blog.id, 'draft')"
+                      type="button"
+                      role="menuitem"
+                    >
+                      Draft
+                    </button>
+                    <button
+                      class="status-option"
+                      [class.is-active]="blog.status === 'review'"
+                      (click)="changePostStatus(blog.id, 'review')"
+                      type="button"
+                      role="menuitem"
+                    >
+                      Review
+                    </button>
+                    <button
+                      class="status-option"
+                      [class.is-active]="blog.status === 'published'"
+                      (click)="changePostStatus(blog.id, 'published')"
+                      type="button"
+                      role="menuitem"
+                    >
+                      Published
+                    </button>
+                  </div>
+                }
+              </div>
+
               <div class="post-meta" [attr.aria-label]="copy().postsMetaLabel">
                 <span class="post-time" [attr.aria-label]="copy().postsTimeLabel">
                   <span class="ui-icon is-clock" aria-hidden="true"></span>
@@ -111,6 +155,17 @@ import { ConfirmationService } from '../../services/confirmation.service';
                   {{ copy().postsViewDetailsText }}
                 </a>
                 <div class="action-buttons" role="group" [attr.aria-label]="copy().postsActionsLabel">
+                  @if (blog.status !== 'published') {
+                    <button
+                      class="btn-icon btn-success"
+                      (click)="onPublish(blog.id)"
+                      [attr.aria-label]="'Publish ' + blog.title"
+                      type="button"
+                      title="Publish post"
+                    >
+                      <span class="ui-icon is-check" aria-hidden="true"></span>
+                    </button>
+                  }
                   <a
                     class="btn-icon"
                     [routerLink]="['/posts/edit', blog.id]"
@@ -276,6 +331,110 @@ import { ConfirmationService } from '../../services/confirmation.service';
       overflow: hidden;
     }
 
+    .status-selector {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .post-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      background: none;
+    }
+
+    .post-status-badge:hover {
+      transform: translateY(-1px);
+      border-color: currentColor;
+      opacity: 0.9;
+    }
+
+    .post-status-badge.status-draft {
+      background: color-mix(in srgb, #f59e0b 15%, var(--surface));
+      color: #b45309;
+    }
+
+    .post-status-badge.status-review {
+      background: color-mix(in srgb, #6366f1 15%, var(--surface));
+      color: #4338ca;
+    }
+
+    .post-status-badge.status-published {
+      background: color-mix(in srgb, #10b981 15%, var(--surface));
+      color: #065f46;
+    }
+
+    .dropdown-arrow {
+      font-size: 6px;
+      transition: transform 0.2s;
+    }
+
+    .post-status-badge:hover .dropdown-arrow {
+      transform: translateY(1px);
+    }
+
+    .status-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: var(--shadow-strong);
+      min-width: 120px;
+      z-index: 100;
+      margin-top: 4px;
+      overflow: hidden;
+    }
+
+    .status-option {
+      display: block;
+      width: 100%;
+      padding: 10px 12px;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .status-option:hover {
+      background: var(--surface-alt);
+      color: var(--primary);
+    }
+
+    .status-option.is-active {
+      background: color-mix(in srgb, var(--primary) 10%, var(--surface));
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .post-excerpt {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin: 0 0 16px 0;
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
     .post-meta {
       display: flex;
       flex-direction: column;
@@ -351,26 +510,42 @@ import { ConfirmationService } from '../../services/confirmation.service';
 
     .btn-icon {
       background: none;
-      border: none;
-      font-size: 16px;
-      cursor: pointer;
-      padding: 8px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      width: 36px;
+      height: 36px;
       border-radius: 6px;
-      transition: all 0.2s;
-      text-decoration: none;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+      padding: 0;
     }
 
     .btn-icon:hover {
-      background: color-mix(in srgb, var(--primary) 12%, var(--surface));
-      transform: scale(1.1);
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-2px);
     }
 
-    .btn-danger:hover {
-      background: color-mix(in srgb, var(--danger) 12%, var(--surface));
+    .btn-icon.btn-danger {
       color: var(--danger);
+      border-color: var(--danger);
+    }
+
+    .btn-icon.btn-danger:hover {
+      background: color-mix(in srgb, var(--danger) 10%, var(--surface));
+    }
+
+    .btn-icon.btn-success {
+      color: #10b981;
+      border-color: #10b981;
+    }
+
+    .btn-icon.btn-success:hover {
+      background: color-mix(in srgb, #10b981 10%, var(--surface));
     }
 
     .icon {
@@ -576,6 +751,7 @@ export class PostsComponent implements OnInit {
   protected dateTo = signal('');
   protected currentPage = signal(1);
   protected itemsPerPage = 6;
+  protected statusDropdownOpen = signal<string>('');
 
   protected authorOptions = computed(() => {
     const names = this.blogs()
@@ -720,6 +896,85 @@ export class PostsComponent implements OnInit {
 
   protected onEdit(id: string): void {
     this.router.navigate(['/posts/edit', id]);
+  }
+
+  protected toggleStatusDropdown(postId: string): void {
+    if (this.statusDropdownOpen() === postId) {
+      this.statusDropdownOpen.set('');
+    } else {
+      this.statusDropdownOpen.set(postId);
+    }
+  }
+
+  protected async changePostStatus(id: string, newStatus: 'draft' | 'review' | 'published'): Promise<void> {
+    const blog = this.blogs().find(b => b.id === id);
+    if (!blog) return;
+
+    this.statusDropdownOpen.set('');
+
+    if (blog.status === newStatus) {
+      return;
+    }
+
+    try {
+      if (newStatus === 'published') {
+        await this.blogService.publishBlog(id);
+        this.toastService.success('Post published successfully');
+      } else if (newStatus === 'review') {
+        await this.blogService.submitForReview(id);
+        this.toastService.success('Post submitted for review');
+      } else {
+        // Draft - just update status
+        await this.blogService.updateBlog(id, { status: 'draft' } as any);
+        this.toastService.success('Post status changed to draft');
+      }
+    } catch (error) {
+      this.toastService.error('Failed to change post status');
+    }
+  }
+
+  protected async onPublish(id: string): Promise<void> {
+    const blog = this.blogs().find(b => b.id === id);
+    if (!blog) return;
+
+    const confirmed = await this.confirmationService.confirm({
+      title: 'Publish Post',
+      message: `Are you sure you want to publish "${blog.title}"? Once published, it will be visible to all users.`,
+      confirmText: 'Publish',
+      cancelText: this.copy().commonCancel,
+      confirmButtonClass: 'primary'
+    });
+
+    if (confirmed) {
+      try {
+        await this.blogService.publishBlog(id);
+        this.toastService.success('Post published successfully');
+      } catch (error) {
+        this.toastService.error('Failed to publish post');
+      }
+    }
+  }
+
+  protected async onSubmitForReview(id: string): Promise<void> {
+    const blog = this.blogs().find(b => b.id === id);
+    if (!blog) return;
+
+    const confirmed = await this.confirmationService.confirm({
+      title: 'Submit for Review',
+      message: `Submit "${blog.title}" for review? An admin will need to approve it before it's published.`,
+      confirmText: 'Submit',
+      cancelText: this.copy().commonCancel,
+      confirmButtonClass: 'primary'
+    });
+
+    if (confirmed) {
+      try {
+        await this.blogService.submitForReview(id);
+        this.toastService.success('Post submitted for review');
+      } catch (error) {
+        this.toastService.error('Failed to submit post for review');
+      }
+    }
   }
 
   protected async onDelete(id: string): Promise<void> {
