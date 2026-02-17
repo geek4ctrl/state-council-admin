@@ -157,6 +157,42 @@ export class BlogService {
     return true;
   }
 
+  async publishBlog(id: string): Promise<Blog> {
+    const response = await firstValueFrom(
+      this.http.put<ApiPost | ApiPostResponse>(
+        `${this.apiBase}/api/posts/${id}`,
+        { status: 'published' },
+        { headers: this.getAuthHeaders() }
+      )
+    );
+    const updated = this.extractPost(response);
+    if (!updated) {
+      throw new Error('Missing post payload from publish response.');
+    }
+
+    const mapped = this.mapApiPost(updated);
+    this.blogs.update(blogs => blogs.map(blog => (blog.id === mapped.id ? mapped : blog)));
+    return mapped;
+  }
+
+  async submitForReview(id: string): Promise<Blog> {
+    const response = await firstValueFrom(
+      this.http.put<ApiPost | ApiPostResponse>(
+        `${this.apiBase}/api/posts/${id}`,
+        { status: 'review' },
+        { headers: this.getAuthHeaders() }
+      )
+    );
+    const updated = this.extractPost(response);
+    if (!updated) {
+      throw new Error('Missing post payload from submit response.');
+    }
+
+    const mapped = this.mapApiPost(updated);
+    this.blogs.update(blogs => blogs.map(blog => (blog.id === mapped.id ? mapped : blog)));
+    return mapped;
+  }
+
   private mapApiPost(post: ApiPost): Blog {
     const title = post.title ?? 'Untitled Post';
     const content = post.content ?? '';
