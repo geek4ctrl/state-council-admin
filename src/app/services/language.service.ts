@@ -75,6 +75,18 @@ type AppCopy = {
   postsTitle: string;
   postsNewButton: string;
   postsCreateAriaLabel: string;
+  postsFilterSearch: string;
+  postsFilterSearchPlaceholder: string;
+  postsFilterStatus: string;
+  postsFilterAllStatuses: string;
+  postsFilterDraft: string;
+  postsFilterReview: string;
+  postsFilterPublished: string;
+  postsFilterAuthor: string;
+  postsFilterAllAuthors: string;
+  postsFilterFrom: string;
+  postsFilterTo: string;
+  postsFilterReset: string;
   postsCoverAltPrefix: string;
   postsCategoryLabel: string;
   postsMetaLabel: string;
@@ -294,6 +306,18 @@ const translations: Record<Language, AppCopy> = {
     postsTitle: 'All Posts',
     postsNewButton: 'New Post',
     postsCreateAriaLabel: 'Create a new blog post',
+    postsFilterSearch: 'Search',
+    postsFilterSearchPlaceholder: 'Search posts',
+    postsFilterStatus: 'Status',
+    postsFilterAllStatuses: 'All statuses',
+    postsFilterDraft: 'Draft',
+    postsFilterReview: 'Review',
+    postsFilterPublished: 'Published',
+    postsFilterAuthor: 'Author',
+    postsFilterAllAuthors: 'All authors',
+    postsFilterFrom: 'From',
+    postsFilterTo: 'To',
+    postsFilterReset: 'Reset',
     postsCoverAltPrefix: 'Cover image for',
     postsCategoryLabel: 'Category',
     postsMetaLabel: 'Post metadata',
@@ -510,6 +534,18 @@ const translations: Record<Language, AppCopy> = {
     dashboardUsersJoinedLabel: 'Inscription',
     postsTitle: 'Tous les articles',
     postsNewButton: 'Nouvel article',
+    postsFilterSearch: 'Recherche',
+    postsFilterSearchPlaceholder: 'Rechercher des articles',
+    postsFilterStatus: 'Statut',
+    postsFilterAllStatuses: 'Tous les statuts',
+    postsFilterDraft: 'Brouillon',
+    postsFilterReview: 'En révision',
+    postsFilterPublished: 'Publié',
+    postsFilterAuthor: 'Auteur',
+    postsFilterAllAuthors: 'Tous les auteurs',
+    postsFilterFrom: 'Du',
+    postsFilterTo: 'Au',
+    postsFilterReset: 'Réinitialiser',
     postsCreateAriaLabel: 'Creer un nouvel article',
     postsCoverAltPrefix: 'Image de couverture pour',
     postsCategoryLabel: 'Categorie',

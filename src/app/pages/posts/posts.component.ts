@@ -24,31 +24,31 @@ import { ConfirmationService } from '../../services/confirmation.service';
 
       <div class="filters filter-panel" role="search" aria-label="Post filters">
         <div class="filter-group">
-          <label for="post-search">Search</label>
+          <label for="post-search">{{ copy().postsFilterSearch }}</label>
           <input
             id="post-search"
             type="search"
             class="filter-control"
             [value]="searchQuery()"
             (input)="onSearchChange($event)"
-            placeholder="Search posts"
+            [placeholder]="copy().postsFilterSearchPlaceholder"
           />
         </div>
 
         <div class="filter-group">
-          <label for="post-status">Status</label>
+          <label for="post-status">{{ copy().postsFilterStatus }}</label>
           <select id="post-status" class="filter-control" [value]="statusFilter()" (change)="onStatusChange($event)">
-            <option value="">All statuses</option>
-            <option value="draft">Draft</option>
-            <option value="review">Review</option>
-            <option value="published">Published</option>
+            <option value="">{{ copy().postsFilterAllStatuses }}</option>
+            <option value="draft">{{ copy().postsFilterDraft }}</option>
+            <option value="review">{{ copy().postsFilterReview }}</option>
+            <option value="published">{{ copy().postsFilterPublished }}</option>
           </select>
         </div>
 
         <div class="filter-group">
-          <label for="post-author">Author</label>
+          <label for="post-author">{{ copy().postsFilterAuthor }}</label>
           <select id="post-author" class="filter-control" [value]="authorFilter()" (change)="onAuthorChange($event)">
-            <option value="">All authors</option>
+            <option value="">{{ copy().postsFilterAllAuthors }}</option>
             @for (author of authorOptions(); track author) {
               <option [value]="author">{{ author }}</option>
             }
@@ -56,16 +56,16 @@ import { ConfirmationService } from '../../services/confirmation.service';
         </div>
 
         <div class="filter-group">
-          <label for="post-from">From</label>
+          <label for="post-from">{{ copy().postsFilterFrom }}</label>
           <input id="post-from" type="date" class="filter-control" [value]="dateFrom()" (input)="onDateFromChange($event)" />
         </div>
 
         <div class="filter-group">
-          <label for="post-to">To</label>
+          <label for="post-to">{{ copy().postsFilterTo }}</label>
           <input id="post-to" type="date" class="filter-control" [value]="dateTo()" (input)="onDateToChange($event)" />
         </div>
 
-        <button class="btn-secondary btn-reset" type="button" (click)="resetFilters()">Reset</button>
+        <button class="btn-secondary btn-reset" type="button" (click)="resetFilters()">{{ copy().postsFilterReset }}</button>
       </div>
 
       <div class="posts-grid" role="list" aria-labelledby="page-title">
