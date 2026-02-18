@@ -106,16 +106,21 @@ import { BlogStatus } from '../../models/blog.model';
               />
               <div class="recent-post-content">
                 <div class="recent-post-meta" [attr.aria-label]="copy().postsMetaLabel">
-                  <span class="meta-pill is-category" [attr.aria-label]="copy().dashboardCategoryLabel">{{ blog.category }}</span>
-                  <span
-                    class="meta-pill is-status"
-                    [class.is-draft]="blog.status === 'draft'"
-                    [class.is-review]="blog.status === 'review'"
-                    [class.is-published]="blog.status === 'published'"
-                    [attr.aria-label]="copy().postsFilterStatus"
-                  >
-                    {{ statusLabel(blog.status) }}
-                  </span>
+                  <div class="meta-top">
+                    <span class="meta-pill is-category" [attr.aria-label]="copy().dashboardCategoryLabel">{{ blog.category }}</span>
+                    <span
+                      class="meta-pill is-status"
+                      [class.is-draft]="blog.status === 'draft'"
+                      [class.is-review]="blog.status === 'review'"
+                      [class.is-published]="blog.status === 'published'"
+                      [attr.aria-label]="copy().postsFilterStatus"
+                    >
+                      {{ statusLabel(blog.status) }}
+                    </span>
+                  </div>
+                </div>
+                <h3>{{ blog.title }}</h3>
+                <div class="meta-bottom">
                   <span class="meta-item">
                     <span class="meta-label">{{ copy().postsFilterAuthor }}</span>
                     <span class="meta-value">{{ blog.authorName || copy().commonNotAvailable }}</span>
@@ -125,7 +130,6 @@ import { BlogStatus } from '../../models/blog.model';
                     <time [attr.datetime]="blog.date.toISOString()">{{ formatDate(blog.date) }}</time>
                   </span>
                 </div>
-                <h3>{{ blog.title }}</h3>
               </div>
             </a>
           } @empty {
@@ -396,10 +400,21 @@ import { BlogStatus } from '../../models/blog.model';
 
     .recent-post-meta {
       display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .meta-top,
+    .meta-bottom {
+      display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: 8px 12px;
-      margin-bottom: 8px;
+    }
+
+    .meta-bottom {
+      align-items: flex-end;
     }
 
     .meta-pill {
@@ -413,6 +428,7 @@ import { BlogStatus } from '../../models/blog.model';
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      align-self: flex-start;
     }
 
     .meta-pill.is-status {
@@ -437,7 +453,7 @@ import { BlogStatus } from '../../models/blog.model';
 
     .meta-item {
       display: inline-flex;
-      align-items: center;
+      align-items: flex-end;
       gap: 6px;
       font-size: 11px;
       color: var(--text-subtle);
