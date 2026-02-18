@@ -1464,6 +1464,8 @@ a {
 
   .posts-page .action-menu {
     opacity: 1;
+    width: 100%;
+    justify-content: flex-end;
   }
 
   .posts-page .btn-icon:hover {

@@ -20,39 +20,39 @@ import { PasswordResetService } from '../../services/password-reset.service';
           <span class="users-count">{{ filteredUsers().length }} {{ copy().dashboardUsersCountSuffix }}</span>
         </div>
 
-        <div class="filters filter-panel" role="search" aria-label="User filters">
+        <div class="filters filter-panel" role="search" [attr.aria-label]="copy().usersFiltersAria">
           <div class="filter-group">
-            <label for="user-search">Search</label>
+            <label for="user-search">{{ copy().usersFilterSearch }}</label>
             <input
               id="user-search"
               type="search"
               class="filter-control"
               [value]="searchQuery()"
               (input)="onSearchChange($event)"
-              placeholder="Search users"
+              [placeholder]="copy().usersFilterSearchPlaceholder"
             />
           </div>
 
           <div class="filter-group">
-            <label for="user-role">Role</label>
+            <label for="user-role">{{ copy().usersFilterRole }}</label>
             <select id="user-role" class="filter-control" [value]="roleFilter()" (change)="onRoleChange($event)">
-              <option value="">All roles</option>
-              <option value="admin">Admin</option>
-              <option value="user">User</option>
+              <option value="">{{ copy().usersFilterAllRoles }}</option>
+              <option value="admin">{{ copy().usersRoleAdmin }}</option>
+              <option value="user">{{ copy().usersRoleUser }}</option>
             </select>
           </div>
 
           <div class="filter-group">
-            <label for="user-from">From</label>
+            <label for="user-from">{{ copy().usersFilterFrom }}</label>
             <input id="user-from" type="date" class="filter-control" [value]="dateFrom()" (input)="onDateFromChange($event)" />
           </div>
 
           <div class="filter-group">
-            <label for="user-to">To</label>
+            <label for="user-to">{{ copy().usersFilterTo }}</label>
             <input id="user-to" type="date" class="filter-control" [value]="dateTo()" (input)="onDateToChange($event)" />
           </div>
 
-          <button class="btn-secondary btn-reset" type="button" (click)="resetFilters()">Reset</button>
+          <button class="btn-secondary btn-reset" type="button" (click)="resetFilters()">{{ copy().usersFilterReset }}</button>
         </div>
 
         @if (!isAdmin()) {
@@ -75,26 +75,26 @@ import { PasswordResetService } from '../../services/password-reset.service';
                 <div class="user-meta">
                   <div class="user-name">{{ user.name }}</div>
                   <div class="user-email">{{ user.email }}</div>
-                  <div class="user-chips" role="group" aria-label="User status">
+                  <div class="user-chips" role="group" [attr.aria-label]="copy().usersStatusLabel">
                     <span
                       class="chip"
                       [class.role-admin]="user.role === 'admin'"
                       [class.role-user]="user.role !== 'admin'"
                     >
-                      {{ user.role === 'admin' ? 'Admin' : 'User' }}
+                      {{ user.role === 'admin' ? copy().usersRoleAdmin : copy().usersRoleUser }}
                     </span>
                     <span
                       class="chip"
                       [class.is-locked]="user.locked"
                       [class.is-active]="!user.locked"
                     >
-                      {{ user.locked ? 'Locked' : 'Active' }}
+                      {{ user.locked ? copy().usersStatusLocked : copy().usersStatusActive }}
                     </span>
                   </div>
                 </div>
                 <div class="user-info">
                   <span class="user-label">{{ copy().dashboardUsersRoleLabel }}</span>
-                  <span class="user-value">{{ user.role }}</span>
+                  <span class="user-value">{{ user.role === 'admin' ? copy().usersRoleAdmin : copy().usersRoleUser }}</span>
                 </div>
                 <div class="user-info">
                   <span class="user-label">{{ copy().dashboardUsersJoinedLabel }}</span>
@@ -104,14 +104,14 @@ import { PasswordResetService } from '../../services/password-reset.service';
                     </time>
                   </span>
                 </div>
-                <div class="user-actions" role="group" aria-label="User actions">
+                <div class="user-actions" role="group" [attr.aria-label]="copy().usersActionsLabel">
                   <button
                     class="btn-action"
                     type="button"
                     (click)="onToggleRole(user)"
                     [disabled]="isSelf(user)"
                   >
-                    {{ user.role === 'admin' ? 'Make User' : 'Make Admin' }}
+                    {{ user.role === 'admin' ? copy().usersMakeUser : copy().usersMakeAdmin }}
                   </button>
                   <button
                     class="btn-action"
@@ -119,14 +119,14 @@ import { PasswordResetService } from '../../services/password-reset.service';
                     (click)="onToggleLock(user)"
                     [disabled]="isSelf(user)"
                   >
-                    {{ user.locked ? 'Unlock' : 'Lock' }}
+                    {{ user.locked ? copy().usersUnlock : copy().usersLock }}
                   </button>
                   <button
                     class="btn-action"
                     type="button"
                     (click)="onResetPassword(user)"
                   >
-                    Reset Password
+                    {{ copy().usersResetPassword }}
                   </button>
                 </div>
               </div>
@@ -206,7 +206,7 @@ import { PasswordResetService } from '../../services/password-reset.service';
 
     .user-card {
       display: grid;
-      grid-template-columns: 48px minmax(0, 1fr) minmax(120px, auto) minmax(140px, auto) minmax(180px, auto);
+      grid-template-columns: 48px minmax(0, 1fr) 120px 140px minmax(260px, 1fr);
       align-items: center;
       gap: 16px;
       padding: 16px;
@@ -297,6 +297,8 @@ import { PasswordResetService } from '../../services/password-reset.service';
       display: flex;
       flex-direction: column;
       gap: 4px;
+      min-width: 120px;
+      text-align: left;
     }
 
     .user-label {
@@ -314,10 +316,13 @@ import { PasswordResetService } from '../../services/password-reset.service';
     }
 
     .user-actions {
-      display: flex;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
       gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
+      align-items: center;
+      justify-items: stretch;
+      justify-self: end;
+      width: 100%;
     }
 
     .btn-action {
@@ -330,6 +335,12 @@ import { PasswordResetService } from '../../services/password-reset.service';
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
+      min-height: 32px;
+      width: 100%;
+      text-align: center;
+      white-space: normal;
+      line-height: 1.2;
+      word-break: break-word;
     }
 
     .btn-action:hover:not(:disabled) {
