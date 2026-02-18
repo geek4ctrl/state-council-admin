@@ -50,6 +50,7 @@ type AppCopy = {
   registerErrorMessage: string;
   registerErrorToast: string;
   dashboardTitle: string;
+  dashboardSubtitle: string;
   dashboardRecentPosts: string;
   dashboardViewAllText: string;
   dashboardViewAllAriaLabel: string;
@@ -115,6 +116,20 @@ type AppCopy = {
   commonCancel: string;
   postsDeleteSuccess: string;
   postsDeleteError: string;
+  postsRemoveFilterLabel: string;
+  postsImageFallbackText: string;
+  postsPublishTitle: string;
+  postsPublishMessage: string;
+  postsPublishConfirm: string;
+  postsSubmitReviewTitle: string;
+  postsSubmitReviewMessage: string;
+  postsSubmitReviewConfirm: string;
+  postsPublishSuccess: string;
+  postsPublishError: string;
+  postsSubmitReviewSuccess: string;
+  postsSubmitReviewError: string;
+  postsDraftSuccess: string;
+  postsStatusChangeError: string;
   postDetailBack: string;
   postDetailEdit: string;
   postDetailDelete: string;
@@ -129,6 +144,12 @@ type AppCopy = {
   postFormBack: string;
   postFormEditTitle: string;
   postFormNewTitle: string;
+  postFormSubtitle: string;
+  postFormStatusLabel: string;
+  postFormStatusHint: string;
+  postFormSectionContent: string;
+  postFormSectionPublish: string;
+  postFormSectionVisibility: string;
   postFormCategoryLabel: string;
   postFormCategoryEvent: string;
   postFormCategoryAnnouncement: string;
@@ -138,6 +159,8 @@ type AppCopy = {
   postFormImageUrlLabel: string;
   postFormImagePlaceholder: string;
   postFormImagePreviewAlt: string;
+  postFormImageHelp: string;
+  postFormImageInvalid: string;
   postFormExcerptLabel: string;
   postFormExcerptPlaceholder: string;
   postFormContentLabel: string;
@@ -149,9 +172,11 @@ type AppCopy = {
   postFormLocationPlaceholder: string;
   postFormExternalLinkLabel: string;
   postFormExternalLinkPlaceholder: string;
+  postFormExternalLinkHelp: string;
   postFormShowHome: string;
   postFormShowRegistration: string;
   postFormCancel: string;
+  postFormSaveDraft: string;
   postFormUpdate: string;
   postFormPublish: string;
   postFormNotFound: string;
@@ -160,6 +185,14 @@ type AppCopy = {
   postFormUpdateSuccess: string;
   postFormCreateSuccess: string;
   postFormSaveError: string;
+  postFormPreviewTitle: string;
+  postFormPreviewSubtitle: string;
+  postFormPreviewButton: string;
+  postFormPreviewClose: string;
+  postFormPreviewTitlePlaceholder: string;
+  postFormPreviewExcerptPlaceholder: string;
+  postFormPreviewContentPlaceholder: string;
+  postFormPreviewImageFallback: string;
   commonNotAvailable: string;
   settingsTitle: string;
   settingsProfileTitle: string;
@@ -229,6 +262,7 @@ type AppCopy = {
   auditLogOfText: string;
   headerGreetingPrefix: string;
   headerGuestName: string;
+  headerThemeLabel: string;
   headerLanguageLabel: string;
   headerMenuToggleLabel: string;
 };
@@ -281,6 +315,7 @@ const translations: Record<Language, AppCopy> = {
     registerErrorMessage: 'Unable to create account. Please try again.',
     registerErrorToast: 'Registration failed. Please try again.',
     dashboardTitle: 'Dashboard',
+    dashboardSubtitle: 'Recent articles',
     dashboardRecentPosts: 'All Posts',
     dashboardViewAllText: 'View All →',
     dashboardViewAllAriaLabel: 'View all blog posts',
@@ -346,6 +381,20 @@ const translations: Record<Language, AppCopy> = {
     commonCancel: 'Cancel',
     postsDeleteSuccess: 'Post deleted successfully',
     postsDeleteError: 'Failed to delete post',
+    postsRemoveFilterLabel: 'Remove filter:',
+    postsImageFallbackText: 'Image not available',
+    postsPublishTitle: 'Publish post',
+    postsPublishMessage: 'Are you sure you want to publish "{title}"? Once published, it will be visible to all users.',
+    postsPublishConfirm: 'Publish',
+    postsSubmitReviewTitle: 'Submit for review',
+    postsSubmitReviewMessage: 'Submit "{title}" for review? An admin will need to approve it before it\'s published.',
+    postsSubmitReviewConfirm: 'Submit',
+    postsPublishSuccess: 'Post published successfully',
+    postsPublishError: 'Failed to publish post',
+    postsSubmitReviewSuccess: 'Post submitted for review',
+    postsSubmitReviewError: 'Failed to submit post for review',
+    postsDraftSuccess: 'Post status changed to draft',
+    postsStatusChangeError: 'Failed to change post status',
     postDetailBack: '« Back to Posts',
     postDetailEdit: 'Edit Post',
     postDetailDelete: 'Delete',
@@ -360,6 +409,12 @@ const translations: Record<Language, AppCopy> = {
     postFormBack: '« Back',
     postFormEditTitle: 'Edit Post',
     postFormNewTitle: 'New Post',
+    postFormSubtitle: 'Provide the article details',
+    postFormStatusLabel: 'Status',
+    postFormStatusHint: 'Choose how this post will appear in the public feed.',
+    postFormSectionContent: 'Content',
+    postFormSectionPublish: 'Publishing',
+    postFormSectionVisibility: 'Visibility',
     postFormCategoryLabel: 'Category',
     postFormCategoryEvent: 'Event',
     postFormCategoryAnnouncement: 'Announcement',
@@ -369,6 +424,8 @@ const translations: Record<Language, AppCopy> = {
     postFormImageUrlLabel: 'Image URL',
     postFormImagePlaceholder: 'https://example.com/image.jpg',
     postFormImagePreviewAlt: 'Preview',
+    postFormImageHelp: 'Use a direct image URL (jpg, png, or webp).',
+    postFormImageInvalid: 'Please use a direct image URL ending with jpg, png, webp, or gif.',
     postFormExcerptLabel: 'Excerpt',
     postFormExcerptPlaceholder: 'Brief description...',
     postFormContentLabel: 'Content',
@@ -380,9 +437,11 @@ const translations: Record<Language, AppCopy> = {
     postFormLocationPlaceholder: 'Event location',
     postFormExternalLinkLabel: 'External Link (Optional)',
     postFormExternalLinkPlaceholder: 'https://example.com',
+    postFormExternalLinkHelp: 'Optional link for registration or additional details.',
     postFormShowHome: 'Show on home page',
     postFormShowRegistration: 'Show on Registration',
     postFormCancel: 'Cancel',
+    postFormSaveDraft: 'Save Draft',
     postFormUpdate: 'Update Post',
     postFormPublish: 'Publish',
     postFormNotFound: 'Post not found',
@@ -391,6 +450,14 @@ const translations: Record<Language, AppCopy> = {
     postFormUpdateSuccess: 'Post updated successfully',
     postFormCreateSuccess: 'Post created successfully',
     postFormSaveError: 'Failed to save post. Please try again.',
+    postFormPreviewTitle: 'Live preview',
+    postFormPreviewSubtitle: 'See how your post will look',
+    postFormPreviewButton: 'Preview full article',
+    postFormPreviewClose: 'Close preview',
+    postFormPreviewTitlePlaceholder: 'Post title will appear here',
+    postFormPreviewExcerptPlaceholder: 'A short excerpt appears here as you type.',
+    postFormPreviewContentPlaceholder: 'Full content preview will appear here.',
+    postFormPreviewImageFallback: 'Preview not available',
     commonNotAvailable: 'N/A',
     settingsTitle: 'Settings',
     settingsProfileTitle: 'Profile Information',
@@ -460,6 +527,7 @@ const translations: Record<Language, AppCopy> = {
     auditLogOfText: 'of',
     headerGreetingPrefix: 'Hello',
     headerGuestName: 'Guest',
+    headerThemeLabel: 'Theme',
     headerLanguageLabel: 'Language',
     headerMenuToggleLabel: 'Toggle navigation menu'
   },
@@ -510,6 +578,7 @@ const translations: Record<Language, AppCopy> = {
     registerErrorMessage: 'Impossible de creer le compte. Veuillez reessayer.',
     registerErrorToast: 'Echec de l\'inscription. Veuillez reessayer.',
     dashboardTitle: 'Tableau de bord',
+    dashboardSubtitle: 'Articles recents',
     dashboardRecentPosts: 'Tous les articles',
     dashboardViewAllText: 'Voir tout →',
     dashboardViewAllAriaLabel: 'Voir tous les articles',
@@ -575,6 +644,20 @@ const translations: Record<Language, AppCopy> = {
     commonCancel: 'Annuler',
     postsDeleteSuccess: 'Article supprime avec succes',
     postsDeleteError: 'Echec de la suppression de l\'article',
+    postsRemoveFilterLabel: 'Retirer le filtre :',
+    postsImageFallbackText: 'Image non disponible',
+    postsPublishTitle: 'Publier l\'article',
+    postsPublishMessage: 'Voulez-vous vraiment publier "{title}" ? Une fois publie, il sera visible par tous les utilisateurs.',
+    postsPublishConfirm: 'Publier',
+    postsSubmitReviewTitle: 'Soumettre pour validation',
+    postsSubmitReviewMessage: 'Soumettre "{title}" pour validation ? Un admin devra l\'approuver avant publication.',
+    postsSubmitReviewConfirm: 'Soumettre',
+    postsPublishSuccess: 'Article publie avec succes',
+    postsPublishError: 'Echec de la publication de l\'article',
+    postsSubmitReviewSuccess: 'Article soumis pour validation',
+    postsSubmitReviewError: 'Echec de la soumission pour validation',
+    postsDraftSuccess: 'Le statut est passe en brouillon',
+    postsStatusChangeError: 'Echec du changement de statut',
     postDetailBack: '« Retour aux articles',
     postDetailEdit: 'Modifier l\'article',
     postDetailDelete: 'Supprimer',
@@ -589,6 +672,12 @@ const translations: Record<Language, AppCopy> = {
     postFormBack: '« Retour',
     postFormEditTitle: 'Modifier l\'article',
     postFormNewTitle: 'Nouvel article',
+    postFormSubtitle: 'Renseignez les details de l\'article',
+    postFormStatusLabel: 'Statut',
+    postFormStatusHint: 'Choisissez comment cet article apparaitra dans le flux public.',
+    postFormSectionContent: 'Contenu',
+    postFormSectionPublish: 'Publication',
+    postFormSectionVisibility: 'Visibilite',
     postFormCategoryLabel: 'Categorie',
     postFormCategoryEvent: 'Evenement',
     postFormCategoryAnnouncement: 'Annonce',
@@ -598,6 +687,8 @@ const translations: Record<Language, AppCopy> = {
     postFormImageUrlLabel: 'URL de l\'image',
     postFormImagePlaceholder: 'https://exemple.com/image.jpg',
     postFormImagePreviewAlt: 'Apercu',
+    postFormImageHelp: 'Utilisez une URL directe (jpg, png, ou webp).',
+    postFormImageInvalid: 'Veuillez utiliser une URL d\'image directe se terminant par jpg, png, webp ou gif.',
     postFormExcerptLabel: 'Extrait',
     postFormExcerptPlaceholder: 'Description breve...',
     postFormContentLabel: 'Contenu',
@@ -609,9 +700,11 @@ const translations: Record<Language, AppCopy> = {
     postFormLocationPlaceholder: 'Lieu de l\'evenement',
     postFormExternalLinkLabel: 'Lien externe (optionnel)',
     postFormExternalLinkPlaceholder: 'https://exemple.com',
+    postFormExternalLinkHelp: 'Lien optionnel pour l\'inscription ou des details.',
     postFormShowHome: 'Afficher sur la page d\'accueil',
     postFormShowRegistration: 'Afficher a l\'inscription',
     postFormCancel: 'Annuler',
+    postFormSaveDraft: 'Enregistrer le brouillon',
     postFormUpdate: 'Mettre a jour',
     postFormPublish: 'Publier',
     postFormNotFound: 'Article introuvable',
@@ -620,6 +713,14 @@ const translations: Record<Language, AppCopy> = {
     postFormUpdateSuccess: 'Article mis a jour avec succes',
     postFormCreateSuccess: 'Article cree avec succes',
     postFormSaveError: 'Echec de l\'enregistrement. Veuillez reessayer.',
+    postFormPreviewTitle: 'Apercu en direct',
+    postFormPreviewSubtitle: 'Voyez le rendu en temps reel',
+    postFormPreviewButton: 'Apercu complet',
+    postFormPreviewClose: 'Fermer l\'apercu',
+    postFormPreviewTitlePlaceholder: 'Le titre apparaitra ici',
+    postFormPreviewExcerptPlaceholder: 'Un extrait s\'affiche ici au fur et a mesure.',
+    postFormPreviewContentPlaceholder: 'Le contenu complet s\'affichera ici.',
+    postFormPreviewImageFallback: 'Apercu non disponible',
     commonNotAvailable: 'N/A',
     settingsTitle: 'Parametres',
     settingsProfileTitle: 'Informations du profil',
@@ -689,6 +790,7 @@ const translations: Record<Language, AppCopy> = {
     auditLogOfText: 'sur',
     headerGreetingPrefix: 'Bonjour',
     headerGuestName: 'Invite',
+    headerThemeLabel: 'Theme',
     headerLanguageLabel: 'Langue',
     headerMenuToggleLabel: 'Basculer le menu de navigation'
   }

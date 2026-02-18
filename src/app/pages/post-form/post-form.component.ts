@@ -15,176 +15,270 @@ import { BlogCategory } from '../../models/blog.model';
     <div class="post-form-page">
       <div class="form-header">
         <button class="btn-back" (click)="onBack()">{{ copy().postFormBack }}</button>
-        @if (isEditMode()) {
-          <h1>{{ copy().postFormEditTitle }}</h1>
-        } @else {
-          <h1>{{ copy().postFormNewTitle }}</h1>
-        }
+        <div class="header-content">
+          <div class="title-block">
+            @if (isEditMode()) {
+              <h1>{{ copy().postFormEditTitle }}</h1>
+            } @else {
+              <h1>{{ copy().postFormNewTitle }}</h1>
+            }
+            <p class="subtitle">{{ copy().postFormSubtitle }}</p>
+          </div>
+          <div class="status-group">
+            <span class="status-label">{{ copy().postFormStatusLabel }}</span>
+            <div class="status-pills" role="radiogroup" [attr.aria-label]="copy().postFormStatusLabel">
+              <button
+                type="button"
+                class="status-pill is-draft"
+                [class.is-active]="formData.status === 'draft'"
+                [attr.aria-pressed]="formData.status === 'draft'"
+                (click)="setStatus('draft')"
+              >
+                {{ copy().postsFilterDraft }}
+              </button>
+              <button
+                type="button"
+                class="status-pill is-review"
+                [class.is-active]="formData.status === 'review'"
+                [attr.aria-pressed]="formData.status === 'review'"
+                (click)="setStatus('review')"
+              >
+                {{ copy().postsFilterReview }}
+              </button>
+              <button
+                type="button"
+                class="status-pill is-published"
+                [class.is-active]="formData.status === 'published'"
+                [attr.aria-pressed]="formData.status === 'published'"
+                (click)="setStatus('published')"
+              >
+                {{ copy().postsFilterPublished }}
+              </button>
+            </div>
+            <span class="status-hint">{{ copy().postFormStatusHint }}</span>
+          </div>
+        </div>
       </div>
 
       <div class="form-container">
         <form (ngSubmit)="onSubmit()">
-          <div class="form-section">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="category">{{ copy().postFormCategoryLabel }}</label>
-                <select
-                  id="category"
-                  [(ngModel)]="formData.category"
-                  name="category"
-                  required
-                >
-                  <option value="Event">{{ copy().postFormCategoryEvent }}</option>
-                  <option value="Announcement">{{ copy().postFormCategoryAnnouncement }}</option>
-                  <option value="News">{{ copy().postFormCategoryNews }}</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="status">Status</label>
-                <select
-                  id="status"
-                  [(ngModel)]="formData.status"
-                  name="status"
-                  required
-                >
-                  <option value="draft">Draft</option>
-                  <option value="review">Review</option>
-                  <option value="published">Published</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group full-width">
-              <label for="title">{{ copy().postFormTitleLabel }}</label>
-              <input
-                type="text"
-                id="title"
-                [(ngModel)]="formData.title"
-                name="title"
-                [placeholder]="copy().postFormTitlePlaceholder"
-                required
-              />
-            </div>
-
-            <div class="form-group full-width">
-              <label for="imageUrl">{{ copy().postFormImageUrlLabel }}</label>
-              <input
-                type="url"
-                id="imageUrl"
-                [(ngModel)]="formData.imageUrl"
-                name="imageUrl"
-                [placeholder]="copy().postFormImagePlaceholder"
-                required
-              />
-              @if (formData.imageUrl) {
-                <div class="image-preview">
-                  <img
-                    [src]="formData.imageUrl"
-                    [alt]="copy().postFormImagePreviewAlt"
-                    loading="eager"
-                    decoding="async"
-                    (error)="onImageError($event)"
+          <div class="form-shell">
+            <div class="form-panel">
+              <section class="form-section">
+                <h2 class="section-title">{{ copy().postFormSectionContent }}</h2>
+                <div class="form-group full-width">
+                  <label for="title" class="label-row">
+                    <span>{{ copy().postFormTitleLabel }}</span>
+                    <span class="char-count">{{ formData.title.length }}/{{ titleMax }}</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="title"
+                    [(ngModel)]="formData.title"
+                    name="title"
+                    [placeholder]="copy().postFormTitlePlaceholder"
+                    maxlength="{{ titleMax }}"
+                    (ngModelChange)="onFormChange()"
+                    required
                   />
                 </div>
-              }
+
+                <div class="form-group full-width">
+                  <label for="excerpt" class="label-row">
+                    <span>{{ copy().postFormExcerptLabel }}</span>
+                    <span class="char-count">{{ formData.excerpt.length }}/{{ excerptMax }}</span>
+                  </label>
+                  <textarea
+                    id="excerpt"
+                    [(ngModel)]="formData.excerpt"
+                    name="excerpt"
+                    rows="2"
+                    [placeholder]="copy().postFormExcerptPlaceholder"
+                    maxlength="{{ excerptMax }}"
+                    (ngModelChange)="onFormChange()"
+                    required
+                  ></textarea>
+                </div>
+
+                <div class="form-group full-width">
+                  <label for="content">{{ copy().postFormContentLabel }}</label>
+                  <textarea
+                    id="content"
+                    [(ngModel)]="formData.content"
+                    name="content"
+                    rows="8"
+                    [placeholder]="copy().postFormContentPlaceholder"
+                    (ngModelChange)="onFormChange()"
+                    required
+                  ></textarea>
+                </div>
+              </section>
+
+              <section class="form-section">
+                <h2 class="section-title">{{ copy().postFormSectionPublish }}</h2>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="category">{{ copy().postFormCategoryLabel }}</label>
+                    <select
+                      id="category"
+                      [(ngModel)]="formData.category"
+                      name="category"
+                      (ngModelChange)="onFormChange()"
+                      required
+                    >
+                      <option value="Event">{{ copy().postFormCategoryEvent }}</option>
+                      <option value="Announcement">{{ copy().postFormCategoryAnnouncement }}</option>
+                      <option value="News">{{ copy().postFormCategoryNews }}</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="date">{{ copy().postFormDateLabel }}</label>
+                    <input
+                      type="date"
+                      id="date"
+                      [(ngModel)]="dateString"
+                      name="date"
+                      (ngModelChange)="onFormChange()"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="time">{{ copy().postFormTimeLabel }}</label>
+                    <input
+                      type="text"
+                      id="time"
+                      [(ngModel)]="formData.time"
+                      name="time"
+                      [placeholder]="copy().postFormTimePlaceholder"
+                      (ngModelChange)="onFormChange()"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="location">{{ copy().postFormLocationLabel }}</label>
+                    <input
+                      type="text"
+                      id="location"
+                      [(ngModel)]="formData.location"
+                      name="location"
+                      [placeholder]="copy().postFormLocationPlaceholder"
+                      (ngModelChange)="onFormChange()"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group full-width">
+                  <label for="imageUrl">{{ copy().postFormImageUrlLabel }}</label>
+                  <input
+                    type="url"
+                    id="imageUrl"
+                    [(ngModel)]="formData.imageUrl"
+                    name="imageUrl"
+                    [placeholder]="copy().postFormImagePlaceholder"
+                    (ngModelChange)="onFormChange()"
+                    required
+                  />
+                  <p class="field-help">{{ copy().postFormImageHelp }}</p>
+                  @if (formData.imageUrl && !isImageUrlValid()) {
+                    <p class="field-warning">{{ copy().postFormImageInvalid }}</p>
+                  }
+                  @if (formData.imageUrl) {
+                    <div class="image-preview">
+                      <img
+                        [src]="formData.imageUrl"
+                        [alt]="copy().postFormImagePreviewAlt"
+                        loading="eager"
+                        decoding="async"
+                        (error)="onImageError($event)"
+                      />
+                    </div>
+                  }
+                </div>
+
+                <div class="form-group full-width">
+                  <label for="externalLink">{{ copy().postFormExternalLinkLabel }}</label>
+                  <input
+                    type="url"
+                    id="externalLink"
+                    [(ngModel)]="formData.externalLink"
+                    name="externalLink"
+                    [placeholder]="copy().postFormExternalLinkPlaceholder"
+                    (ngModelChange)="onFormChange()"
+                  />
+                  <p class="field-help">{{ copy().postFormExternalLinkHelp }}</p>
+                </div>
+              </section>
+
+              <section class="form-section">
+                <h2 class="section-title">{{ copy().postFormSectionVisibility }}</h2>
+                <div class="form-group full-width checkbox-group">
+                  <label class="checkbox-label">
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="formData.showOnHomePage"
+                      name="showOnHomePage"
+                      (ngModelChange)="onFormChange()"
+                    />
+                    <span>{{ copy().postFormShowHome }}</span>
+                  </label>
+
+                  <label class="checkbox-label">
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="formData.showOnRegistration"
+                      name="showOnRegistration"
+                      (ngModelChange)="onFormChange()"
+                    />
+                    <span>{{ copy().postFormShowRegistration }}</span>
+                  </label>
+                </div>
+              </section>
             </div>
 
-            <div class="form-group full-width">
-              <label for="excerpt">{{ copy().postFormExcerptLabel }}</label>
-              <textarea
-                id="excerpt"
-                [(ngModel)]="formData.excerpt"
-                name="excerpt"
-                rows="2"
-                [placeholder]="copy().postFormExcerptPlaceholder"
-                required
-              ></textarea>
-            </div>
-
-            <div class="form-group full-width">
-              <label for="content">{{ copy().postFormContentLabel }}</label>
-              <textarea
-                id="content"
-                [(ngModel)]="formData.content"
-                name="content"
-                rows="8"
-                [placeholder]="copy().postFormContentPlaceholder"
-                required
-              ></textarea>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="date">{{ copy().postFormDateLabel }}</label>
-                <input
-                  type="date"
-                  id="date"
-                  [(ngModel)]="dateString"
-                  name="date"
-                  required
-                />
+            <aside class="preview-panel" aria-label="{{ copy().postFormPreviewTitle }}">
+              <h3 class="preview-title">{{ copy().postFormPreviewTitle }}</h3>
+              <p class="preview-subtitle">{{ copy().postFormPreviewSubtitle }}</p>
+              <div class="preview-card">
+                <div class="preview-image">
+                  <img
+                    [src]="previewImageUrl()"
+                    [alt]="copy().postFormImagePreviewAlt"
+                    loading="lazy"
+                    decoding="async"
+                    (error)="onPreviewImageError($event)"
+                  />
+                </div>
+                <div class="preview-body">
+                  <div class="preview-meta">
+                    <span class="preview-category">{{ formData.category }}</span>
+                    <span
+                      class="preview-status"
+                      [class.is-draft]="formData.status === 'draft'"
+                      [class.is-review]="formData.status === 'review'"
+                      [class.is-published]="formData.status === 'published'"
+                    >
+                      {{ statusLabel(formData.status) }}
+                    </span>
+                  </div>
+                  <h4>{{ formData.title || copy().postFormPreviewTitlePlaceholder }}</h4>
+                  <p>{{ formData.excerpt || copy().postFormPreviewExcerptPlaceholder }}</p>
+                </div>
               </div>
-
-              <div class="form-group">
-                <label for="time">{{ copy().postFormTimeLabel }}</label>
-                <input
-                  type="text"
-                  id="time"
-                  [(ngModel)]="formData.time"
-                  name="time"
-                  [placeholder]="copy().postFormTimePlaceholder"
-                  required
-                />
-              </div>
-            </div>
-
-            <div class="form-group full-width">
-              <label for="location">{{ copy().postFormLocationLabel }}</label>
-              <input
-                type="text"
-                id="location"
-                [(ngModel)]="formData.location"
-                name="location"
-                [placeholder]="copy().postFormLocationPlaceholder"
-              />
-            </div>
-
-            <div class="form-group full-width">
-              <label for="externalLink">{{ copy().postFormExternalLinkLabel }}</label>
-              <input
-                type="url"
-                id="externalLink"
-                [(ngModel)]="formData.externalLink"
-                name="externalLink"
-                [placeholder]="copy().postFormExternalLinkPlaceholder"
-              />
-            </div>
-
-            <div class="form-group full-width">
-              <label class="checkbox-label">
-                <input
-                  type="checkbox"
-                  [(ngModel)]="formData.showOnHomePage"
-                  name="showOnHomePage"
-                />
-                <span>{{ copy().postFormShowHome }}</span>
-              </label>
-
-              <label class="checkbox-label">
-                <input
-                  type="checkbox"
-                  [(ngModel)]="formData.showOnRegistration"
-                  name="showOnRegistration"
-                />
-                <span>{{ copy().postFormShowRegistration }}</span>
-              </label>
-            </div>
+              <button class="btn-secondary btn-preview" type="button" (click)="openPreview()">
+                {{ copy().postFormPreviewButton }}
+              </button>
+            </aside>
           </div>
 
-          <div class="form-actions">
+          <div class="sticky-actions">
             <button type="button" class="btn-secondary" (click)="onBack()">
               {{ copy().postFormCancel }}
+            </button>
+            <button type="button" class="btn-secondary" (click)="submitWithStatus('draft')">
+              {{ copy().postFormSaveDraft }}
             </button>
             <button type="submit" class="btn-primary">
               @if (isEditMode()) {
@@ -196,214 +290,49 @@ import { BlogCategory } from '../../models/blog.model';
           </div>
         </form>
       </div>
+
+      @if (isPreviewOpen()) {
+        <div class="preview-modal" role="dialog" aria-modal="true" [attr.aria-label]="copy().postFormPreviewTitle">
+          <div class="modal-backdrop" (click)="closePreview()"></div>
+          <div class="modal-card">
+            <div class="modal-header">
+              <div>
+                <h2>{{ formData.title || copy().postFormPreviewTitlePlaceholder }}</h2>
+                <p>{{ copy().postFormPreviewSubtitle }}</p>
+              </div>
+              <button type="button" class="btn-icon" (click)="closePreview()" [attr.aria-label]="copy().postFormPreviewClose">
+                ×
+              </button>
+            </div>
+            <div class="modal-body">
+              <img
+                class="modal-image"
+                [src]="previewImageUrl()"
+                [alt]="copy().postFormImagePreviewAlt"
+                loading="lazy"
+                decoding="async"
+                (error)="onPreviewImageError($event)"
+              />
+              <div class="modal-meta">
+                <span class="preview-category">{{ formData.category }}</span>
+                <span
+                  class="preview-status"
+                  [class.is-draft]="formData.status === 'draft'"
+                  [class.is-review]="formData.status === 'review'"
+                  [class.is-published]="formData.status === 'published'"
+                >
+                  {{ statusLabel(formData.status) }}
+                </span>
+              </div>
+              <p class="modal-excerpt">{{ formData.excerpt || copy().postFormPreviewExcerptPlaceholder }}</p>
+              <div class="modal-content">{{ formData.content || copy().postFormPreviewContentPlaceholder }}</div>
+            </div>
+          </div>
+        </div>
+      }
     </div>
   `,
-  styles: [`
-    .post-form-page {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .form-header {
-      margin-bottom: 32px;
-    }
-
-    .btn-back {
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      padding: 8px 0;
-      margin-bottom: 12px;
-      display: block;
-      transition: color 0.2s;
-    }
-
-    .btn-back:hover {
-      color: var(--primary);
-    }
-
-    .form-header h1 {
-      font-size: 30px;
-      font-weight: 400;
-      margin: 0;
-      color: var(--text-muted);
-    }
-
-    .form-container {
-      background: var(--surface);
-      border-radius: 12px;
-      padding: 32px;
-      box-shadow: var(--shadow-soft);
-    }
-
-    @media (max-width: 768px) {
-      .form-container {
-        padding: 24px;
-      }
-
-      .form-header h1 {
-        font-size: 26px;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .form-container {
-        padding: 20px;
-      }
-
-      .form-header h1 {
-        font-size: 22px;
-      }
-
-      .form-actions {
-        flex-direction: column-reverse;
-      }
-
-      .btn-primary,
-      .btn-secondary {
-        width: 100%;
-      }
-
-      .image-preview {
-        max-height: 200px;
-      }
-    }
-
-    .form-section {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
-    }
-
-    @media (max-width: 768px) {
-      .form-section {
-        grid-template-columns: 1fr;
-      }
-
-      .form-row {
-        grid-template-columns: 1fr !important;
-      }
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .form-group.full-width {
-      grid-column: 1 / -1;
-    }
-
-    .form-row {
-      grid-column: 1 / -1;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
-    }
-
-    label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-
-    input, select, textarea {
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 12px;
-      font-family: inherit;
-      transition: border-color 0.2s;
-      background: var(--surface);
-      color: var(--text);
-    }
-
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-
-    textarea {
-      resize: vertical;
-    }
-
-    .image-preview {
-      margin-top: 12px;
-      border-radius: 8px;
-      overflow: hidden;
-      max-height: 300px;
-    }
-
-    .image-preview img {
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-    }
-
-    .checkbox-label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      font-weight: 400;
-    }
-
-    .checkbox-label input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      cursor: pointer;
-    }
-
-    .form-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 12px;
-      margin-top: 32px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 12px 32px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 2px 4px rgba(8, 145, 178, 0.2);
-    }
-
-    .btn-primary:hover {
-      background: var(--primary-strong);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(8, 145, 178, 0.3);
-    }
-
-    .btn-secondary {
-      background: var(--surface);
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-secondary:hover {
-      background: var(--surface-alt);
-      border-color: var(--text-muted);
-    }
-  `]
+  styles: []
 })
 export class PostFormComponent implements OnInit {
   private blogService = inject(BlogService);
@@ -433,6 +362,13 @@ export class PostFormComponent implements OnInit {
     status: 'draft' as 'draft' | 'review' | 'published'
   };
 
+  protected titleMax = 120;
+  protected excerptMax = 180;
+  protected isPreviewOpen = signal(false);
+
+  private autosaveTimer: ReturnType<typeof setTimeout> | null = null;
+  private autosaveKey = 'post-form-draft';
+
   private editId: string | null = null;
 
   async ngOnInit(): Promise<void> {
@@ -442,6 +378,7 @@ export class PostFormComponent implements OnInit {
       this.editId = id;
       await this.loadBlog(id);
     } else {
+      this.loadDraft();
       // Set default date to today
       const today = new Date();
       this.dateString = today.toISOString().split('T')[0];
@@ -498,6 +435,8 @@ export class PostFormComponent implements OnInit {
         this.toastService.success(this.copy().postFormCreateSuccess);
       }
 
+      this.clearDraft();
+
       this.router.navigate(['/posts']);
     } catch {
       this.toastService.error(this.copy().postFormSaveError);
@@ -508,9 +447,110 @@ export class PostFormComponent implements OnInit {
     this.router.navigate(['/posts']);
   }
 
+  protected submitWithStatus(status: 'draft' | 'review' | 'published'): void {
+    this.formData.status = status;
+    this.onSubmit();
+  }
+
+  protected setStatus(status: 'draft' | 'review' | 'published'): void {
+    this.formData.status = status;
+    this.onFormChange();
+  }
+
+  protected statusLabel(status: 'draft' | 'review' | 'published'): string {
+    const copy = this.copy();
+    switch (status) {
+      case 'draft':
+        return copy.postsFilterDraft;
+      case 'review':
+        return copy.postsFilterReview;
+      case 'published':
+        return copy.postsFilterPublished;
+      default:
+        return status;
+    }
+  }
+
+  protected previewImageUrl(): string {
+    return this.formData.imageUrl || this.previewFallback();
+  }
+
+  protected onPreviewImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = this.previewFallback();
+  }
+
+  protected openPreview(): void {
+    this.isPreviewOpen.set(true);
+  }
+
+  protected closePreview(): void {
+    this.isPreviewOpen.set(false);
+  }
+
   protected onImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
     img.src = 'https://placehold.co/600x400/e5e7eb/6b7280?text=Preview+Not+Available';
+  }
+
+  protected onFormChange(): void {
+    if (this.isEditMode()) {
+      return;
+    }
+
+    if (this.formData.status !== 'draft') {
+      return;
+    }
+
+    if (this.autosaveTimer) {
+      clearTimeout(this.autosaveTimer);
+    }
+
+    this.autosaveTimer = setTimeout(() => {
+      const draft = {
+        ...this.formData,
+        date: this.dateString,
+      };
+      localStorage.setItem(this.autosaveKey, JSON.stringify(draft));
+    }, 600);
+  }
+
+  protected isImageUrlValid(): boolean {
+    if (!this.formData.imageUrl) {
+      return true;
+    }
+
+    return /^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)(\?.*)?$/i.test(this.formData.imageUrl);
+  }
+
+  private loadDraft(): void {
+    const raw = localStorage.getItem(this.autosaveKey);
+    if (!raw) {
+      return;
+    }
+
+    try {
+      const draft = JSON.parse(raw) as typeof this.formData & { date?: string };
+      this.formData = {
+        ...this.formData,
+        ...draft,
+        date: draft.date ? new Date(draft.date) : this.formData.date,
+      };
+      if (draft.date) {
+        this.dateString = draft.date;
+      }
+    } catch {
+      this.clearDraft();
+    }
+  }
+
+  private clearDraft(): void {
+    localStorage.removeItem(this.autosaveKey);
+  }
+
+  private previewFallback(): string {
+    const text = encodeURIComponent(this.copy().postFormPreviewImageFallback);
+    return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%23f1f5f9"/><stop offset="1" stop-color="%23e2e8f0"/></linearGradient></defs><rect width="600" height="400" fill="url(%23g)"/><rect x="210" y="140" width="180" height="120" rx="16" fill="%23e2e8f0" stroke="%23cbd5f5" stroke-width="2"/><circle cx="255" cy="180" r="14" fill="%2394a3b8"/><path d="M230 230l35-35 25 25 30-30 50 40" fill="none" stroke="%2394a3b8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><text x="300" y="290" text-anchor="middle" font-family="Segoe UI, Arial" font-size="16" fill="%2394a3b8">${text}</text></svg>`;
   }
 }
 
