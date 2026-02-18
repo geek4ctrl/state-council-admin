@@ -215,13 +215,18 @@ type AppCopy = {
   commonNotAvailable: string;
   settingsTitle: string;
   settingsProfileTitle: string;
+  settingsProfileSubtitle: string;
   settingsAccountTitle: string;
   settingsAvatarAlt: string;
   settingsProfilePictureLabel: string;
+  settingsAvatarChangeLabel: string;
+  settingsAvatarHelp: string;
   settingsAvatarPlaceholder: string;
   settingsFullNameLabel: string;
   settingsEmailLabel: string;
+  settingsEmailHelp: string;
   settingsSaveChanges: string;
+  settingsLastUpdatedLabel: string;
   settingsUserIdLabel: string;
   settingsRoleLabel: string;
   settingsMemberSinceLabel: string;
@@ -499,13 +504,18 @@ const translations: Record<Language, AppCopy> = {
     commonNotAvailable: 'N/A',
     settingsTitle: 'Settings',
     settingsProfileTitle: 'Profile Information',
+    settingsProfileSubtitle: 'Manage your profile details',
     settingsAccountTitle: 'Account Information',
     settingsAvatarAlt: 'Avatar',
     settingsProfilePictureLabel: 'Profile Picture',
+    settingsAvatarChangeLabel: 'Change photo',
+    settingsAvatarHelp: 'Accepted formats: jpg, png, webp, or svg.',
     settingsAvatarPlaceholder: 'Avatar URL',
     settingsFullNameLabel: 'Full Name',
     settingsEmailLabel: 'Email Address',
+    settingsEmailHelp: 'Used to sign in and receive account updates.',
     settingsSaveChanges: 'Save Changes',
+    settingsLastUpdatedLabel: 'Last updated',
     settingsUserIdLabel: 'User ID',
     settingsRoleLabel: 'Role',
     settingsMemberSinceLabel: 'Member Since',
@@ -781,13 +791,18 @@ const translations: Record<Language, AppCopy> = {
     commonNotAvailable: 'N/A',
     settingsTitle: 'Parametres',
     settingsProfileTitle: 'Informations du profil',
+    settingsProfileSubtitle: 'Gerer votre profil',
     settingsAccountTitle: 'Informations du compte',
     settingsAvatarAlt: 'Avatar',
     settingsProfilePictureLabel: 'Photo de profil',
+    settingsAvatarChangeLabel: 'Changer la photo',
+    settingsAvatarHelp: 'Formats acceptes : jpg, png, webp ou svg.',
     settingsAvatarPlaceholder: 'URL de l\'avatar',
     settingsFullNameLabel: 'Nom complet',
     settingsEmailLabel: 'Adresse e-mail',
+    settingsEmailHelp: 'Utilise pour la connexion et les notifications.',
     settingsSaveChanges: 'Enregistrer les modifications',
+    settingsLastUpdatedLabel: 'Derniere mise a jour',
     settingsUserIdLabel: 'ID utilisateur',
     settingsRoleLabel: 'Role',
     settingsMemberSinceLabel: 'Membre depuis',

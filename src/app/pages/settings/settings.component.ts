@@ -10,11 +10,12 @@ import { LanguageService } from '../../services/language.service';
   imports: [CommonModule, FormsModule],
   template: `
     <div class="settings-page">
-      <h1>{{ copy().settingsTitle }}</h1>
+      <h1 class="page-title">{{ copy().settingsTitle }}</h1>
 
       <div class="settings-container">
         <div class="section">
           <h2>{{ copy().settingsProfileTitle }}</h2>
+          <p class="section-subtitle">{{ copy().settingsProfileSubtitle }}</p>
 
           <div class="avatar-section">
             <img
@@ -27,39 +28,64 @@ import { LanguageService } from '../../services/language.service';
             />
             <div class="avatar-info">
               <p class="avatar-label">{{ copy().settingsProfilePictureLabel }}</p>
-              <input
-                type="url"
-                [(ngModel)]="formData.avatar"
-                [placeholder]="copy().settingsAvatarPlaceholder"
-                class="avatar-input"
-              />
+              <div class="avatar-input-wrap">
+                <input
+                  #avatarInput
+                  type="url"
+                  [(ngModel)]="formData.avatar"
+                  [placeholder]="copy().settingsAvatarPlaceholder"
+                  class="avatar-input"
+                />
+                <div class="avatar-preview" aria-hidden="true">
+                  <img
+                    [src]="formData.avatar"
+                    [attr.alt]="copy().settingsAvatarAlt"
+                    (error)="onImageError($event)"
+                  />
+                </div>
+              </div>
+              <div class="avatar-actions">
+                <button class="btn-link" type="button" (click)="avatarInput.focus()">
+                  {{ copy().settingsAvatarChangeLabel }}
+                </button>
+                <p class="field-help">{{ copy().settingsAvatarHelp }}</p>
+              </div>
             </div>
           </div>
 
           <form (ngSubmit)="onSave()">
-            <div class="form-group">
-              <label for="name">{{ copy().settingsFullNameLabel }}</label>
-              <input
-                type="text"
-                id="name"
-                [(ngModel)]="formData.name"
-                name="name"
-                required
-              />
-            </div>
+            <div class="profile-grid">
+              <div class="form-group">
+                <label for="name">{{ copy().settingsFullNameLabel }}</label>
+                <input
+                  type="text"
+                  id="name"
+                  [(ngModel)]="formData.name"
+                  name="name"
+                  required
+                />
+              </div>
 
-            <div class="form-group">
-              <label for="email">{{ copy().settingsEmailLabel }}</label>
-              <input
-                type="email"
-                id="email"
-                [(ngModel)]="formData.email"
-                name="email"
-                required
-              />
+              <div class="form-group">
+                <label for="email">{{ copy().settingsEmailLabel }}</label>
+                <input
+                  type="email"
+                  id="email"
+                  [(ngModel)]="formData.email"
+                  name="email"
+                  required
+                />
+                <p class="field-help">{{ copy().settingsEmailHelp }}</p>
+              </div>
             </div>
 
             <div class="form-actions">
+              <div class="last-updated">
+                <span class="last-updated-label">{{ copy().settingsLastUpdatedLabel }}</span>
+                <span class="last-updated-value">
+                  {{ lastSavedAt() ? formatShortDate(lastSavedAt()!) : copy().commonNotAvailable }}
+                </span>
+              </div>
               <button type="submit" class="btn-primary">
                 {{ copy().settingsSaveChanges }}
               </button>
@@ -93,11 +119,11 @@ import { LanguageService } from '../../services/language.service';
       margin: 0 auto;
     }
 
-    h1 {
-      font-size: 30px;
-      font-weight: 400;
+    .page-title {
+      font-size: 26px;
+      font-weight: 500;
       margin: 0 0 32px 0;
-      color: var(--text-muted);
+      color: var(--text);
     }
 
     .settings-container {
@@ -116,8 +142,14 @@ import { LanguageService } from '../../services/language.service';
     .section h2 {
       font-size: 18px;
       font-weight: 600;
+      margin: 0 0 6px 0;
+      color: var(--text);
+    }
+
+    .section-subtitle {
       margin: 0 0 24px 0;
-      color: var(--text-muted);
+      color: var(--text-subtle);
+      font-size: 12px;
     }
 
     .avatar-section {
@@ -148,14 +180,82 @@ import { LanguageService } from '../../services/language.service';
       margin: 0 0 8px 0;
     }
 
+    .avatar-input-wrap {
+      position: relative;
+    }
+
     .avatar-input {
       width: 100%;
       padding: 10px 12px;
+      padding-right: 84px;
       border: 1px solid var(--border);
       border-radius: 6px;
       font-size: 12px;
       background: var(--surface);
       color: var(--text);
+    }
+
+    .avatar-preview {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%) scale(0.96);
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease;
+      display: grid;
+      place-items: center;
+    }
+
+    .avatar-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .avatar-input-wrap:hover .avatar-preview,
+    .avatar-input-wrap:focus-within .avatar-preview {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+    }
+
+    .avatar-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .btn-link {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      padding: 0;
+      align-self: flex-start;
+    }
+
+    .field-help {
+      margin: 6px 0 0;
+      font-size: 11px;
+      color: var(--text-subtle);
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
     }
 
     .form-group {
@@ -187,9 +287,32 @@ import { LanguageService } from '../../services/language.service';
     }
 
     .form-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-top: 32px;
       padding-top: 24px;
       border-top: 1px solid var(--border);
+    }
+
+    .last-updated {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--text-subtle);
+    }
+
+    .last-updated-label {
+      text-transform: uppercase;
+      font-size: 9px;
+      letter-spacing: 0.4px;
+      color: var(--text-muted);
+    }
+
+    .last-updated-value {
+      font-weight: 600;
+      color: var(--text);
     }
 
     .btn-primary {
@@ -213,25 +336,30 @@ import { LanguageService } from '../../services/language.service';
 
     .info-grid {
       display: grid;
-      gap: 20px;
+      gap: 14px;
     }
 
     .info-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 16px;
-      background: var(--surface-alt);
-      border-radius: 8px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 18px;
+      background: var(--surface);
+      border-radius: 10px;
+      border: 1px solid var(--border);
     }
 
     .info-label {
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 700;
       color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
     }
 
     .info-value {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text);
       text-transform: capitalize;
     }
@@ -250,10 +378,20 @@ import { LanguageService } from '../../services/language.service';
       .avatar-info {
         width: 100%;
       }
+
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
     }
 
     @media (max-width: 640px) {
-      h1 {
+      .page-title {
         font-size: 22px;
         margin-bottom: 24px;
       }
@@ -267,7 +405,7 @@ import { LanguageService } from '../../services/language.service';
       }
 
       .info-item {
-        flex-direction: column;
+        grid-template-columns: 1fr;
         gap: 8px;
         align-items: flex-start;
       }
@@ -291,6 +429,8 @@ export class SettingsComponent {
     avatar: this.user()?.avatar || ''
   };
 
+  protected lastSavedAt = signal<Date | null>(null);
+
   protected userId = computed(() => this.user()?.id || this.copy().commonNotAvailable);
   protected userRole = computed(() => this.user()?.role || this.copy().commonNotAvailable);
   protected memberSince = computed(() => {
@@ -305,11 +445,20 @@ export class SettingsComponent {
   protected onSave(): void {
     this.authService.updateProfile(this.formData);
     this.toastService.success(this.copy().settingsProfileUpdatedToast);
+    this.lastSavedAt.set(new Date());
   }
 
   protected onImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
     img.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(this.formData.name) + '&size=200&background=e5e7eb&color=6b7280';
+  }
+
+  protected formatShortDate(date: Date): string {
+    return new Date(date).toLocaleDateString(this.languageService.locale(), {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
   }
 }
 
