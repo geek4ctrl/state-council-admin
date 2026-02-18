@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, HostListener, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -20,41 +20,61 @@ import { ThemeService } from '../../services/theme.service';
           <text x="45" y="27" font-family="Sora, sans-serif" font-size="16" font-weight="600" fill="#0891b2">{{ copy().logoText }}</text>
         </svg>
       </div>
-      <div class="utility-toggles">
+      <div class="utility-menu" [class.is-open]="utilityOpen()">
         <button
-          class="theme-toggle"
+          class="utility-trigger"
           type="button"
-          (click)="toggleTheme()"
-          [attr.aria-label]="themeAriaLabel()"
+          (click)="toggleUtilityMenu()"
+          [attr.aria-label]="copy().utilityMenuLabel"
+          [attr.aria-expanded]="utilityOpen()"
+          aria-haspopup="menu"
         >
-          <span class="theme-icon" aria-hidden="true">{{ themeIcon() }}</span>
+          {{ copy().utilityMenuLabel }}
         </button>
-        <div class="language-toggle" role="group" [attr.aria-label]="copy().headerLanguageLabel">
-          <button
-            class="language-option"
-            type="button"
-            [class.is-active]="languageService.languageName() === 'en'"
-            [attr.aria-pressed]="languageService.languageName() === 'en'"
-            [attr.aria-label]="copy().switchToEnglishLabel"
-            (click)="setLanguage('en')"
-          >
-            EN
-          </button>
-          <button
-            class="language-option"
-            type="button"
-            [class.is-active]="languageService.languageName() === 'fr'"
-            [attr.aria-pressed]="languageService.languageName() === 'fr'"
-            [attr.aria-label]="copy().switchToFrenchLabel"
-            (click)="setLanguage('fr')"
-          >
-            FR
-          </button>
-        </div>
+        @if (utilityOpen()) {
+          <div class="utility-dropdown" role="menu">
+            <button
+              class="utility-item"
+              type="button"
+              (click)="toggleTheme()"
+              [attr.aria-label]="themeAriaLabel()"
+            >
+              <span>{{ copy().headerThemeLabel }}</span>
+              <span class="utility-value">{{ themeLabel() }}</span>
+            </button>
+            <div class="utility-group" role="group" [attr.aria-label]="copy().headerLanguageLabel">
+              <span class="utility-group-label">{{ copy().headerLanguageLabel }}</span>
+              <div class="utility-pills">
+                <button
+                  class="utility-pill"
+                  type="button"
+                  [class.is-active]="languageService.languageName() === 'en'"
+                  [attr.aria-pressed]="languageService.languageName() === 'en'"
+                  [attr.aria-label]="copy().switchToEnglishLabel"
+                  (click)="setLanguage('en')"
+                >
+                  EN
+                </button>
+                <button
+                  class="utility-pill"
+                  type="button"
+                  [class.is-active]="languageService.languageName() === 'fr'"
+                  [attr.aria-pressed]="languageService.languageName() === 'fr'"
+                  [attr.aria-label]="copy().switchToFrenchLabel"
+                  (click)="setLanguage('fr')"
+                >
+                  FR
+                </button>
+              </div>
+            </div>
+          </div>
+        }
       </div>
 
       <div class="login-container">
-        <div class="login-card">
+        <p class="page-subtitle">{{ copy().loginPageSubtitle }}</p>
+        <div class="login-card-wrap">
+          <div class="login-card">
           <div class="login-header">
             @if (isRegisterMode()) {
               <h1>{{ copy().loginRegisterTitle }}</h1>
@@ -69,44 +89,80 @@ import { ThemeService } from '../../services/theme.service';
             <form (ngSubmit)="onRegister()" class="login-form" role="form" [attr.aria-label]="copy().registerFormLabel">
               <div class="form-group">
                 <label for="registerEmail">{{ copy().emailAddressLabel }}</label>
-                <input
-                  type="email"
-                  id="registerEmail"
-                  [(ngModel)]="registerEmail"
-                  name="registerEmail"
-                  [placeholder]="copy().emailPlaceholder"
-                  required
-                  autocomplete="email"
-                  aria-required="true"
-                />
+                <div class="input-wrap">
+                  <span class="input-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M3 5h18v14H3z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 7l9 6 9-6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                  </span>
+                  <input
+                    class="input-field"
+                    type="email"
+                    id="registerEmail"
+                    [(ngModel)]="registerEmail"
+                    name="registerEmail"
+                    [placeholder]="copy().emailPlaceholder"
+                    required
+                    autocomplete="email"
+                    aria-required="true"
+                    aria-describedby="register-email-hint"
+                  />
+                </div>
+                <p class="field-help" id="register-email-hint">{{ copy().loginEmailHelp }}</p>
               </div>
 
               <div class="form-group">
                 <label for="registerPassword">{{ copy().passwordLabel }}</label>
-                <input
-                  type="password"
-                  id="registerPassword"
-                  [(ngModel)]="registerPassword"
-                  name="registerPassword"
-                  [placeholder]="copy().createPasswordPlaceholder"
-                  required
-                  autocomplete="new-password"
-                  aria-required="true"
-                />
+                <div class="input-wrap">
+                  <span class="input-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                  </span>
+                  <input
+                    class="input-field has-toggle"
+                    [type]="showRegisterPassword() ? 'text' : 'password'"
+                    id="registerPassword"
+                    [(ngModel)]="registerPassword"
+                    name="registerPassword"
+                    [placeholder]="copy().createPasswordPlaceholder"
+                    required
+                    autocomplete="new-password"
+                    aria-required="true"
+                  />
+                  <button
+                    class="input-action"
+                    type="button"
+                    (click)="togglePassword('register')"
+                    [attr.aria-label]="showRegisterPassword() ? copy().loginHidePassword : copy().loginShowPassword"
+                  >
+                    {{ showRegisterPassword() ? copy().loginHidePassword : copy().loginShowPassword }}
+                  </button>
+                </div>
               </div>
 
               <div class="form-group">
                 <label for="registerConfirm">{{ copy().confirmPasswordLabel }}</label>
-                <input
-                  type="password"
-                  id="registerConfirm"
-                  [(ngModel)]="registerConfirm"
-                  name="registerConfirm"
-                  [placeholder]="copy().confirmPasswordPlaceholder"
-                  required
-                  autocomplete="new-password"
-                  aria-required="true"
-                />
+                <div class="input-wrap">
+                  <span class="input-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                  </span>
+                  <input
+                    class="input-field has-toggle"
+                    [type]="showRegisterConfirm() ? 'text' : 'password'"
+                    id="registerConfirm"
+                    [(ngModel)]="registerConfirm"
+                    name="registerConfirm"
+                    [placeholder]="copy().confirmPasswordPlaceholder"
+                    required
+                    autocomplete="new-password"
+                    aria-required="true"
+                  />
+                  <button
+                    class="input-action"
+                    type="button"
+                    (click)="togglePassword('confirm')"
+                    [attr.aria-label]="showRegisterConfirm() ? copy().loginHidePassword : copy().loginShowPassword"
+                  >
+                    {{ showRegisterConfirm() ? copy().loginHidePassword : copy().loginShowPassword }}
+                  </button>
+                </div>
               </div>
 
               @if (errorMessage()) {
@@ -138,31 +194,52 @@ import { ThemeService } from '../../services/theme.service';
             <form (ngSubmit)="onLogin()" class="login-form" role="form" [attr.aria-label]="copy().loginFormLabel">
               <div class="form-group">
                 <label for="email">{{ copy().emailAddressLabel }}</label>
-                <input
-                  type="email"
-                  id="email"
-                  [(ngModel)]="email"
-                  name="email"
-                  [placeholder]="copy().emailAdminPlaceholder"
-                  required
-                  autocomplete="email"
-                  aria-required="true"
-                  aria-describedby="email-hint"
-                />
+                <div class="input-wrap">
+                  <span class="input-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M3 5h18v14H3z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 7l9 6 9-6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                  </span>
+                  <input
+                    class="input-field"
+                    type="email"
+                    id="email"
+                    [(ngModel)]="email"
+                    name="email"
+                    [placeholder]="copy().emailAdminPlaceholder"
+                    required
+                    autocomplete="email"
+                    aria-required="true"
+                    aria-describedby="email-hint"
+                  />
+                </div>
+                <p class="field-help" id="email-hint">{{ copy().loginEmailHelp }}</p>
               </div>
 
               <div class="form-group">
                 <label for="password">{{ copy().passwordLabel }}</label>
-                <input
-                  type="password"
-                  id="password"
-                  [(ngModel)]="password"
-                  name="password"
-                  [placeholder]="copy().passwordPlaceholder"
-                  required
-                  autocomplete="current-password"
-                  aria-required="true"
-                />
+                <div class="input-wrap">
+                  <span class="input-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                  </span>
+                  <input
+                    class="input-field has-toggle"
+                    [type]="showPassword() ? 'text' : 'password'"
+                    id="password"
+                    [(ngModel)]="password"
+                    name="password"
+                    [placeholder]="copy().passwordPlaceholder"
+                    required
+                    autocomplete="current-password"
+                    aria-required="true"
+                  />
+                  <button
+                    class="input-action"
+                    type="button"
+                    (click)="togglePassword('login')"
+                    [attr.aria-label]="showPassword() ? copy().loginHidePassword : copy().loginShowPassword"
+                  >
+                    {{ showPassword() ? copy().loginHidePassword : copy().loginShowPassword }}
+                  </button>
+                </div>
               </div>
 
               <div class="form-options">
@@ -205,6 +282,7 @@ import { ThemeService } from '../../services/theme.service';
               </div>
             </form>
           }
+          </div>
         </div>
 
         <footer class="footer-text" role="contentinfo">
@@ -238,30 +316,90 @@ import { ThemeService } from '../../services/theme.service';
       z-index: 10;
     }
 
-    .utility-toggles {
+    .utility-menu {
       position: absolute;
       top: 28px;
       right: 32px;
-      display: flex;
-      gap: 8px;
       z-index: 10;
     }
 
-    .theme-toggle {
+    .utility-trigger {
       border: 1px solid var(--border);
       background: var(--surface);
       color: var(--text);
       padding: 8px 14px;
       border-radius: 999px;
       font-size: 10px;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.3px;
       line-height: 1;
       cursor: pointer;
       transition: all 0.2s;
+      box-shadow: var(--shadow-soft);
     }
 
-    .language-toggle {
+    .utility-trigger:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .utility-dropdown {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 10px);
+      min-width: 220px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow-strong);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .utility-item {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .utility-item:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .utility-value {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .utility-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .utility-group-label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--text-muted);
+    }
+
+    .utility-pills {
       display: inline-flex;
       align-items: center;
       border: 1px solid var(--border);
@@ -271,7 +409,7 @@ import { ThemeService } from '../../services/theme.service';
       gap: 2px;
     }
 
-    .language-option {
+    .utility-pill {
       border: none;
       background: transparent;
       color: var(--text);
@@ -285,29 +423,14 @@ import { ThemeService } from '../../services/theme.service';
       transition: all 0.2s;
     }
 
-    .language-option:hover {
+    .utility-pill:hover {
       color: var(--primary);
     }
 
-    .language-option.is-active {
+    .utility-pill.is-active {
       background: var(--primary);
       color: #ffffff;
       box-shadow: 0 2px 6px rgba(8, 145, 178, 0.25);
-    }
-
-    .theme-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .theme-toggle:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-
-    .language-toggle:hover {
-      border-color: var(--primary);
     }
 
     .login-container {
@@ -321,13 +444,37 @@ import { ThemeService } from '../../services/theme.service';
       z-index: 1;
     }
 
+    .page-subtitle {
+      margin: 0 0 18px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .login-card-wrap {
+      position: relative;
+    }
+
+    .login-card-wrap::before {
+      content: "";
+      position: absolute;
+      inset: -40px;
+      background: radial-gradient(circle, rgba(8, 145, 178, 0.14) 0%, rgba(8, 145, 178, 0.02) 55%, transparent 70%);
+      z-index: 0;
+      filter: blur(6px);
+    }
+
     .login-card {
-      background: var(--surface);
+      background: linear-gradient(180deg, var(--surface) 0%, color-mix(in srgb, var(--surface) 85%, var(--surface-elev)) 100%);
       border-radius: 12px;
       box-shadow: var(--shadow-strong);
       width: 100%;
       max-width: 440px;
       overflow: hidden;
+      position: relative;
+      z-index: 1;
     }
 
     .login-header {
@@ -336,9 +483,9 @@ import { ThemeService } from '../../services/theme.service';
     }
 
     .login-header h1 {
-      font-size: 26px;
-      font-weight: 400;
-      color: var(--text-muted);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text);
       margin: 0 0 8px 0;
     }
 
@@ -363,31 +510,83 @@ import { ThemeService } from '../../services/theme.service';
 
     label {
       font-size: 11px;
-      font-weight: 400;
-      color: var(--text-subtle);
+      font-weight: 600;
+      color: var(--text);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
-    input[type="email"],
-    input[type="password"] {
-      padding: 12px 16px;
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 0;
+      width: 36px;
+      height: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-subtle);
+    }
+
+    .input-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .input-action {
+      position: absolute;
+      right: 0;
+      height: 100%;
+      padding: 0 12px;
       border: none;
+      background: none;
+      color: var(--primary);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .input-action:hover {
+      color: var(--primary-strong);
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px 16px 12px 36px;
+      border: 1px solid transparent;
       border-bottom: 1px solid var(--border);
+      border-radius: 8px;
       font-size: 13px;
       font-family: inherit;
       transition: border-color 0.2s;
       background: transparent;
     }
 
-    input[type="email"]:focus,
-    input[type="password"]:focus {
+    .input-field.has-toggle {
+      padding-right: 72px;
+    }
+
+    .input-field:focus {
       outline: none;
-      border-bottom-color: var(--primary);
+      border-color: var(--primary);
+      box-shadow: var(--ring);
     }
 
     input::placeholder {
       color: var(--text-subtle);
+    }
+
+    .field-help {
+      font-size: 11px;
+      color: var(--text-subtle);
+      margin: 4px 0 0;
     }
 
     .form-options {
@@ -432,21 +631,24 @@ import { ThemeService } from '../../services/theme.service';
     }
 
     .btn-login {
-      background: var(--primary);
+      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
       color: white;
       border: none;
-      padding: 14px;
-      border-radius: 25px;
+      padding: 16px;
+      border-radius: 999px;
       font-size: 12px;
       font-weight: 600;
       letter-spacing: 0.5px;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s;
       margin-top: 8px;
+      width: 100%;
+      box-shadow: 0 12px 24px rgba(8, 145, 178, 0.2);
     }
 
     .btn-login:hover:not(:disabled) {
-      background: var(--primary-strong);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 30px rgba(8, 145, 178, 0.28);
     }
 
     .btn-login:disabled {
@@ -554,7 +756,7 @@ import { ThemeService } from '../../services/theme.service';
         justify-content: center;
       }
 
-      .utility-toggles {
+      .utility-menu {
         position: relative;
         top: 0;
         right: 0;
@@ -563,25 +765,11 @@ import { ThemeService } from '../../services/theme.service';
         flex-wrap: nowrap;
         width: fit-content;
         margin: 6px auto 18px;
-        padding: 6px 8px;
-        border-radius: 999px;
-        border: 1px solid var(--border);
-        background: color-mix(in srgb, var(--surface) 88%, transparent);
-        box-shadow: var(--shadow-soft);
       }
 
-      .theme-toggle {
-        position: relative;
-        top: 0;
-        right: 0;
-        margin: 0;
-        padding: 6px 10px;
-        font-size: 9px;
-      }
-
-      .language-option {
-        padding: 6px 10px;
-        font-size: 9px;
+      .utility-dropdown {
+        right: 50%;
+        transform: translateX(50%);
       }
 
       .logo svg {
@@ -638,9 +826,10 @@ export class LoginComponent {
   protected registerEmail = '';
   protected registerPassword = '';
   protected registerConfirm = '';
-  protected themeIcon = computed(() =>
-    this.themeService.themeName() === 'dark' ? '☀' : '🌙'
-  );
+  protected utilityOpen = signal(false);
+  protected showPassword = signal(false);
+  protected showRegisterPassword = signal(false);
+  protected showRegisterConfirm = signal(false);
 
   protected themeAriaLabel = computed(() =>
     this.themeService.themeName() === 'dark'
@@ -648,12 +837,38 @@ export class LoginComponent {
       : this.copy().themeSwitchToDark
   );
 
+  protected themeLabel = computed(() =>
+    this.themeService.themeName() === 'dark'
+      ? this.copy().themeDarkLabel
+      : this.copy().themeLightLabel
+  );
+
   protected toggleTheme(): void {
     this.themeService.toggleTheme();
+    this.utilityOpen.set(false);
+  }
+
+  protected toggleUtilityMenu(): void {
+    this.utilityOpen.set(!this.utilityOpen());
+  }
+
+  protected togglePassword(target: 'login' | 'register' | 'confirm'): void {
+    if (target === 'login') {
+      this.showPassword.set(!this.showPassword());
+      return;
+    }
+
+    if (target === 'register') {
+      this.showRegisterPassword.set(!this.showRegisterPassword());
+      return;
+    }
+
+    this.showRegisterConfirm.set(!this.showRegisterConfirm());
   }
 
   protected setLanguage(value: 'en' | 'fr'): void {
     this.languageService.setLanguage(value);
+    this.utilityOpen.set(false);
   }
 
   protected setRegisterMode(isRegister: boolean): void {
@@ -663,6 +878,16 @@ export class LoginComponent {
     this.registerEmail = '';
     this.registerPassword = '';
     this.registerConfirm = '';
+    this.showRegisterPassword.set(false);
+    this.showRegisterConfirm.set(false);
+  }
+
+  @HostListener('document:click', ['$event'])
+  protected handleDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.utility-menu')) {
+      this.utilityOpen.set(false);
+    }
   }
 
   protected async onLogin(): Promise<void> {
