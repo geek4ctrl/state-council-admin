@@ -9,6 +9,10 @@ type AppCopy = {
   loginRegisterSubtitle: string;
   loginWelcomeTitle: string;
   loginWelcomeSubtitle: string;
+  loginPageSubtitle: string;
+  loginEmailHelp: string;
+  loginShowPassword: string;
+  loginHidePassword: string;
   registerFormLabel: string;
   loginFormLabel: string;
   emailAddressLabel: string;
@@ -289,6 +293,9 @@ type AppCopy = {
   headerThemeLabel: string;
   headerLanguageLabel: string;
   headerMenuToggleLabel: string;
+  utilityMenuLabel: string;
+  themeLightLabel: string;
+  themeDarkLabel: string;
 };
 
 const translations: Record<Language, AppCopy> = {
@@ -298,6 +305,10 @@ const translations: Record<Language, AppCopy> = {
     loginRegisterSubtitle: 'Fill in your details to get started',
     loginWelcomeTitle: 'Welcome to State Council',
     loginWelcomeSubtitle: 'Please login to your account',
+    loginPageSubtitle: 'Secure access',
+    loginEmailHelp: 'Use a valid email address (name@example.com).',
+    loginShowPassword: 'Show',
+    loginHidePassword: 'Hide',
     registerFormLabel: 'Create account form',
     loginFormLabel: 'Login form',
     emailAddressLabel: 'Email Address',
@@ -577,7 +588,10 @@ const translations: Record<Language, AppCopy> = {
     headerGuestName: 'Guest',
     headerThemeLabel: 'Theme',
     headerLanguageLabel: 'Language',
-    headerMenuToggleLabel: 'Toggle navigation menu'
+    headerMenuToggleLabel: 'Toggle navigation menu',
+    utilityMenuLabel: 'Preferences',
+    themeLightLabel: 'Light',
+    themeDarkLabel: 'Dark'
   },
   fr: {
     logoText: 'Conseil d\'Etat',
@@ -585,6 +599,10 @@ const translations: Record<Language, AppCopy> = {
     loginRegisterSubtitle: 'Renseignez vos informations pour commencer',
     loginWelcomeTitle: 'Bienvenue au Conseil d\'Etat',
     loginWelcomeSubtitle: 'Veuillez vous connecter a votre compte',
+    loginPageSubtitle: 'Acces securise',
+    loginEmailHelp: 'Utilisez une adresse e-mail valide (nom@exemple.com).',
+    loginShowPassword: 'Afficher',
+    loginHidePassword: 'Masquer',
     registerFormLabel: 'Formulaire de creation de compte',
     loginFormLabel: 'Formulaire de connexion',
     emailAddressLabel: 'Adresse e-mail',
@@ -864,7 +882,10 @@ const translations: Record<Language, AppCopy> = {
     headerGuestName: 'Invite',
     headerThemeLabel: 'Theme',
     headerLanguageLabel: 'Langue',
-    headerMenuToggleLabel: 'Basculer le menu de navigation'
+    headerMenuToggleLabel: 'Basculer le menu de navigation',
+    utilityMenuLabel: 'Preferences',
+    themeLightLabel: 'Clair',
+    themeDarkLabel: 'Sombre'
   }
 };
 
