@@ -35,7 +35,8 @@ interface NavItem {
             [routerLink]="item.route"
             routerLinkActive="active"
             class="nav-item"
-            [attr.aria-current]="item.route === '/dashboard' ? 'page' : null"
+            #rla="routerLinkActive"
+            [attr.aria-current]="rla.isActive ? 'page' : null"
           >
             <span class="nav-icon" aria-hidden="true">{{ item.icon }}</span>
             <span class="nav-label">{{ item.label }}</span>
@@ -152,9 +153,15 @@ interface NavItem {
     }
 
     .nav-item.active {
-      background: linear-gradient(120deg, rgba(124, 109, 243, 0.25), rgba(34, 211, 238, 0.08));
+      background: linear-gradient(120deg, rgba(124, 109, 243, 0.35), rgba(34, 211, 238, 0.12));
       color: var(--text);
-      box-shadow: inset 0 0 0 1px rgba(124, 109, 243, 0.3);
+      box-shadow: inset 0 0 0 1px rgba(124, 109, 243, 0.45);
+      font-weight: 600;
+    }
+
+    .nav-item.active .nav-icon {
+      color: var(--primary-strong);
+      opacity: 1;
     }
 
     .nav-icon {

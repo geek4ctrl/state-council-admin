@@ -20,35 +20,44 @@ import { ThemeService } from '../../services/theme.service';
       </button>
       <h2 class="greeting">{{ copy().headerGreetingPrefix }}, {{ userName() }}</h2>
       <div class="header-actions">
-        <button
-          class="theme-toggle"
-          type="button"
-          (click)="toggleTheme()"
-          [attr.aria-label]="themeAriaLabel()"
-        >
-          <span class="theme-icon" aria-hidden="true">{{ themeIcon() }}</span>
-        </button>
-        <div class="language-toggle" role="group" [attr.aria-label]="copy().headerLanguageLabel">
+        <div class="action-group">
+          <span class="action-label">{{ copy().headerThemeLabel }}</span>
           <button
-            class="language-option"
+            class="theme-toggle"
             type="button"
-            [class.is-active]="languageService.languageName() === 'en'"
-            [attr.aria-pressed]="languageService.languageName() === 'en'"
-            [attr.aria-label]="copy().switchToEnglishLabel"
-            (click)="setLanguage('en')"
+            (click)="toggleTheme()"
+            [attr.aria-label]="themeAriaLabel()"
+            [attr.title]="themeAriaLabel()"
           >
-            EN
+            <span class="theme-icon" aria-hidden="true">{{ themeIcon() }}</span>
           </button>
-          <button
-            class="language-option"
-            type="button"
-            [class.is-active]="languageService.languageName() === 'fr'"
-            [attr.aria-pressed]="languageService.languageName() === 'fr'"
-            [attr.aria-label]="copy().switchToFrenchLabel"
-            (click)="setLanguage('fr')"
-          >
-            FR
-          </button>
+        </div>
+        <div class="action-group">
+          <span class="action-label">{{ copy().headerLanguageLabel }}</span>
+          <div class="language-toggle" role="group" [attr.aria-label]="copy().headerLanguageLabel">
+            <button
+              class="language-option"
+              type="button"
+              [class.is-active]="languageService.languageName() === 'en'"
+              [attr.aria-pressed]="languageService.languageName() === 'en'"
+              [attr.aria-label]="copy().switchToEnglishLabel"
+              [attr.title]="copy().switchToEnglishLabel"
+              (click)="setLanguage('en')"
+            >
+              EN
+            </button>
+            <button
+              class="language-option"
+              type="button"
+              [class.is-active]="languageService.languageName() === 'fr'"
+              [attr.aria-pressed]="languageService.languageName() === 'fr'"
+              [attr.aria-label]="copy().switchToFrenchLabel"
+              [attr.title]="copy().switchToFrenchLabel"
+              (click)="setLanguage('fr')"
+            >
+              FR
+            </button>
+          </div>
         </div>
       </div>
     </header>
@@ -108,7 +117,21 @@ import { ThemeService } from '../../services/theme.service';
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
+    }
+
+    .action-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      color: var(--text-muted);
     }
 
     .theme-toggle {
@@ -201,6 +224,10 @@ import { ThemeService } from '../../services/theme.service';
       .header-actions {
         margin-left: auto;
         gap: 8px;
+      }
+
+      .action-label {
+        display: none;
       }
 
       .theme-toggle {
