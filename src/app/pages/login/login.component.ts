@@ -94,6 +94,7 @@ import { ThemeService } from '../../services/theme.service';
                     <svg viewBox="0 0 24 24"><path d="M3 5h18v14H3z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 7l9 6 9-6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
                   </span>
                   <input
+                    class="input-field"
                     type="email"
                     id="registerEmail"
                     [(ngModel)]="registerEmail"
@@ -115,6 +116,7 @@ import { ThemeService } from '../../services/theme.service';
                     <svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
                   </span>
                   <input
+                    class="input-field has-toggle"
                     [type]="showRegisterPassword() ? 'text' : 'password'"
                     id="registerPassword"
                     [(ngModel)]="registerPassword"
@@ -142,6 +144,7 @@ import { ThemeService } from '../../services/theme.service';
                     <svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
                   </span>
                   <input
+                    class="input-field has-toggle"
                     [type]="showRegisterConfirm() ? 'text' : 'password'"
                     id="registerConfirm"
                     [(ngModel)]="registerConfirm"
@@ -196,6 +199,7 @@ import { ThemeService } from '../../services/theme.service';
                     <svg viewBox="0 0 24 24"><path d="M3 5h18v14H3z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 7l9 6 9-6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
                   </span>
                   <input
+                    class="input-field"
                     type="email"
                     id="email"
                     [(ngModel)]="email"
@@ -217,6 +221,7 @@ import { ThemeService } from '../../services/theme.service';
                     <svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
                   </span>
                   <input
+                    class="input-field has-toggle"
                     [type]="showPassword() ? 'text' : 'password'"
                     id="password"
                     [(ngModel)]="password"
@@ -552,11 +557,9 @@ import { ThemeService } from '../../services/theme.service';
       color: var(--primary-strong);
     }
 
-    input[type="email"],
-    input[type="password"],
-    input[type="text"] {
+    .input-field {
       width: 100%;
-      padding: 12px 72px 12px 36px;
+      padding: 12px 16px 12px 36px;
       border: 1px solid transparent;
       border-bottom: 1px solid var(--border);
       border-radius: 8px;
@@ -566,9 +569,11 @@ import { ThemeService } from '../../services/theme.service';
       background: transparent;
     }
 
-    input[type="email"]:focus,
-    input[type="password"]:focus,
-    input[type="text"]:focus {
+    .input-field.has-toggle {
+      padding-right: 72px;
+    }
+
+    .input-field:focus {
       outline: none;
       border-color: var(--primary);
       box-shadow: var(--ring);
