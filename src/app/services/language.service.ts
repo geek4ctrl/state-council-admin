@@ -50,6 +50,7 @@ type AppCopy = {
   registerErrorMessage: string;
   registerErrorToast: string;
   dashboardTitle: string;
+  dashboardSubtitle: string;
   dashboardRecentPosts: string;
   dashboardViewAllText: string;
   dashboardViewAllAriaLabel: string;
@@ -115,6 +116,20 @@ type AppCopy = {
   commonCancel: string;
   postsDeleteSuccess: string;
   postsDeleteError: string;
+  postsRemoveFilterLabel: string;
+  postsImageFallbackText: string;
+  postsPublishTitle: string;
+  postsPublishMessage: string;
+  postsPublishConfirm: string;
+  postsSubmitReviewTitle: string;
+  postsSubmitReviewMessage: string;
+  postsSubmitReviewConfirm: string;
+  postsPublishSuccess: string;
+  postsPublishError: string;
+  postsSubmitReviewSuccess: string;
+  postsSubmitReviewError: string;
+  postsDraftSuccess: string;
+  postsStatusChangeError: string;
   postDetailBack: string;
   postDetailEdit: string;
   postDetailDelete: string;
@@ -229,6 +244,7 @@ type AppCopy = {
   auditLogOfText: string;
   headerGreetingPrefix: string;
   headerGuestName: string;
+  headerThemeLabel: string;
   headerLanguageLabel: string;
   headerMenuToggleLabel: string;
 };
@@ -281,6 +297,7 @@ const translations: Record<Language, AppCopy> = {
     registerErrorMessage: 'Unable to create account. Please try again.',
     registerErrorToast: 'Registration failed. Please try again.',
     dashboardTitle: 'Dashboard',
+    dashboardSubtitle: 'Recent articles',
     dashboardRecentPosts: 'All Posts',
     dashboardViewAllText: 'View All →',
     dashboardViewAllAriaLabel: 'View all blog posts',
@@ -346,6 +363,20 @@ const translations: Record<Language, AppCopy> = {
     commonCancel: 'Cancel',
     postsDeleteSuccess: 'Post deleted successfully',
     postsDeleteError: 'Failed to delete post',
+    postsRemoveFilterLabel: 'Remove filter:',
+    postsImageFallbackText: 'Image not available',
+    postsPublishTitle: 'Publish post',
+    postsPublishMessage: 'Are you sure you want to publish "{title}"? Once published, it will be visible to all users.',
+    postsPublishConfirm: 'Publish',
+    postsSubmitReviewTitle: 'Submit for review',
+    postsSubmitReviewMessage: 'Submit "{title}" for review? An admin will need to approve it before it\'s published.',
+    postsSubmitReviewConfirm: 'Submit',
+    postsPublishSuccess: 'Post published successfully',
+    postsPublishError: 'Failed to publish post',
+    postsSubmitReviewSuccess: 'Post submitted for review',
+    postsSubmitReviewError: 'Failed to submit post for review',
+    postsDraftSuccess: 'Post status changed to draft',
+    postsStatusChangeError: 'Failed to change post status',
     postDetailBack: '« Back to Posts',
     postDetailEdit: 'Edit Post',
     postDetailDelete: 'Delete',
@@ -460,6 +491,7 @@ const translations: Record<Language, AppCopy> = {
     auditLogOfText: 'of',
     headerGreetingPrefix: 'Hello',
     headerGuestName: 'Guest',
+    headerThemeLabel: 'Theme',
     headerLanguageLabel: 'Language',
     headerMenuToggleLabel: 'Toggle navigation menu'
   },
@@ -510,6 +542,7 @@ const translations: Record<Language, AppCopy> = {
     registerErrorMessage: 'Impossible de creer le compte. Veuillez reessayer.',
     registerErrorToast: 'Echec de l\'inscription. Veuillez reessayer.',
     dashboardTitle: 'Tableau de bord',
+    dashboardSubtitle: 'Articles recents',
     dashboardRecentPosts: 'Tous les articles',
     dashboardViewAllText: 'Voir tout →',
     dashboardViewAllAriaLabel: 'Voir tous les articles',
@@ -575,6 +608,20 @@ const translations: Record<Language, AppCopy> = {
     commonCancel: 'Annuler',
     postsDeleteSuccess: 'Article supprime avec succes',
     postsDeleteError: 'Echec de la suppression de l\'article',
+    postsRemoveFilterLabel: 'Retirer le filtre :',
+    postsImageFallbackText: 'Image non disponible',
+    postsPublishTitle: 'Publier l\'article',
+    postsPublishMessage: 'Voulez-vous vraiment publier "{title}" ? Une fois publie, il sera visible par tous les utilisateurs.',
+    postsPublishConfirm: 'Publier',
+    postsSubmitReviewTitle: 'Soumettre pour validation',
+    postsSubmitReviewMessage: 'Soumettre "{title}" pour validation ? Un admin devra l\'approuver avant publication.',
+    postsSubmitReviewConfirm: 'Soumettre',
+    postsPublishSuccess: 'Article publie avec succes',
+    postsPublishError: 'Echec de la publication de l\'article',
+    postsSubmitReviewSuccess: 'Article soumis pour validation',
+    postsSubmitReviewError: 'Echec de la soumission pour validation',
+    postsDraftSuccess: 'Le statut est passe en brouillon',
+    postsStatusChangeError: 'Echec du changement de statut',
     postDetailBack: '« Retour aux articles',
     postDetailEdit: 'Modifier l\'article',
     postDetailDelete: 'Supprimer',
@@ -689,6 +736,7 @@ const translations: Record<Language, AppCopy> = {
     auditLogOfText: 'sur',
     headerGreetingPrefix: 'Bonjour',
     headerGuestName: 'Invite',
+    headerThemeLabel: 'Theme',
     headerLanguageLabel: 'Langue',
     headerMenuToggleLabel: 'Basculer le menu de navigation'
   }

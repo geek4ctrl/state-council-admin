@@ -1,4 +1,4 @@
-import { Component, computed, signal, inject, OnInit, effect } from '@angular/core';
+import { Component, computed, signal, inject, OnInit, effect, HostListener } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { BlogService } from '../../services/blog.service';
@@ -11,62 +11,84 @@ import { ConfirmationService } from '../../services/confirmation.service';
   imports: [CommonModule, RouterLink],
   template: `
     <div class="posts-page" role="main">
-      <div class="page-header">
-        <h1 id="page-title">{{ copy().postsTitle }}</h1>
-        <button
-          class="btn-primary"
-          (click)="onCreatePost()"
-          [attr.aria-label]="copy().postsCreateAriaLabel"
-        >
-          <span class="icon" aria-hidden="true">+</span> {{ copy().postsNewButton }}
-        </button>
-      </div>
-
-      <div class="filters filter-panel" role="search" aria-label="Post filters">
-        <div class="filter-group">
-          <label for="post-search">{{ copy().postsFilterSearch }}</label>
-          <input
-            id="post-search"
-            type="search"
-            class="filter-control"
-            [value]="searchQuery()"
-            (input)="onSearchChange($event)"
-            [placeholder]="copy().postsFilterSearchPlaceholder"
-          />
+      <section class="page-hero" aria-labelledby="page-title">
+        <div class="page-header">
+          <div class="title-stack">
+            <h1 id="page-title">{{ copy().postsTitle }}</h1>
+            <span class="page-count">{{ totalBlogs() }} {{ copy().postsCountSuffix }}</span>
+          </div>
+          <button
+            class="btn-primary"
+            (click)="onCreatePost()"
+            [attr.aria-label]="copy().postsCreateAriaLabel"
+          >
+            <span class="icon" aria-hidden="true">+</span> {{ copy().postsNewButton }}
+          </button>
         </div>
 
-        <div class="filter-group">
-          <label for="post-status">{{ copy().postsFilterStatus }}</label>
-          <select id="post-status" class="filter-control" [value]="statusFilter()" (change)="onStatusChange($event)">
-            <option value="">{{ copy().postsFilterAllStatuses }}</option>
-            <option value="draft">{{ copy().postsFilterDraft }}</option>
-            <option value="review">{{ copy().postsFilterReview }}</option>
-            <option value="published">{{ copy().postsFilterPublished }}</option>
-          </select>
+        <div class="filters filter-panel" role="search" aria-label="Post filters">
+          <div class="filter-group">
+            <label for="post-search">{{ copy().postsFilterSearch }}</label>
+            <input
+              id="post-search"
+              type="search"
+              class="filter-control"
+              [value]="searchQuery()"
+              (input)="onSearchChange($event)"
+              [placeholder]="copy().postsFilterSearchPlaceholder"
+            />
+          </div>
+
+          <div class="filter-group">
+            <label for="post-status">{{ copy().postsFilterStatus }}</label>
+            <select id="post-status" class="filter-control" [value]="statusFilter()" (change)="onStatusChange($event)">
+              <option value="">{{ copy().postsFilterAllStatuses }}</option>
+              <option value="draft">{{ copy().postsFilterDraft }}</option>
+              <option value="review">{{ copy().postsFilterReview }}</option>
+              <option value="published">{{ copy().postsFilterPublished }}</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="post-author">{{ copy().postsFilterAuthor }}</label>
+            <select id="post-author" class="filter-control" [value]="authorFilter()" (change)="onAuthorChange($event)">
+              <option value="">{{ copy().postsFilterAllAuthors }}</option>
+              @for (author of authorOptions(); track author) {
+                <option [value]="author">{{ author }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="post-from">{{ copy().postsFilterFrom }}</label>
+            <input id="post-from" type="date" class="filter-control" [value]="dateFrom()" (input)="onDateFromChange($event)" />
+          </div>
+
+          <div class="filter-group">
+            <label for="post-to">{{ copy().postsFilterTo }}</label>
+            <input id="post-to" type="date" class="filter-control" [value]="dateTo()" (input)="onDateToChange($event)" />
+          </div>
+
+          <button class="btn-secondary btn-reset" type="button" (click)="resetFilters()">{{ copy().postsFilterReset }}</button>
         </div>
 
-        <div class="filter-group">
-          <label for="post-author">{{ copy().postsFilterAuthor }}</label>
-          <select id="post-author" class="filter-control" [value]="authorFilter()" (change)="onAuthorChange($event)">
-            <option value="">{{ copy().postsFilterAllAuthors }}</option>
-            @for (author of authorOptions(); track author) {
-              <option [value]="author">{{ author }}</option>
+        @if (activeFilters().length) {
+          <div class="active-filters" role="group" [attr.aria-label]="copy().postsFilterReset">
+            @for (filter of activeFilters(); track filter.key) {
+              <button
+                class="filter-chip"
+                type="button"
+                (click)="clearFilter(filter.key)"
+                [attr.aria-label]="copy().postsRemoveFilterLabel + ' ' + filter.label"
+              >
+                <span class="chip-label">{{ filter.label }}</span>
+                <span class="chip-remove" aria-hidden="true">×</span>
+              </button>
             }
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label for="post-from">{{ copy().postsFilterFrom }}</label>
-          <input id="post-from" type="date" class="filter-control" [value]="dateFrom()" (input)="onDateFromChange($event)" />
-        </div>
-
-        <div class="filter-group">
-          <label for="post-to">{{ copy().postsFilterTo }}</label>
-          <input id="post-to" type="date" class="filter-control" [value]="dateTo()" (input)="onDateToChange($event)" />
-        </div>
-
-        <button class="btn-secondary btn-reset" type="button" (click)="resetFilters()">{{ copy().postsFilterReset }}</button>
-      </div>
+            <button class="btn-link" type="button" (click)="resetFilters()">{{ copy().postsFilterReset }}</button>
+          </div>
+        }
+      </section>
 
       <div class="posts-grid" role="list" aria-labelledby="page-title">
         @for (blog of paginatedBlogs(); track blog.id) {
@@ -82,56 +104,67 @@ import { ConfirmationService } from '../../services/confirmation.service';
               <span class="post-category" [attr.aria-label]="copy().postsCategoryLabel">{{ blog.category }}</span>
             </div>
             <div class="post-content">
-              <h3 class="post-title">{{ blog.title }}</h3>
+              <div class="title-row">
+                <h3 class="post-title">{{ blog.title }}</h3>
+                <div class="status-selector" [attr.aria-label]="copy().postsFilterStatus + ': ' + statusLabel(blog.status)">
+                  <button
+                    class="post-status-badge"
+                    [class]="'status-' + blog.status"
+                    (click)="toggleStatusDropdown(blog.id)"
+                    type="button"
+                  >
+                    {{ blog.status | uppercase }}
+                    <span class="dropdown-arrow" aria-hidden="true">▼</span>
+                  </button>
+                  <span
+                    class="status-tooltip"
+                    [attr.data-tooltip]="copy().postsFilterStatus + ': ' + statusLabel(blog.status)"
+                    aria-hidden="true"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <circle cx="12" cy="12" r="9"></circle>
+                      <path d="M12 10v6"></path>
+                      <circle cx="12" cy="7" r="1"></circle>
+                    </svg>
+                  </span>
+                  @if (statusDropdownOpen() === blog.id) {
+                    <div class="status-dropdown" role="menu">
+                      <button
+                        class="status-option"
+                        [class.is-active]="blog.status === 'draft'"
+                        (click)="changePostStatus(blog.id, 'draft')"
+                        type="button"
+                        role="menuitem"
+                      >
+                        {{ copy().postsFilterDraft }}
+                      </button>
+                      <button
+                        class="status-option"
+                        [class.is-active]="blog.status === 'review'"
+                        (click)="changePostStatus(blog.id, 'review')"
+                        type="button"
+                        role="menuitem"
+                      >
+                        {{ copy().postsFilterReview }}
+                      </button>
+                      <button
+                        class="status-option"
+                        [class.is-active]="blog.status === 'published'"
+                        (click)="changePostStatus(blog.id, 'published')"
+                        type="button"
+                        role="menuitem"
+                      >
+                        {{ copy().postsFilterPublished }}
+                      </button>
+                    </div>
+                  }
+                </div>
+              </div>
               <p class="post-date">
                 <span class="ui-icon is-calendar" aria-hidden="true"></span>
                 <time [attr.datetime]="blog.date.toISOString()">{{ formatDate(blog.date) }}</time>
               </p>
               <p class="post-excerpt">{{ blog.excerpt }}</p>
-
-              <div class="status-selector" [attr.aria-label]="'Post status: ' + blog.status">
-                <button
-                  class="post-status-badge"
-                  [class]="'status-' + blog.status"
-                  (click)="toggleStatusDropdown(blog.id)"
-                  type="button"
-                  title="Click to change status"
-                >
-                  {{ blog.status | uppercase }}
-                  <span class="dropdown-arrow" aria-hidden="true">▼</span>
-                </button>
-                @if (statusDropdownOpen() === blog.id) {
-                  <div class="status-dropdown" role="menu">
-                    <button
-                      class="status-option"
-                      [class.is-active]="blog.status === 'draft'"
-                      (click)="changePostStatus(blog.id, 'draft')"
-                      type="button"
-                      role="menuitem"
-                    >
-                      Draft
-                    </button>
-                    <button
-                      class="status-option"
-                      [class.is-active]="blog.status === 'review'"
-                      (click)="changePostStatus(blog.id, 'review')"
-                      type="button"
-                      role="menuitem"
-                    >
-                      Review
-                    </button>
-                    <button
-                      class="status-option"
-                      [class.is-active]="blog.status === 'published'"
-                      (click)="changePostStatus(blog.id, 'published')"
-                      type="button"
-                      role="menuitem"
-                    >
-                      Published
-                    </button>
-                  </div>
-                }
-              </div>
 
               <div class="post-meta" [attr.aria-label]="copy().postsMetaLabel">
                 <span class="post-time" [attr.aria-label]="copy().postsTimeLabel">
@@ -154,33 +187,45 @@ import { ConfirmationService } from '../../services/confirmation.service';
                 >
                   {{ copy().postsViewDetailsText }}
                 </a>
-                <div class="action-buttons" role="group" [attr.aria-label]="copy().postsActionsLabel">
-                  @if (blog.status !== 'published') {
-                    <button
-                      class="btn-icon btn-success"
-                      (click)="onPublish(blog.id)"
-                      [attr.aria-label]="'Publish ' + blog.title"
-                      type="button"
-                      title="Publish post"
-                    >
-                      <span class="ui-icon is-check" aria-hidden="true"></span>
-                    </button>
-                  }
-                  <a
-                    class="btn-icon"
-                    [routerLink]="['/posts/edit', blog.id]"
-                    [attr.aria-label]="copy().postsEditPrefix + ' ' + blog.title"
-                  >
-                    <span class="ui-icon is-edit" aria-hidden="true"></span>
-                  </a>
+                <div class="action-menu" role="group" [attr.aria-label]="copy().postsActionsLabel">
                   <button
-                    class="btn-icon btn-danger"
-                    (click)="onDelete(blog.id)"
-                    [attr.aria-label]="copy().postsDeletePrefix + ' ' + blog.title"
+                    class="btn-icon btn-kebab"
+                    (click)="toggleActionMenu(blog.id)"
+                    [attr.aria-label]="copy().postsActionsLabel"
                     type="button"
                   >
-                    <span class="ui-icon is-trash" aria-hidden="true"></span>
+                    <span class="kebab" aria-hidden="true">···</span>
                   </button>
+                  @if (actionMenuOpen() === blog.id) {
+                    <div class="action-dropdown" role="menu">
+                      @if (blog.status !== 'published') {
+                        <button
+                          class="action-item is-success"
+                          (click)="onPublish(blog.id)"
+                          type="button"
+                          role="menuitem"
+                        >
+                          {{ copy().postsFilterPublished }}
+                        </button>
+                      }
+                      <a
+                        class="action-item"
+                        [routerLink]="['/posts/edit', blog.id]"
+                        (click)="closeActionMenu()"
+                        role="menuitem"
+                      >
+                        {{ copy().postsEditPrefix }}
+                      </a>
+                      <button
+                        class="action-item is-danger"
+                        (click)="onDelete(blog.id)"
+                        type="button"
+                        role="menuitem"
+                      >
+                        {{ copy().postsDeletePrefix }}
+                      </button>
+                    </div>
+                  }
                 </div>
               </div>
             </div>
@@ -233,18 +278,125 @@ import { ConfirmationService } from '../../services/confirmation.service';
       margin: 0 auto;
     }
 
+    .page-hero {
+      padding: 18px 20px 20px;
+      margin: -8px 0 24px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 85%, transparent) 0%, var(--surface-elev) 100%);
+      border: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+      box-shadow: var(--shadow-soft);
+    }
+
     .page-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 32px;
+      margin-bottom: 12px;
+    }
+
+    .title-stack {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .page-header h1 {
-      font-size: 30px;
-      font-weight: 400;
+      font-size: 28px;
+      font-weight: 600;
       margin: 0;
+      color: var(--text);
+    }
+
+    .page-count {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      align-items: end;
+      padding: 12px;
+      background: var(--surface);
+      border-radius: 12px;
+      border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .filter-group label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
       color: var(--text-muted);
+    }
+
+    .filter-control {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--surface-alt);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .btn-reset {
+      align-self: flex-end;
+      margin-top: 18px;
+    }
+
+    .active-filters {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .filter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+      background: var(--surface);
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .chip-remove {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .btn-link {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      padding: 6px 8px;
     }
 
     .posts-grid {
@@ -257,7 +409,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
     .post-card {
       background: var(--surface);
       border-radius: 12px;
-      overflow: hidden;
+      overflow: visible;
       box-shadow: var(--shadow-soft);
       transition: all 0.3s;
     }
@@ -271,6 +423,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
       position: relative;
       height: 200px;
       overflow: hidden;
+      border-radius: 12px 12px 0 0;
     }
 
     .post-image img {
@@ -278,6 +431,16 @@ import { ConfirmationService } from '../../services/confirmation.service';
       height: 100%;
       object-fit: cover;
       transition: transform 0.3s;
+    }
+
+    .post-image.is-fallback {
+      background: linear-gradient(135deg, #eef2f7 0%, #e2e8f0 100%);
+    }
+
+    .post-image.is-fallback img {
+      object-fit: contain;
+      padding: 22px;
+      filter: grayscale(0.1);
     }
 
     .post-card:hover .post-image img {
@@ -300,21 +463,28 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .post-content {
-      padding: 24px;
+      padding: 20px 22px 22px;
+    }
+
+    .title-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
     }
 
     .post-title {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 600;
-      margin: 0 0 8px 0;
+      margin: 0 0 6px 0;
       color: var(--text);
       line-height: 1.4;
     }
 
     .post-date {
-      font-size: 11px;
-      color: var(--text-subtle);
-      margin: 0 0 12px 0;
+      font-size: 10px;
+      color: var(--text-muted);
+      margin: 0 0 8px 0;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -322,8 +492,8 @@ import { ConfirmationService } from '../../services/confirmation.service';
 
     .post-excerpt {
       font-size: 12px;
-      color: var(--text-muted);
-      margin: 0 0 16px 0;
+      color: var(--text-subtle);
+      margin: 0 0 12px 0;
       line-height: 1.6;
       display: -webkit-box;
       -webkit-line-clamp: 3;
@@ -334,7 +504,55 @@ import { ConfirmationService } from '../../services/confirmation.service';
     .status-selector {
       position: relative;
       display: inline-block;
-      margin-bottom: 12px;
+      margin-top: 2px;
+    }
+
+    .status-tooltip {
+      width: 18px;
+      height: 18px;
+      margin-left: 6px;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+      background: var(--surface);
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: default;
+      position: relative;
+    }
+
+    .status-tooltip svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      fill: none;
+    }
+
+    .status-tooltip::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 130%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-size: 10px;
+      white-space: nowrap;
+      box-shadow: var(--shadow-soft);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .status-tooltip:hover::after {
+      opacity: 1;
     }
 
     .post-status-badge {
@@ -345,7 +563,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
       font-weight: 700;
       letter-spacing: 0.5px;
       padding: 6px 12px;
-      border-radius: 6px;
+      border-radius: 999px;
       border: 1px solid transparent;
       cursor: pointer;
       text-transform: uppercase;
@@ -360,18 +578,18 @@ import { ConfirmationService } from '../../services/confirmation.service';
     }
 
     .post-status-badge.status-draft {
-      background: color-mix(in srgb, #f59e0b 15%, var(--surface));
-      color: #b45309;
+      background: color-mix(in srgb, var(--accent-3) 18%, var(--surface));
+      color: color-mix(in srgb, var(--accent-3) 70%, var(--text));
     }
 
     .post-status-badge.status-review {
-      background: color-mix(in srgb, #6366f1 15%, var(--surface));
-      color: #4338ca;
+      background: color-mix(in srgb, var(--accent-2) 18%, var(--surface));
+      color: color-mix(in srgb, var(--accent-2) 70%, var(--text));
     }
 
     .post-status-badge.status-published {
-      background: color-mix(in srgb, #10b981 15%, var(--surface));
-      color: #065f46;
+      background: color-mix(in srgb, var(--accent-1) 18%, var(--surface));
+      color: color-mix(in srgb, var(--accent-1) 70%, var(--text));
     }
 
     .dropdown-arrow {
@@ -424,32 +642,30 @@ import { ConfirmationService } from '../../services/confirmation.service';
       font-weight: 700;
     }
 
-    .post-excerpt {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin: 0 0 16px 0;
-      line-height: 1.6;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
     .post-meta {
       display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 16px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
     }
 
     .post-time, .post-location {
-      font-size: 11px;
-      color: var(--text-subtle);
+      font-size: 10px;
+      color: var(--text-muted);
       display: flex;
       align-items: center;
       gap: 6px;
+    }
+
+    .post-meta .ui-icon {
+      font-size: 12px;
+      width: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .post-actions {
@@ -459,9 +675,17 @@ import { ConfirmationService } from '../../services/confirmation.service';
       gap: 8px;
     }
 
-    .action-buttons {
-      display: flex;
-      gap: 8px;
+    .action-menu {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      opacity: 0.4;
+      transition: opacity 0.2s;
+    }
+
+    .post-card:hover .action-menu,
+    .post-card:focus-within .action-menu {
+      opacity: 1;
     }
 
     .btn-primary {
@@ -524,6 +748,67 @@ import { ConfirmationService } from '../../services/confirmation.service';
       padding: 0;
     }
 
+    .btn-icon.btn-kebab {
+      border-radius: 10px;
+      background: var(--surface-alt);
+    }
+
+    .kebab {
+      font-size: 18px;
+      letter-spacing: 1px;
+    }
+
+    .action-dropdown {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 6px);
+      min-width: 160px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: var(--shadow-strong);
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 10;
+    }
+
+    .action-item {
+      border: none;
+      background: none;
+      padding: 9px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      text-align: left;
+      border-radius: 8px;
+      color: var(--text);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .action-item:hover {
+      background: var(--surface-alt);
+      color: var(--primary);
+    }
+
+    .action-item.is-danger {
+      color: var(--danger);
+    }
+
+    .action-item.is-danger:hover {
+      background: color-mix(in srgb, var(--danger) 10%, var(--surface));
+    }
+
+    .action-item.is-success {
+      color: #10b981;
+    }
+
+    .action-item.is-success:hover {
+      background: color-mix(in srgb, #10b981 12%, var(--surface));
+    }
+
     .btn-icon:hover {
       border-color: var(--primary);
       color: var(--primary);
@@ -578,6 +863,10 @@ import { ConfirmationService } from '../../services/confirmation.service';
         padding: 20px;
       }
 
+      .page-hero {
+        padding: 16px;
+      }
+
       .post-image {
         height: 200px;
       }
@@ -592,6 +881,10 @@ import { ConfirmationService } from '../../services/confirmation.service';
 
       .page-header h1 {
         font-size: 22px;
+      }
+
+      .title-stack {
+        flex-wrap: wrap;
       }
 
       .btn-primary {
@@ -636,18 +929,16 @@ import { ConfirmationService } from '../../services/confirmation.service';
         border-radius: 10px;
       }
 
-      .action-buttons {
-        width: 100%;
-        justify-content: center;
-        gap: 12px;
-      }
-
       .btn-icon {
         background: var(--surface-alt);
         border: 1px solid var(--border);
         width: 40px;
         height: 40px;
         border-radius: 12px;
+      }
+
+      .action-menu {
+        opacity: 1;
       }
 
       .btn-icon:hover {
@@ -752,6 +1043,7 @@ export class PostsComponent implements OnInit {
   protected currentPage = signal(1);
   protected itemsPerPage = 6;
   protected statusDropdownOpen = signal<string>('');
+  protected actionMenuOpen = signal<string>('');
 
   protected authorOptions = computed(() => {
     const names = this.blogs()
@@ -894,6 +1186,35 @@ export class PostsComponent implements OnInit {
     this.currentPage.set(1);
   }
 
+  protected activeFilters = computed(() => {
+    const filters: Array<{ key: string; label: string }> = [];
+    const copy = this.copy();
+
+    const query = this.searchQuery().trim();
+    if (query) {
+      filters.push({ key: 'search', label: `${copy.postsFilterSearch}: ${query}` });
+    }
+
+    const status = this.statusFilter();
+    if (status) {
+      filters.push({ key: 'status', label: `${copy.postsFilterStatus}: ${this.statusLabel(status)}` });
+    }
+
+    const author = this.authorFilter();
+    if (author) {
+      filters.push({ key: 'author', label: `${copy.postsFilterAuthor}: ${author}` });
+    }
+
+    const from = this.dateFrom();
+    const to = this.dateTo();
+    if (from || to) {
+      const range = [from || '...', to || '...'].join(' - ');
+      filters.push({ key: 'date', label: `${copy.postsFilterFrom}/${copy.postsFilterTo}: ${range}` });
+    }
+
+    return filters;
+  });
+
   protected onEdit(id: string): void {
     this.router.navigate(['/posts/edit', id]);
   }
@@ -903,6 +1224,60 @@ export class PostsComponent implements OnInit {
       this.statusDropdownOpen.set('');
     } else {
       this.statusDropdownOpen.set(postId);
+    }
+  }
+
+  protected closeStatusDropdown(): void {
+    this.statusDropdownOpen.set('');
+  }
+
+  protected toggleActionMenu(postId: string): void {
+    if (this.actionMenuOpen() === postId) {
+      this.actionMenuOpen.set('');
+    } else {
+      this.actionMenuOpen.set(postId);
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  protected handleDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement | null;
+    if (!target) {
+      this.closeActionMenu();
+      this.closeStatusDropdown();
+      return;
+    }
+
+    if (this.actionMenuOpen() && !target.closest('.action-menu')) {
+      this.closeActionMenu();
+    }
+
+    if (this.statusDropdownOpen() && !target.closest('.status-selector')) {
+      this.closeStatusDropdown();
+    }
+  }
+
+  protected closeActionMenu(): void {
+    this.actionMenuOpen.set('');
+  }
+
+  protected clearFilter(key: string): void {
+    switch (key) {
+      case 'search':
+        this.searchQuery.set('');
+        break;
+      case 'status':
+        this.statusFilter.set('');
+        break;
+      case 'author':
+        this.authorFilter.set('');
+        break;
+      case 'date':
+        this.dateFrom.set('');
+        this.dateTo.set('');
+        break;
+      default:
+        break;
     }
   }
 
@@ -919,28 +1294,29 @@ export class PostsComponent implements OnInit {
     try {
       if (newStatus === 'published') {
         await this.blogService.publishBlog(id);
-        this.toastService.success('Post published successfully');
+        this.toastService.success(this.copy().postsPublishSuccess);
       } else if (newStatus === 'review') {
         await this.blogService.submitForReview(id);
-        this.toastService.success('Post submitted for review');
+        this.toastService.success(this.copy().postsSubmitReviewSuccess);
       } else {
         // Draft - just update status
         await this.blogService.updateBlog(id, { status: 'draft' } as any);
-        this.toastService.success('Post status changed to draft');
+        this.toastService.success(this.copy().postsDraftSuccess);
       }
     } catch (error) {
-      this.toastService.error('Failed to change post status');
+      this.toastService.error(this.copy().postsStatusChangeError);
     }
   }
 
   protected async onPublish(id: string): Promise<void> {
+    this.closeActionMenu();
     const blog = this.blogs().find(b => b.id === id);
     if (!blog) return;
 
     const confirmed = await this.confirmationService.confirm({
-      title: 'Publish Post',
-      message: `Are you sure you want to publish "${blog.title}"? Once published, it will be visible to all users.`,
-      confirmText: 'Publish',
+      title: this.copy().postsPublishTitle,
+      message: this.copy().postsPublishMessage.replace('{title}', blog.title),
+      confirmText: this.copy().postsPublishConfirm,
       cancelText: this.copy().commonCancel,
       confirmButtonClass: 'primary'
     });
@@ -948,9 +1324,9 @@ export class PostsComponent implements OnInit {
     if (confirmed) {
       try {
         await this.blogService.publishBlog(id);
-        this.toastService.success('Post published successfully');
+        this.toastService.success(this.copy().postsPublishSuccess);
       } catch (error) {
-        this.toastService.error('Failed to publish post');
+        this.toastService.error(this.copy().postsPublishError);
       }
     }
   }
@@ -960,9 +1336,9 @@ export class PostsComponent implements OnInit {
     if (!blog) return;
 
     const confirmed = await this.confirmationService.confirm({
-      title: 'Submit for Review',
-      message: `Submit "${blog.title}" for review? An admin will need to approve it before it's published.`,
-      confirmText: 'Submit',
+      title: this.copy().postsSubmitReviewTitle,
+      message: this.copy().postsSubmitReviewMessage.replace('{title}', blog.title),
+      confirmText: this.copy().postsSubmitReviewConfirm,
       cancelText: this.copy().commonCancel,
       confirmButtonClass: 'primary'
     });
@@ -970,14 +1346,15 @@ export class PostsComponent implements OnInit {
     if (confirmed) {
       try {
         await this.blogService.submitForReview(id);
-        this.toastService.success('Post submitted for review');
+        this.toastService.success(this.copy().postsSubmitReviewSuccess);
       } catch (error) {
-        this.toastService.error('Failed to submit post for review');
+        this.toastService.error(this.copy().postsSubmitReviewError);
       }
     }
   }
 
   protected async onDelete(id: string): Promise<void> {
+    this.closeActionMenu();
     const confirmed = await this.confirmationService.confirm({
       title: this.copy().postsDeleteTitle,
       message: this.copy().postsDeleteMessage,
@@ -1002,7 +1379,23 @@ export class PostsComponent implements OnInit {
 
   protected onImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
-    img.src = 'https://placehold.co/600x400/e5e7eb/6b7280?text=Image+Not+Available';
+    const text = encodeURIComponent(this.copy().postsImageFallbackText);
+    img.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%23f1f5f9"/><stop offset="1" stop-color="%23e2e8f0"/></linearGradient></defs><rect width="600" height="400" fill="url(%23g)"/><rect x="210" y="140" width="180" height="120" rx="16" fill="%23e2e8f0" stroke="%23cbd5f5" stroke-width="2"/><circle cx="255" cy="180" r="14" fill="%2394a3b8"/><path d="M230 230l35-35 25 25 30-30 50 40" fill="none" stroke="%2394a3b8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><text x="300" y="290" text-anchor="middle" font-family="Segoe UI, Arial" font-size="16" fill="%2394a3b8">${text}</text></svg>`;
+    img.parentElement?.classList.add('is-fallback');
+  }
+
+  protected statusLabel(status: string): string {
+    const copy = this.copy();
+    switch (status) {
+      case 'draft':
+        return copy.postsFilterDraft;
+      case 'review':
+        return copy.postsFilterReview;
+      case 'published':
+        return copy.postsFilterPublished;
+      default:
+        return status;
+    }
   }
 
   private matchesDateRange(date: Date, from: string, to: string): boolean {
