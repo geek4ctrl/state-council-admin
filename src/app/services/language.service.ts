@@ -73,6 +73,25 @@ type AppCopy = {
   dashboardUsersEmailLabel: string;
   dashboardUsersRoleLabel: string;
   dashboardUsersJoinedLabel: string;
+  usersFiltersAria: string;
+  usersFilterSearch: string;
+  usersFilterSearchPlaceholder: string;
+  usersFilterRole: string;
+  usersFilterAllRoles: string;
+  usersFilterFrom: string;
+  usersFilterTo: string;
+  usersFilterReset: string;
+  usersRoleAdmin: string;
+  usersRoleUser: string;
+  usersStatusLabel: string;
+  usersStatusActive: string;
+  usersStatusLocked: string;
+  usersActionsLabel: string;
+  usersMakeAdmin: string;
+  usersMakeUser: string;
+  usersLock: string;
+  usersUnlock: string;
+  usersResetPassword: string;
   postsTitle: string;
   postsNewButton: string;
   postsCreateAriaLabel: string;
@@ -338,6 +357,25 @@ const translations: Record<Language, AppCopy> = {
     dashboardUsersEmailLabel: 'Email',
     dashboardUsersRoleLabel: 'Role',
     dashboardUsersJoinedLabel: 'Joined',
+    usersFiltersAria: 'User filters',
+    usersFilterSearch: 'Search',
+    usersFilterSearchPlaceholder: 'Search users',
+    usersFilterRole: 'Role',
+    usersFilterAllRoles: 'All roles',
+    usersFilterFrom: 'From',
+    usersFilterTo: 'To',
+    usersFilterReset: 'Reset',
+    usersRoleAdmin: 'Admin',
+    usersRoleUser: 'User',
+    usersStatusLabel: 'User status',
+    usersStatusActive: 'Active',
+    usersStatusLocked: 'Locked',
+    usersActionsLabel: 'User actions',
+    usersMakeAdmin: 'Make admin',
+    usersMakeUser: 'Make user',
+    usersLock: 'Lock',
+    usersUnlock: 'Unlock',
+    usersResetPassword: 'Reset password',
     postsTitle: 'All Posts',
     postsNewButton: 'New Post',
     postsCreateAriaLabel: 'Create a new blog post',
@@ -601,6 +639,25 @@ const translations: Record<Language, AppCopy> = {
     dashboardUsersEmailLabel: 'E-mail',
     dashboardUsersRoleLabel: 'Role',
     dashboardUsersJoinedLabel: 'Inscription',
+    usersFiltersAria: 'Filtres utilisateurs',
+    usersFilterSearch: 'Recherche',
+    usersFilterSearchPlaceholder: 'Rechercher des utilisateurs',
+    usersFilterRole: 'Role',
+    usersFilterAllRoles: 'Tous les roles',
+    usersFilterFrom: 'Du',
+    usersFilterTo: 'Au',
+    usersFilterReset: 'Reinitialiser',
+    usersRoleAdmin: 'Admin',
+    usersRoleUser: 'Utilisateur',
+    usersStatusLabel: 'Statut utilisateur',
+    usersStatusActive: 'Actif',
+    usersStatusLocked: 'Verrouille',
+    usersActionsLabel: 'Actions utilisateur',
+    usersMakeAdmin: 'Passer admin',
+    usersMakeUser: 'Passer utilisateur',
+    usersLock: 'Verrouiller',
+    usersUnlock: 'Deverrouiller',
+    usersResetPassword: 'Reinitialiser le mot de passe',
     postsTitle: 'Tous les articles',
     postsNewButton: 'Nouvel article',
     postsFilterSearch: 'Recherche',
