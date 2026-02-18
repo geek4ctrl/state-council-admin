@@ -205,7 +205,7 @@ import { ConfirmationService } from '../../services/confirmation.service';
                           type="button"
                           role="menuitem"
                         >
-                          {{ copy().postsFilterPublished }}
+                          {{ copy().postsPublishConfirm }}
                         </button>
                       }
                       <a
