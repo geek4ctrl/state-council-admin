@@ -685,6 +685,10 @@ import { ThemeService } from '../../services/theme.service';
     }
 
     .new-user {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
       text-align: center;
       font-size: 12px;
       color: var(--text-muted);
