@@ -2,30 +2,37 @@
 
 :root {
   color-scheme: light;
-  --bg: #f5f7fb;
-  --surface: #ffffff;
-  --surface-alt: #eef2f6;
-  --surface-elev: #f8fafc;
-  --text: #0f172a;
-  --text-muted: #64748b;
-  --text-subtle: #94a3b8;
-  --border: #e2e8f0;
-  --border-strong: #cbd5f5;
-  --primary: #0891b2;
-  --primary-strong: #0284c7;
-  --accent-1: #22d3ee;
-  --accent-2: #6366f1;
-  --accent-3: #34d399;
-  --danger: #dc3545;
-  --danger-strong: #b02a37;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --info: #3b82f6;
-  --overlay: rgba(15, 23, 42, 0.5);
-  --ring: 0 0 0 2px rgba(8, 145, 178, 0.35);
-  --shadow-soft: 0 6px 24px rgba(15, 23, 42, 0.08);
-  --shadow-strong: 0 18px 48px rgba(15, 23, 42, 0.12);
-  --shadow-card: 0 8px 30px rgba(15, 23, 42, 0.08);
+  --surface-0: #f6f3ee;
+  --surface-1: #ffffff;
+  --ink-strong: #1f2a24;
+  --ink-muted: #55645c;
+  --accent: #6f7f6d;
+  --accent-strong: #3f5a4a;
+  --accent-soft: rgba(111, 127, 109, 0.18);
+  --bg: var(--surface-0);
+  --surface: var(--surface-1);
+  --surface-alt: #f2eee7;
+  --surface-elev: #fbfaf7;
+  --text: var(--ink-strong);
+  --text-muted: var(--ink-muted);
+  --text-subtle: #7a887f;
+  --border: rgba(63, 90, 74, 0.16);
+  --border-strong: rgba(63, 90, 74, 0.28);
+  --primary: var(--accent-strong);
+  --primary-strong: #2f4a3a;
+  --accent-1: #bf9874;
+  --accent-2: #6f7f6d;
+  --accent-3: #3f5a4a;
+  --danger: #b13c3c;
+  --danger-strong: #8f2f2f;
+  --success: #2f7d5f;
+  --warning: #c58a3e;
+  --info: #51756a;
+  --overlay: rgba(31, 42, 36, 0.42);
+  --ring: 0 0 0 3px rgba(191, 152, 116, 0.45);
+  --shadow-soft: 0 12px 30px rgba(19, 27, 23, 0.08);
+  --shadow-strong: 0 18px 45px rgba(19, 27, 23, 0.12);
+  --shadow-card: 0 10px 28px rgba(19, 27, 23, 0.1);
   --space-1: 12px;
   --space-2: 16px;
   --space-3: 20px;
@@ -70,19 +77,16 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--bg);
-  background-image:
-    radial-gradient(circle at 20% 10%, rgba(124, 109, 243, 0.16), transparent 45%),
-    radial-gradient(circle at 80% 0%, rgba(34, 211, 238, 0.12), transparent 40%),
-    radial-gradient(circle at 10% 80%, rgba(52, 211, 153, 0.12), transparent 45%);
   color: var(--text);
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 1.55;
 }
 
 button,
 input,
 select,
 textarea {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 :focus-visible {
@@ -105,11 +109,16 @@ h1, h2, h3, h4, h5, h6 {
 
 button {
   font-family: inherit;
+  border-radius: 999px;
 }
 
 a {
   text-decoration: none;
-  color: inherit;
+  color: var(--accent-strong);
+}
+
+a:hover {
+  color: var(--primary-strong);
 }
 
 .filter-panel {
