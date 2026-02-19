@@ -78,11 +78,13 @@ interface NavItem {
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--border);
-      background: linear-gradient(120deg, rgba(124, 109, 243, 0.15), rgba(34, 211, 238, 0.08));
+      background: linear-gradient(180deg, var(--surface) 0%, var(--surface-elev) 100%);
+      height: 72px;
+      padding: 0 20px;
     }
 
     .logo {
-      padding: 24px 20px;
+      padding: 0;
       flex: 1;
     }
 
@@ -153,9 +155,9 @@ interface NavItem {
     }
 
     .nav-item.active {
-      background: linear-gradient(120deg, rgba(124, 109, 243, 0.35), rgba(34, 211, 238, 0.12));
+      background: rgba(17, 24, 39, 0.08);
       color: var(--text);
-      box-shadow: inset 0 0 0 1px rgba(124, 109, 243, 0.45);
+      box-shadow: none;
       font-weight: 600;
     }
 
