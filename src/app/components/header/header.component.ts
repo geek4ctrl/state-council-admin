@@ -179,9 +179,15 @@ import { ThemeService } from '../../services/theme.service';
     }
 
     .language-option.is-active {
-      background: linear-gradient(120deg, rgba(124, 109, 243, 0.9), rgba(34, 211, 238, 0.7));
-      color: #ffffff;
-      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.35);
+      background: rgba(17, 24, 39, 0.12);
+      color: var(--text);
+      box-shadow: none;
+    }
+
+    :host-context([data-theme="dark"]) .language-option.is-active {
+      background: rgba(229, 231, 235, 0.16);
+      color: #f8fafc;
+      box-shadow: inset 0 0 0 1px rgba(248, 250, 252, 0.22);
     }
 
     .theme-icon {
