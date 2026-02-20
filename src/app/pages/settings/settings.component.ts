@@ -79,6 +79,12 @@ import { AvatarUploadComponent } from '../../components/avatar-upload/avatar-upl
 
         <div class="section">
           <h2>{{ copy().settingsAccountTitle }}</h2>
+          @if (formData.bio) {
+            <div class="bio-section">
+              <span class="bio-label">{{ copy().settingsBioLabel }}</span>
+              <p class="bio-text">{{ formData.bio }}</p>
+            </div>
+          }
           <div class="info-grid">
             <div class="info-item">
               <span class="info-label">{{ copy().settingsUserIdLabel }}</span>
@@ -134,6 +140,32 @@ import { AvatarUploadComponent } from '../../components/avatar-upload/avatar-upl
       margin: 0 0 24px 0;
       color: var(--text-subtle);
       font-size: 12px;
+    }
+
+    .bio-section {
+      margin-bottom: 20px;
+      padding: 16px;
+      background: var(--surface-alt);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .bio-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .bio-text {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text);
+      white-space: pre-wrap;
     }
 
     .avatar-section {

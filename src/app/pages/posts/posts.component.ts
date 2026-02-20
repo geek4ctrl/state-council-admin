@@ -2,11 +2,13 @@ import { Component, computed, signal, inject, OnInit, effect, HostListener } fro
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { BlogService } from '../../services/blog.service';
+import { UserService } from '../../services/user.service';
 import { SearchService } from '../../services/search.service';
 import { LanguageService } from '../../services/language.service';
 import { ToastService } from '../../services/toast.service';
 import { ConfirmationService } from '../../services/confirmation.service';
 import { ExportService } from '../../services/export.service';
+import { getUserAvatar } from '../../models/user.model';
 
 @Component({
   selector: 'app-posts',
@@ -186,6 +188,16 @@ import { ExportService } from '../../services/export.service';
               </p>
               <p class="post-excerpt">{{ blog.excerpt }}</p>
 
+              <div class="post-author">
+                <img 
+                  [src]="getAuthorAvatar(blog.authorId)" 
+                  [alt]="blog.authorName"
+                  class="author-avatar"
+                  (error)="onAvatarError($event, blog.authorName)"
+                />
+                <span class="author-name">{{ blog.authorName }}</span>
+              </div>
+
               <div class="post-meta" [attr.aria-label]="copy().postsMetaLabel">
                 <span class="post-time" [attr.aria-label]="copy().postsTimeLabel">
                   <span class="ui-icon is-clock" aria-hidden="true"></span>
@@ -293,6 +305,32 @@ import { ExportService } from '../../services/export.service';
     </div>
   `,
   styles: [`
+    .post-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 16px 0;
+      padding: 12px;
+      background: var(--surface-alt);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .author-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .author-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
     .page-actions {
       display: inline-flex;
       align-items: center;
@@ -783,6 +821,19 @@ export class PostsComponent implements OnInit {
 
   private exportDateStamp(): string {
     return new Date().toISOString().slice(0, 10);
+  }
+
+  protected getAuthorAvatar(authorId: string): string {
+    // Generate a placeholder avatar based on author name
+    // In a real app, you'd fetch the user's avatar from UserService
+    const blog = this.blogs().find(b => b.authorId === authorId);
+    const authorName = blog?.authorName || 'User';
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(authorName)}&size=64&background=007FFF&color=fff`;
+  }
+
+  protected onAvatarError(event: Event, authorName: string): void {
+    const img = event.target as HTMLImageElement;
+    img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(authorName)}&size=64&background=007FFF&color=fff`;
   }
 }
 

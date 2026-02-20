@@ -5,6 +5,7 @@ import { AuditLog } from '../../models/audit-log.model';
 import { LanguageService } from '../../services/language.service';
 import { ExportService } from '../../services/export.service';
 import { ToastService } from '../../services/toast.service';
+import { getUserAvatar } from '../../models/user.model';
 
 @Component({
   selector: 'app-audit-log',
@@ -115,9 +116,17 @@ import { ToastService } from '../../services/toast.service';
                     </time>
                   </td>
                   <td [attr.data-label]="copy().auditLogTableActor">
-                    <div class="cell-stack">
-                      <span class="primary">{{ formatActor(log) }}</span>
-                      <span class="secondary" *ngIf="log.actorId">#{{ log.actorId }}</span>
+                    <div class="actor-cell">
+                      <img 
+                        [src]="getActorAvatar(log)" 
+                        [alt]="formatActor(log)"
+                        class="actor-avatar"
+                        (error)="onAvatarError($event, formatActor(log))"
+                      />
+                      <div class="cell-stack">
+                        <span class="primary">{{ formatActor(log) }}</span>
+                        <span class="secondary" *ngIf="log.actorId">#{{ log.actorId }}</span>
+                      </div>
                     </div>
                   </td>
                   <td [attr.data-label]="copy().auditLogTableAction">
@@ -266,6 +275,21 @@ import { ToastService } from '../../services/toast.service';
       display: flex;
       flex-direction: column;
       gap: 4px;
+    }
+
+    .actor-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .actor-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
     }
 
     .cell-stack .primary {
@@ -685,5 +709,15 @@ export class AuditLogComponent implements OnInit {
   private resetPageAndReload(): void {
     this.currentPage.set(1);
     void this.loadLogs();
+  }
+
+  protected getActorAvatar(log: AuditLog): string {
+    const actorName = this.formatActor(log);
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(actorName)}&size=72&background=007FFF&color=fff`;
+  }
+
+  protected onAvatarError(event: Event, actorName: string): void {
+    const img = event.target as HTMLImageElement;
+    img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(actorName)}&size=72&background=007FFF&color=fff`;
   }
 }

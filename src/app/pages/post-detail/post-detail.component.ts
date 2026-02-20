@@ -6,6 +6,7 @@ import { Blog } from '../../models/blog.model';
 import { ConfirmationService } from '../../services/confirmation.service';
 import { LanguageService } from '../../services/language.service';
 import { ToastService } from '../../services/toast.service';
+import { getUserAvatar } from '../../models/user.model';
 
 @Component({
   selector: 'app-post-detail',
@@ -31,7 +32,19 @@ import { ToastService } from '../../services/toast.service';
             @if (blog.location) {
               <span>📍 {{ blog.location }}</span>
             }
-            <span>✍️ {{ blog.authorName }}</span>
+          </div>
+
+          <div class="author-section">
+            <img
+              [src]="getAuthorAvatar(blog.authorName)"
+              [alt]="blog.authorName"
+              class="author-avatar"
+              (error)="onAvatarError($event, blog.authorName)"
+            />
+            <div class="author-info">
+              <span class="author-label">Written by</span>
+              <span class="author-name">{{ blog.authorName }}</span>
+            </div>
           </div>
 
           <div class="post-image">
@@ -174,9 +187,49 @@ import { ToastService } from '../../services/toast.service';
       gap: 24px;
       font-size: 12px;
       color: var(--text-muted);
-      margin-bottom: 32px;
+      margin-bottom: 24px;
       padding-bottom: 24px;
       border-bottom: 1px solid var(--border);
+    }
+
+    .author-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      margin-bottom: 32px;
+      background: var(--surface-alt);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .author-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .author-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .author-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--text-subtle);
+    }
+
+    .author-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
     }
 
     .post-image {
@@ -467,6 +520,15 @@ export class PostDetailComponent implements OnInit {
     } catch {
       this.toastService.error(this.copy().postsDeleteError);
     }
+  }
+
+  protected getAuthorAvatar(authorName: string): string {
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(authorName)}&size=112&background=007FFF&color=fff`;
+  }
+
+  protected onAvatarError(event: Event, authorName: string): void {
+    const img = event.target as HTMLImageElement;
+    img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(authorName)}&size=112&background=007FFF&color=fff`;
   }
 }
 
