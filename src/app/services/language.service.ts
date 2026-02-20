@@ -325,9 +325,21 @@ type AppCopy = {
   headerThemeLabel: string;
   headerLanguageLabel: string;
   headerMenuToggleLabel: string;
-  utilityMenuLabel: string;
-  themeLightLabel: string;
+  utilityMenuLabel: string;  themeLightLabel: string;
   themeDarkLabel: string;
+  searchGlobalPlaceholder: string;
+  searchNoResults: string;
+  searchResultsCount: string;
+  searchResultPost: string;
+  searchResultUser: string;
+  searchResultAudit: string;
+  searchMatchedIn: string;
+  searchClearFilters: string;
+  searchSaveFilter: string;
+  searchLoadFilter: string;
+  advancedFiltersTitle: string;
+  advancedFiltersApply: string;
+  advancedFiltersClear: string;
 };
 
 const translations: Record<Language, AppCopy> = {
@@ -655,7 +667,20 @@ const translations: Record<Language, AppCopy> = {
     headerMenuToggleLabel: 'Toggle navigation menu',
     utilityMenuLabel: 'Preferences',
     themeLightLabel: 'Light',
-    themeDarkLabel: 'Dark'
+    themeDarkLabel: 'Dark',
+    searchGlobalPlaceholder: 'Search everything...',
+    searchNoResults: 'No results found',
+    searchResultsCount: '{count} results found',
+    searchResultPost: 'Post',
+    searchResultUser: 'User',
+    searchResultAudit: 'Audit Log',
+    searchMatchedIn: 'Matched in:',
+    searchClearFilters: 'Clear all filters',
+    searchSaveFilter: 'Save filter',
+    searchLoadFilter: 'Load saved filter',
+    advancedFiltersTitle: 'Advanced Filters',
+    advancedFiltersApply: 'Apply Filters',
+    advancedFiltersClear: 'Clear Filters'
   },
   fr: {
     logoText: 'Conseil d\'État de la RDC',
@@ -981,7 +1006,20 @@ const translations: Record<Language, AppCopy> = {
     headerMenuToggleLabel: 'Basculer le menu de navigation',
     utilityMenuLabel: 'Préférences',
     themeLightLabel: 'Clair',
-    themeDarkLabel: 'Sombre'
+    themeDarkLabel: 'Sombre',
+    searchGlobalPlaceholder: 'Rechercher partout...',
+    searchNoResults: 'Aucun résultat trouvé',
+    searchResultsCount: '{count} résultats trouvés',
+    searchResultPost: 'Article',
+    searchResultUser: 'Utilisateur',
+    searchResultAudit: 'Journal d\'audit',
+    searchMatchedIn: 'Trouvé dans :',
+    searchClearFilters: 'Effacer tous les filtres',
+    searchSaveFilter: 'Enregistrer le filtre',
+    searchLoadFilter: 'Charger un filtre sauvegardé',
+    advancedFiltersTitle: 'Filtres avancés',
+    advancedFiltersApply: 'Appliquer les filtres',
+    advancedFiltersClear: 'Effacer les filtres'
   }
 };
 

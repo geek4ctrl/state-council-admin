@@ -2,10 +2,11 @@ import { Component, computed, inject, output } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { LanguageService } from '../../services/language.service';
 import { ThemeService } from '../../services/theme.service';
+import { GlobalSearchComponent } from '../global-search/global-search.component';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [GlobalSearchComponent],
   template: `
     <header class="header" role="banner">
       <button
@@ -19,6 +20,7 @@ import { ThemeService } from '../../services/theme.service';
         <span></span>
       </button>
       <h2 class="greeting">{{ copy().headerGreetingPrefix }}, {{ userName() }}</h2>
+      <app-global-search />
       <div class="header-actions">
         <div class="action-group">
           <span class="action-label">{{ copy().headerThemeLabel }}</span>
@@ -109,14 +111,16 @@ import { ThemeService } from '../../services/theme.service';
       font-weight: 500;
       margin: 0;
       color: var(--text);
-      flex: 1;
       letter-spacing: 0.2px;
+      white-space: nowrap;
+      margin-right: 20px;
     }
 
     .header-actions {
       display: flex;
       align-items: center;
       gap: 16px;
+      margin-left: auto;
     }
 
     .action-group {
@@ -221,6 +225,11 @@ import { ThemeService } from '../../services/theme.service';
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        display: none;
+      }
+
+      app-global-search {
+        flex: 1;
       }
 
       .header-actions {
