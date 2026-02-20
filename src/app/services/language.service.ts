@@ -332,7 +332,7 @@ type AppCopy = {
 
 const translations: Record<Language, AppCopy> = {
   en: {
-    logoText: 'State Council',
+    logoText: 'Conseil d\'État RDC',
     loginRegisterTitle: 'Create your account',
     loginRegisterSubtitle: 'Fill in your details to get started',
     loginWelcomeTitle: 'Welcome to State Council',
@@ -597,7 +597,7 @@ const translations: Record<Language, AppCopy> = {
     settingsProfileUpdatedToast: 'Profile updated successfully',
     placeholderTitle: 'Coming Soon',
     placeholderSubtitle: 'This feature is under development',
-    sidebarTitle: 'State Council Admin',
+    sidebarTitle: 'Admin Conseil d\'État RDC',
     sidebarCloseLabel: 'Close navigation menu',
     sidebarNavDashboard: 'Dashboard',
     sidebarNavPosts: 'Posts',
@@ -658,7 +658,7 @@ const translations: Record<Language, AppCopy> = {
     themeDarkLabel: 'Dark'
   },
   fr: {
-    logoText: 'Conseil d\'État',
+    logoText: 'Conseil d\'État RDC',
     loginRegisterTitle: 'Créez votre compte',
     loginRegisterSubtitle: 'Renseignez vos informations pour commencer',
     loginWelcomeTitle: 'Bienvenue au Conseil d\'État',
