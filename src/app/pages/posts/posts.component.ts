@@ -2,6 +2,7 @@ import { Component, computed, signal, inject, OnInit, effect, HostListener } fro
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { BlogService } from '../../services/blog.service';
+import { SearchService } from '../../services/search.service';
 import { LanguageService } from '../../services/language.service';
 import { ToastService } from '../../services/toast.service';
 import { ConfirmationService } from '../../services/confirmation.service';
@@ -55,6 +56,16 @@ import { ExportService } from '../../services/export.service';
               <option value="draft">{{ copy().postsFilterDraft }}</option>
               <option value="review">{{ copy().postsFilterReview }}</option>
               <option value="published">{{ copy().postsFilterPublished }}</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="post-category">{{ copy().postsCategoryLabel }}</label>
+            <select id="post-category" class="filter-control" [value]="categoryFilter()" (change)="onCategoryChange($event)">
+              <option value="">All Categories</option>
+              <option value="event">{{ copy().postFormCategoryEvent }}</option>
+              <option value="announcement">{{ copy().postFormCategoryAnnouncement }}</option>
+              <option value="news">{{ copy().postFormCategoryNews }}</option>
             </select>
           </div>
 
@@ -299,6 +310,7 @@ import { ExportService } from '../../services/export.service';
 })
 export class PostsComponent implements OnInit {
   private blogService = inject(BlogService);
+  private searchService = inject(SearchService);
   private languageService = inject(LanguageService);
   private router = inject(Router);
   private toastService = inject(ToastService);
@@ -310,6 +322,7 @@ export class PostsComponent implements OnInit {
   protected blogs = this.blogService.getBlogs();
   protected searchQuery = signal('');
   protected statusFilter = signal('');
+  protected categoryFilter = signal('');
   protected authorFilter = signal('');
   protected dateFrom = signal('');
   protected dateTo = signal('');
@@ -328,12 +341,17 @@ export class PostsComponent implements OnInit {
   protected filteredBlogs = computed(() => {
     const query = this.searchQuery().toLowerCase().trim();
     const status = this.statusFilter();
+    const category = this.categoryFilter();
     const author = this.authorFilter();
     const from = this.dateFrom();
     const to = this.dateTo();
 
     return this.blogs().filter((blog) => {
       if (status && blog.status !== status) {
+        return false;
+      }
+
+      if (category && blog.category !== category) {
         return false;
       }
 
@@ -378,6 +396,7 @@ export class PostsComponent implements OnInit {
   private filterEffect = effect(() => {
     this.searchQuery();
     this.statusFilter();
+    this.categoryFilter();
     this.authorFilter();
     this.dateFrom();
     this.dateTo();
@@ -435,6 +454,11 @@ export class PostsComponent implements OnInit {
     this.statusFilter.set(value);
   }
 
+  protected onCategoryChange(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value;
+    this.categoryFilter.set(value);
+  }
+
   protected onAuthorChange(event: Event): void {
     const value = (event.target as HTMLSelectElement).value;
     this.authorFilter.set(value);
@@ -453,6 +477,7 @@ export class PostsComponent implements OnInit {
   protected resetFilters(): void {
     this.searchQuery.set('');
     this.statusFilter.set('');
+    this.categoryFilter.set('');
     this.authorFilter.set('');
     this.dateFrom.set('');
     this.dateTo.set('');
@@ -471,6 +496,11 @@ export class PostsComponent implements OnInit {
     const status = this.statusFilter();
     if (status) {
       filters.push({ key: 'status', label: `${copy.postsFilterStatus}: ${this.statusLabel(status)}` });
+    }
+
+    const category = this.categoryFilter();
+    if (category) {
+      filters.push({ key: 'category', label: `${copy.postsCategoryLabel}: ${category}` });
     }
 
     const author = this.authorFilter();
@@ -541,6 +571,9 @@ export class PostsComponent implements OnInit {
         break;
       case 'status':
         this.statusFilter.set('');
+        break;
+      case 'category':
+        this.categoryFilter.set('');
         break;
       case 'author':
         this.authorFilter.set('');
