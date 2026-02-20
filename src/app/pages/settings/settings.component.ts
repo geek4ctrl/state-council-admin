@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 import { LanguageService } from '../../services/language.service';
+import { AvatarUploadComponent } from '../../components/avatar-upload/avatar-upload.component';
 
 @Component({
   selector: 'app-settings',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, AvatarUploadComponent],
   template: `
     <div class="settings-page">
       <h1 class="page-title">{{ copy().settingsTitle }}</h1>
@@ -17,41 +18,12 @@ import { LanguageService } from '../../services/language.service';
           <h2>{{ copy().settingsProfileTitle }}</h2>
           <p class="section-subtitle">{{ copy().settingsProfileSubtitle }}</p>
 
-          <div class="avatar-section">
-            <img
-              [src]="formData.avatar"
-              [attr.alt]="copy().settingsAvatarAlt"
-              class="avatar-large"
-              loading="lazy"
-              decoding="async"
-              (error)="onImageError($event)"
-            />
-            <div class="avatar-info">
-              <p class="avatar-label">{{ copy().settingsProfilePictureLabel }}</p>
-              <div class="avatar-input-wrap">
-                <input
-                  #avatarInput
-                  type="url"
-                  [(ngModel)]="formData.avatar"
-                  [placeholder]="copy().settingsAvatarPlaceholder"
-                  class="avatar-input"
-                />
-                <div class="avatar-preview" aria-hidden="true">
-                  <img
-                    [src]="formData.avatar"
-                    [attr.alt]="copy().settingsAvatarAlt"
-                    (error)="onImageError($event)"
-                  />
-                </div>
-              </div>
-              <div class="avatar-actions">
-                <button class="btn-link" type="button" (click)="avatarInput.focus()">
-                  {{ copy().settingsAvatarChangeLabel }}
-                </button>
-                <p class="field-help">{{ copy().settingsAvatarHelp }}</p>
-              </div>
-            </div>
-          </div>
+          <app-avatar-upload
+            [label]="copy().settingsProfilePictureLabel"
+            [currentAvatarUrl]="formData.avatar"
+            [userEmail]="formData.email"
+            (avatarChange)="onAvatarChange($event)"
+          />
 
           <form (ngSubmit)="onSave()">
             <div class="profile-grid">
@@ -76,6 +48,18 @@ import { LanguageService } from '../../services/language.service';
                   required
                 />
                 <p class="field-help">{{ copy().settingsEmailHelp }}</p>
+              </div>
+
+              <div class="form-group full-width">
+                <label for="bio">{{ copy().settingsBioLabel }}</label>
+                <textarea
+                  id="bio"
+                  [(ngModel)]="formData.bio"
+                  name="bio"
+                  rows="3"
+                  [placeholder]="copy().settingsBioPlaceholder"
+                ></textarea>
+                <p class="field-help">{{ copy().settingsBioHelp }}</p>
               </div>
             </div>
 
@@ -258,6 +242,10 @@ import { LanguageService } from '../../services/language.service';
       gap: 20px;
     }
 
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
     .form-group {
       margin-bottom: 24px;
     }
@@ -282,6 +270,24 @@ import { LanguageService } from '../../services/language.service';
     }
 
     input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: inherit;
+      background: var(--surface);
+      color: var(--text);
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    textarea:focus {
       outline: none;
       border-color: var(--primary);
     }
@@ -426,7 +432,8 @@ export class SettingsComponent {
   protected formData = {
     name: this.user()?.name || '',
     email: this.user()?.email || '',
-    avatar: this.user()?.avatar || ''
+    avatar: this.user()?.avatar || '',
+    bio: this.user()?.bio || ''
   };
 
   protected lastSavedAt = signal<Date | null>(null);
@@ -446,6 +453,10 @@ export class SettingsComponent {
     this.authService.updateProfile(this.formData);
     this.toastService.success(this.copy().settingsProfileUpdatedToast);
     this.lastSavedAt.set(new Date());
+  }
+
+  protected onAvatarChange(avatarUrl: string): void {
+    this.formData.avatar = avatarUrl;
   }
 
   protected onImageError(event: Event): void {

@@ -267,6 +267,9 @@ type AppCopy = {
   settingsRoleLabel: string;
   settingsMemberSinceLabel: string;
   settingsProfileUpdatedToast: string;
+  settingsBioLabel: string;
+  settingsBioPlaceholder: string;
+  settingsBioHelp: string;
   placeholderTitle: string;
   placeholderSubtitle: string;
   sidebarTitle: string;
@@ -625,6 +628,9 @@ const translations: Record<Language, AppCopy> = {
     settingsRoleLabel: 'Role',
     settingsMemberSinceLabel: 'Member Since',
     settingsProfileUpdatedToast: 'Profile updated successfully',
+    settingsBioLabel: 'Bio',
+    settingsBioPlaceholder: 'Tell us about yourself...',
+    settingsBioHelp: 'A brief description about you (optional)',
     placeholderTitle: 'Coming Soon',
     placeholderSubtitle: 'This feature is under development',
     sidebarTitle: 'State Council of the DRC Admin',
@@ -982,6 +988,9 @@ const translations: Record<Language, AppCopy> = {
     settingsRoleLabel: 'Rôle',
     settingsMemberSinceLabel: 'Membre depuis',
     settingsProfileUpdatedToast: 'Profil mis à jour avec succès',
+    settingsBioLabel: 'Bio',
+    settingsBioPlaceholder: 'Parlez-nous de vous...',
+    settingsBioHelp: 'Une brève description de vous (facultatif)',
     placeholderTitle: 'Bientôt disponible',
     placeholderSubtitle: 'Cette fonctionnalité est en cours de développement',
     sidebarTitle: 'Administration Conseil d\'État de la RDC',
