@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { LanguageService } from '../../services/language.service';
 import { ThemeService } from '../../services/theme.service';
 import { GlobalSearchComponent } from '../global-search/global-search.component';
+import { getUserAvatar } from '../../models/user.model';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +23,12 @@ import { GlobalSearchComponent } from '../global-search/global-search.component'
       <h2 class="greeting">{{ copy().headerGreetingPrefix }}, {{ userName() }}</h2>
       <app-global-search />
       <div class="header-actions">
+        <img 
+          [src]="userAvatar()" 
+          [alt]="userName()"
+          class="user-avatar"
+          (error)="onAvatarError($event)"
+        />
         <div class="action-group">
           <span class="action-label">{{ copy().headerThemeLabel }}</span>
           <button
@@ -121,6 +128,21 @@ import { GlobalSearchComponent } from '../global-search/global-search.component'
       align-items: center;
       gap: 16px;
       margin-left: auto;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .user-avatar:hover {
+      border-color: var(--primary);
+      transform: scale(1.05);
     }
 
     .action-group {
@@ -265,6 +287,12 @@ export class HeaderComponent {
     return user?.name || this.copy().headerGuestName;
   });
 
+  protected userAvatar = computed(() => {
+    const user = this.authService.getCurrentUser()();
+    if (!user) return '';
+    return getUserAvatar({ email: user.email, avatar: user.avatar });
+  });
+
   protected themeIcon = computed(() =>
     this.themeService.themeName() === 'dark' ? '☀' : '🌙'
   );
@@ -281,6 +309,14 @@ export class HeaderComponent {
 
   protected setLanguage(value: 'en' | 'fr'): void {
     this.languageService.setLanguage(value);
+  }
+
+  protected onAvatarError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    const user = this.authService.getCurrentUser()();
+    if (user) {
+      img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&size=80&background=007FFF&color=fff`;
+    }
   }
 }
 
