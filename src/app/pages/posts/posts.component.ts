@@ -5,6 +5,7 @@ import { BlogService } from '../../services/blog.service';
 import { LanguageService } from '../../services/language.service';
 import { ToastService } from '../../services/toast.service';
 import { ConfirmationService } from '../../services/confirmation.service';
+import { ExportService } from '../../services/export.service';
 
 @Component({
   selector: 'app-posts',
@@ -17,13 +18,21 @@ import { ConfirmationService } from '../../services/confirmation.service';
             <h1 id="page-title">{{ copy().postsTitle }}</h1>
             <span class="page-count">{{ totalBlogs() }} {{ copy().postsCountSuffix }}</span>
           </div>
-          <button
-            class="btn-primary"
-            (click)="onCreatePost()"
-            [attr.aria-label]="copy().postsCreateAriaLabel"
-          >
-            <span class="icon" aria-hidden="true">+</span> {{ copy().postsNewButton }}
-          </button>
+          <div class="page-actions">
+            <button class="btn-secondary" type="button" (click)="exportPostsCsv()">
+              {{ copy().exportCsvText }}
+            </button>
+            <button class="btn-secondary" type="button" (click)="exportPostsPdf()">
+              {{ copy().exportPdfText }}
+            </button>
+            <button
+              class="btn-primary"
+              (click)="onCreatePost()"
+              [attr.aria-label]="copy().postsCreateAriaLabel"
+            >
+              <span class="icon" aria-hidden="true">+</span> {{ copy().postsNewButton }}
+            </button>
+          </div>
         </div>
 
         <div class="filters filter-panel" role="search" aria-label="Post filters">
@@ -272,7 +281,21 @@ import { ConfirmationService } from '../../services/confirmation.service';
       }
     </div>
   `,
-  styles: []
+  styles: [`
+    .page-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 640px) {
+      .page-actions {
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
+  `]
 })
 export class PostsComponent implements OnInit {
   private blogService = inject(BlogService);
@@ -280,6 +303,7 @@ export class PostsComponent implements OnInit {
   private router = inject(Router);
   private toastService = inject(ToastService);
   private confirmationService = inject(ConfirmationService);
+  private exportService = inject(ExportService);
 
   protected copy = this.languageService.copy;
 
@@ -668,6 +692,64 @@ export class PostsComponent implements OnInit {
     }
 
     return true;
+  }
+
+  protected exportPostsCsv(): void {
+    const rows = this.buildPostRows(false);
+    if (!rows.length) {
+      this.toastService.info(this.copy().exportNoData);
+      return;
+    }
+
+    const filename = `posts-${this.exportDateStamp()}.csv`;
+    this.exportService.downloadCsv(filename, this.postExportHeaders(), rows);
+    this.toastService.success(this.copy().exportStarted);
+  }
+
+  protected exportPostsPdf(): void {
+    const rows = this.buildPostRows(true);
+    if (!rows.length) {
+      this.toastService.info(this.copy().exportNoData);
+      return;
+    }
+
+    const filename = `posts-${this.exportDateStamp()}.pdf`;
+    this.exportService.downloadPdf(
+      filename,
+      this.copy().postsTitle,
+      this.postExportHeaders(),
+      rows
+    );
+    this.toastService.success(this.copy().exportStarted);
+  }
+
+  private postExportHeaders(): string[] {
+    const copy = this.copy();
+    return [
+      copy.postFormTitleLabel,
+      copy.postsFilterStatus,
+      copy.postsCategoryLabel,
+      copy.postsFilterAuthor,
+      copy.postFormDateLabel,
+      copy.exportCreatedLabel,
+      copy.exportUpdatedLabel
+    ];
+  }
+
+  private buildPostRows(useLocaleDates: boolean): Array<Array<string>> {
+    return this.filteredBlogs().map((blog) => [
+      blog.title,
+      this.statusLabel(blog.status),
+      blog.category,
+      blog.authorName,
+      useLocaleDates ? this.formatDate(blog.date) : blog.date.toISOString(),
+      useLocaleDates ? this.formatDate(blog.createdAt) : blog.createdAt.toISOString(),
+      useLocaleDates ? this.formatDate(blog.updatedAt) : blog.updatedAt.toISOString()
+    ]);
+  }
+
+  private exportDateStamp(): string {
+    return new Date().toISOString().slice(0, 10);
   }
 }
 

@@ -2,9 +2,13 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { BlogService } from '../../services/blog.service';
+import { AuditLogService } from '../../services/audit-log.service';
 import { LanguageService } from '../../services/language.service';
 import { ToastService } from '../../services/toast.service';
+import { UserService } from '../../services/user.service';
+import { ExportService } from '../../services/export.service';
 import { BlogStatus } from '../../models/blog.model';
+import { AuditLog } from '../../models/audit-log.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,6 +17,98 @@ import { BlogStatus } from '../../models/blog.model';
     <div class="dashboard" role="main">
       <h1 id="dashboard-title">{{ copy().dashboardTitle }}</h1>
       <p class="page-subtitle">{{ copy().dashboardSubtitle }}</p>
+
+      <section class="analytics-section" aria-labelledby="analytics-title">
+        <div class="section-header">
+          <div>
+            <h2 id="analytics-title">{{ copy().dashboardAnalyticsTitle }}</h2>
+            <p class="section-subtitle">{{ copy().dashboardAnalyticsSubtitle }}</p>
+          </div>
+          <div class="section-actions">
+            <button class="btn-secondary" type="button" (click)="exportReportCsv()">
+              {{ copy().dashboardReportExportCsv }}
+            </button>
+            <button class="btn-secondary" type="button" (click)="exportReportPdf()">
+              {{ copy().dashboardReportExportPdf }}
+            </button>
+          </div>
+        </div>
+
+        @if (analyticsLoading()) {
+          <p class="empty-message state-message is-loading" data-icon="..." role="status">
+            {{ copy().dashboardAnalyticsLoading }}
+          </p>
+        } @else if (analyticsError()) {
+          <p class="empty-message state-message is-error" data-icon="!" role="status">
+            {{ copy().dashboardAnalyticsError }}
+          </p>
+        } @else {
+          <div class="analytics-grid">
+            <article class="kpi-card">
+              <div class="kpi-header">
+                <h3>{{ copy().dashboardAnalyticsPostsLabel }}</h3>
+                <span class="kpi-range">{{ activityWindowLabel() }}</span>
+              </div>
+              <div class="kpi-main">{{ totalPosts() }}</div>
+              <div class="kpi-sub">
+                <span>{{ copy().dashboardAnalyticsPublishedLabel }}: {{ publishedPosts() }}</span>
+                <span>{{ copy().dashboardAnalyticsDraftLabel }}: {{ draftPosts() }}</span>
+                <span>{{ copy().dashboardAnalyticsReviewLabel }}: {{ reviewPosts() }}</span>
+              </div>
+            </article>
+
+            <article class="kpi-card">
+              <div class="kpi-header">
+                <h3>{{ copy().dashboardAnalyticsUsersLabel }}</h3>
+                <span class="kpi-range">{{ activityWindowLabel() }}</span>
+              </div>
+              <div class="kpi-main">{{ totalUsers() }}</div>
+              <div class="kpi-sub">
+                <span>{{ copy().dashboardAnalyticsActiveUsersLabel }}: {{ activeUsers() }}</span>
+                <span>{{ copy().dashboardAnalyticsNewUsersLabel }}: {{ newUsersCount() }}</span>
+              </div>
+            </article>
+
+            <article class="kpi-card">
+              <div class="kpi-header">
+                <h3>{{ copy().dashboardAnalyticsLoginsLabel }}</h3>
+                <span class="kpi-range">{{ activityWindowLabel() }}</span>
+              </div>
+              <div class="kpi-main">{{ loginCount() }}</div>
+              <div class="kpi-sub">
+                <span>{{ copy().dashboardAnalyticsUserActivityLabel }}: {{ userActivityCount() }}</span>
+                <span>{{ copy().dashboardAnalyticsPostActivityLabel }}: {{ postActivityCount() }}</span>
+              </div>
+            </article>
+
+            <article class="kpi-card kpi-top-content">
+              <div class="kpi-header">
+                <h3>{{ copy().dashboardAnalyticsTopContentLabel }}</h3>
+                <span class="kpi-range">{{ copy().dashboardAnalyticsTopContentHint }}</span>
+              </div>
+              <div class="kpi-list" role="list">
+                @for (post of topContent(); track post.id) {
+                  <div class="kpi-list-item" role="listitem">
+                    <div>
+                      <div class="kpi-title">{{ post.title }}</div>
+                      <div class="kpi-meta">
+                        <span>{{ statusLabel(post.status) }}</span>
+                        <span>•</span>
+                        <span>{{ formatDate(post.updatedAt) }}</span>
+                      </div>
+                    </div>
+                    <span class="kpi-pill">{{ post.category }}</span>
+                  </div>
+                } @empty {
+                  <p class="empty-message state-message is-empty" data-icon="-" role="status">
+                    {{ copy().dashboardAnalyticsTopContentEmpty }}
+                  </p>
+                }
+              </div>
+            </article>
+          </div>
+        }
+      </section>
 
       <div class="recent-section">
         <div class="section-header">
@@ -168,6 +264,7 @@ import { BlogStatus } from '../../models/blog.model';
       padding: 32px;
       box-shadow: var(--shadow-soft);
     }
+
 
 
     .section-header {
@@ -517,7 +614,6 @@ import { BlogStatus } from '../../models/blog.model';
         padding: 18px;
       }
 
-
       .section-header {
         flex-direction: column;
         align-items: flex-start;
@@ -566,15 +662,34 @@ import { BlogStatus } from '../../models/blog.model';
 })
 export class DashboardComponent implements OnInit {
   private blogService = inject(BlogService);
+  private auditLogService = inject(AuditLogService);
   private languageService = inject(LanguageService);
+  private userService = inject(UserService);
   private router = inject(Router);
+  private exportService = inject(ExportService);
   private blogs = this.blogService.getBlogs();
+  private users = this.userService.getUsers();
   private toastService = inject(ToastService);
+  private auditLogs = signal<AuditLog[]>([]);
+  private activityWindowDays = 30;
 
   protected selectedStatus = signal<BlogStatus | 'all'>('all');
   protected selectedAuthor = signal<string>('all');
+  protected analyticsLoading = signal(true);
+  protected analyticsError = signal(false);
 
   protected copy = this.languageService.copy;
+
+  protected activityWindowStart = computed(() => {
+    const start = new Date();
+    start.setDate(start.getDate() - this.activityWindowDays);
+    start.setHours(0, 0, 0, 0);
+    return start;
+  });
+
+  protected activityWindowLabel = computed(() =>
+    this.copy().dashboardAnalyticsRangeLabel.replace('{days}', String(this.activityWindowDays))
+  );
 
   protected totalPosts = computed(() => this.blogs().length);
   protected eventCount = computed(() =>
@@ -590,6 +705,39 @@ export class DashboardComponent implements OnInit {
     [...this.blogs()].sort(
       (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     )
+  );
+
+  protected publishedPosts = computed(() => this.blogs().filter((blog) => blog.status === 'published').length);
+  protected draftPosts = computed(() => this.blogs().filter((blog) => blog.status === 'draft').length);
+  protected reviewPosts = computed(() => this.blogs().filter((blog) => blog.status === 'review').length);
+
+  protected totalUsers = computed(() => this.users().length);
+  protected activeUsers = computed(() => this.users().filter((user) => !user.locked).length);
+  protected newUsersCount = computed(() =>
+    this.users().filter((user) => user.createdAt >= this.activityWindowStart()).length
+  );
+
+  protected recentLogs = computed(() =>
+    this.auditLogs().filter((log) => log.createdAt >= this.activityWindowStart())
+  );
+
+  protected loginCount = computed(() =>
+    this.recentLogs().filter((log) => log.action === 'auth.login').length
+  );
+
+  protected userActivityCount = computed(() =>
+    this.recentLogs().filter((log) => log.action.startsWith('users.') || log.action === 'auth.register').length
+  );
+
+  protected postActivityCount = computed(() =>
+    this.recentLogs().filter((log) => log.action.startsWith('posts.')).length
+  );
+
+  protected topContent = computed(() =>
+    [...this.blogs()]
+      .filter((blog) => blog.status === 'published')
+      .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
+      .slice(0, 5)
   );
 
   protected authorOptions = computed(() => {
@@ -612,14 +760,50 @@ export class DashboardComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     try {
-      const loaded = await this.blogService.loadBlogs();
-      if (!loaded) {
+      const [postsLoaded, usersLoaded, auditLoaded] = await Promise.all([
+        this.blogService.loadBlogs(),
+        this.userService.loadUsers(),
+        this.loadAuditLogs()
+      ]);
+
+      if (!postsLoaded) {
         this.toastService.error(this.copy().dashboardLoadError);
       }
+
+      if (!usersLoaded) {
+        this.toastService.error(this.copy().dashboardUsersError);
+      }
+
+      if (!auditLoaded) {
+        this.toastService.error(this.copy().dashboardAnalyticsError);
+      }
+
+      this.analyticsError.set(!usersLoaded || !auditLoaded);
     } catch {
-      this.toastService.error(this.copy().dashboardLoadError);
+      this.analyticsError.set(true);
+      this.toastService.error(this.copy().dashboardAnalyticsError);
+    } finally {
+      this.analyticsLoading.set(false);
     }
 
+  }
+
+  private async loadAuditLogs(): Promise<boolean> {
+    try {
+      const from = this.activityWindowStart().toISOString();
+      const to = new Date().toISOString();
+      const { logs } = await this.auditLogService.listLogs({
+        from,
+        to,
+        limit: 200,
+        offset: 0
+      });
+      this.auditLogs.set(logs);
+      return true;
+    } catch {
+      this.auditLogs.set([]);
+      return false;
+    }
   }
 
   protected formatDate(date: Date): string {
@@ -665,6 +849,119 @@ export class DashboardComponent implements OnInit {
     const img = event.target as HTMLImageElement;
     img.src = 'https://placehold.co/600x400/e5e7eb/6b7280?text=Image+Not+Available';
     img.classList.add('is-fallback');
+  }
+
+  protected exportReportCsv(): void {
+    const rows = this.buildReportRows();
+    if (!rows.length) {
+      this.toastService.info(this.copy().exportNoData);
+      return;
+    }
+
+    const filename = `dashboard-report-${this.exportDateStamp()}.csv`;
+    this.exportService.downloadCsv(filename, this.reportHeaders(), rows);
+    this.toastService.success(this.copy().exportStarted);
+  }
+
+  protected exportReportPdf(): void {
+    const rows = this.buildReportRows();
+    if (!rows.length) {
+      this.toastService.info(this.copy().exportNoData);
+      return;
+    }
+
+    const title = this.copy().dashboardAnalyticsReportTitle;
+    const meta = [
+      {
+        label: this.copy().dashboardAnalyticsRangeLabel.replace('{days}', String(this.activityWindowDays)),
+        value: `${this.formatDate(this.activityWindowStart())} - ${this.formatDate(new Date())}`
+      },
+      { label: this.copy().dashboardAnalyticsPostsLabel, value: String(this.totalPosts()) },
+      { label: this.copy().dashboardAnalyticsUsersLabel, value: String(this.totalUsers()) }
+    ];
+
+    const filename = `dashboard-report-${this.exportDateStamp()}.pdf`;
+    this.exportService.downloadPdf(filename, title, this.reportHeaders(), rows, meta);
+    this.toastService.success(this.copy().exportStarted);
+  }
+
+  private reportHeaders(): string[] {
+    return [
+      this.copy().dashboardAnalyticsReportSection,
+      this.copy().dashboardAnalyticsReportMetric,
+      this.copy().dashboardAnalyticsReportValue
+    ];
+  }
+
+  private buildReportRows(): Array<Array<string | number>> {
+    const rows: Array<Array<string | number>> = [];
+
+    rows.push([
+      this.copy().dashboardAnalyticsPostsLabel,
+      this.copy().dashboardStatsTotalLabel,
+      this.totalPosts()
+    ]);
+    rows.push([
+      this.copy().dashboardAnalyticsPostsLabel,
+      this.copy().dashboardAnalyticsPublishedLabel,
+      this.publishedPosts()
+    ]);
+    rows.push([
+      this.copy().dashboardAnalyticsPostsLabel,
+      this.copy().dashboardAnalyticsDraftLabel,
+      this.draftPosts()
+    ]);
+    rows.push([
+      this.copy().dashboardAnalyticsPostsLabel,
+      this.copy().dashboardAnalyticsReviewLabel,
+      this.reviewPosts()
+    ]);
+
+    rows.push([
+      this.copy().dashboardAnalyticsUsersLabel,
+      this.copy().dashboardAnalyticsTotalUsersLabel,
+      this.totalUsers()
+    ]);
+    rows.push([
+      this.copy().dashboardAnalyticsUsersLabel,
+      this.copy().dashboardAnalyticsActiveUsersLabel,
+      this.activeUsers()
+    ]);
+    rows.push([
+      this.copy().dashboardAnalyticsUsersLabel,
+      this.copy().dashboardAnalyticsNewUsersLabel,
+      this.newUsersCount()
+    ]);
+
+    rows.push([
+      this.copy().dashboardAnalyticsLoginsLabel,
+      this.copy().dashboardAnalyticsRangeLabel.replace('{days}', String(this.activityWindowDays)),
+      this.loginCount()
+    ]);
+    rows.push([
+      this.copy().dashboardAnalyticsUserActivityLabel,
+      this.copy().dashboardAnalyticsRangeLabel.replace('{days}', String(this.activityWindowDays)),
+      this.userActivityCount()
+    ]);
+    rows.push([
+      this.copy().dashboardAnalyticsPostActivityLabel,
+      this.copy().dashboardAnalyticsRangeLabel.replace('{days}', String(this.activityWindowDays)),
+      this.postActivityCount()
+    ]);
+
+    this.topContent().forEach((post, index) => {
+      rows.push([
+        this.copy().dashboardAnalyticsTopContentLabel,
+        `${index + 1}. ${post.title}`,
+        this.formatDate(post.updatedAt)
+      ]);
+    });
+
+    return rows;
+  }
+
+  private exportDateStamp(): string {
+    return new Date().toISOString().slice(0, 10);
   }
 }
 
