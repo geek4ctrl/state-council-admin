@@ -47,7 +47,7 @@ import { ToastService } from '../../services/toast.service';
 
           <div class="post-body">
             <p class="post-excerpt">{{ blog.excerpt }}</p>
-            <div class="post-text">{{ blog.content }}</div>
+            <div class="post-text" [innerHTML]="blog.content"></div>
           </div>
 
           @if (blog.externalLink) {
@@ -207,7 +207,109 @@ import { ToastService } from '../../services/toast.service';
       font-size: 14px;
       color: var(--text);
       line-height: 1.8;
-      white-space: pre-wrap;
+    }
+
+    .post-text :deep(h1) {
+      font-size: 28px;
+      font-weight: 600;
+      margin: 24px 0 16px;
+      color: var(--text);
+    }
+
+    .post-text :deep(h2) {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 20px 0 14px;
+      color: var(--text);
+    }
+
+    .post-text :deep(h3) {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 18px 0 12px;
+      color: var(--text);
+    }
+
+    .post-text :deep(p) {
+      margin: 12px 0;
+      line-height: 1.8;
+    }
+
+    .post-text :deep(strong) {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .post-text :deep(em) {
+      font-style: italic;
+    }
+
+    .post-text :deep(u) {
+      text-decoration: underline;
+    }
+
+    .post-text :deep(s) {
+      text-decoration: line-through;
+    }
+
+    .post-text :deep(ul),
+    .post-text :deep(ol) {
+      margin: 16px 0;
+      padding-left: 32px;
+    }
+
+    .post-text :deep(li) {
+      margin: 8px 0;
+      line-height: 1.6;
+    }
+
+    .post-text :deep(blockquote) {
+      border-left: 4px solid var(--primary);
+      padding-left: 20px;
+      margin: 20px 0;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .post-text :deep(pre) {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+      margin: 16px 0;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+    }
+
+    .post-text :deep(code) {
+      background: var(--surface-alt);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+    }
+
+    .post-text :deep(pre code) {
+      background: none;
+      padding: 0;
+    }
+
+    .post-text :deep(a) {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+
+    .post-text :deep(a:hover) {
+      color: var(--primary-strong);
+    }
+
+    .post-text :deep(img) {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 20px 0;
+      display: block;
     }
 
     .post-link {

@@ -340,6 +340,24 @@ type AppCopy = {
   advancedFiltersTitle: string;
   advancedFiltersApply: string;
   advancedFiltersClear: string;
+  editorBold: string;
+  editorItalic: string;
+  editorUnderline: string;
+  editorStrike: string;
+  editorHeading: string;
+  editorHeading1: string;
+  editorHeading2: string;
+  editorHeading3: string;
+  editorNormal: string;
+  editorOrderedList: string;
+  editorBulletList: string;
+  editorAlign: string;
+  editorLink: string;
+  editorImage: string;
+  editorBlockquote: string;
+  editorCodeBlock: string;
+  editorClearFormat: string;
+  editorCharacters: string;
 };
 
 const translations: Record<Language, AppCopy> = {
@@ -680,7 +698,25 @@ const translations: Record<Language, AppCopy> = {
     searchLoadFilter: 'Load saved filter',
     advancedFiltersTitle: 'Advanced Filters',
     advancedFiltersApply: 'Apply Filters',
-    advancedFiltersClear: 'Clear Filters'
+    advancedFiltersClear: 'Clear Filters',
+    editorBold: 'Bold',
+    editorItalic: 'Italic',
+    editorUnderline: 'Underline',
+    editorStrike: 'Strikethrough',
+    editorHeading: 'Heading',
+    editorHeading1: 'Heading 1',
+    editorHeading2: 'Heading 2',
+    editorHeading3: 'Heading 3',
+    editorNormal: 'Normal',
+    editorOrderedList: 'Numbered list',
+    editorBulletList: 'Bullet list',
+    editorAlign: 'Text alignment',
+    editorLink: 'Insert link',
+    editorImage: 'Insert image',
+    editorBlockquote: 'Quote',
+    editorCodeBlock: 'Code block',
+    editorClearFormat: 'Clear formatting',
+    editorCharacters: 'characters'
   },
   fr: {
     logoText: 'Conseil d\'État de la RDC',
@@ -1019,7 +1055,25 @@ const translations: Record<Language, AppCopy> = {
     searchLoadFilter: 'Charger un filtre sauvegardé',
     advancedFiltersTitle: 'Filtres avancés',
     advancedFiltersApply: 'Appliquer les filtres',
-    advancedFiltersClear: 'Effacer les filtres'
+    advancedFiltersClear: 'Effacer les filtres',
+    editorBold: 'Gras',
+    editorItalic: 'Italique',
+    editorUnderline: 'Souligné',
+    editorStrike: 'Barré',
+    editorHeading: 'Titre',
+    editorHeading1: 'Titre 1',
+    editorHeading2: 'Titre 2',
+    editorHeading3: 'Titre 3',
+    editorNormal: 'Normal',
+    editorOrderedList: 'Liste numérotée',
+    editorBulletList: 'Liste à puces',
+    editorAlign: 'Alignement du texte',
+    editorLink: 'Insérer un lien',
+    editorImage: 'Insérer une image',
+    editorBlockquote: 'Citation',
+    editorCodeBlock: 'Bloc de code',
+    editorClearFormat: 'Effacer le formatage',
+    editorCharacters: 'caractères'
   }
 };
 
