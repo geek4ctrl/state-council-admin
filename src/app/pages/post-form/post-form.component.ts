@@ -7,10 +7,11 @@ import { AuthService } from '../../services/auth.service';
 import { LanguageService } from '../../services/language.service';
 import { ToastService } from '../../services/toast.service';
 import { BlogCategory } from '../../models/blog.model';
+import { RichTextEditorComponent } from '../../components/rich-text-editor/rich-text-editor.component';
 
 @Component({
   selector: 'app-post-form',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RichTextEditorComponent],
   template: `
     <div class="post-form-page">
       <div class="form-header">
@@ -101,16 +102,14 @@ import { BlogCategory } from '../../models/blog.model';
                 </div>
 
                 <div class="form-group full-width">
-                  <label for="content">{{ copy().postFormContentLabel }}</label>
-                  <textarea
-                    id="content"
+                  <app-rich-text-editor
+                    [label]="copy().postFormContentLabel"
+                    [placeholder]="copy().postFormContentPlaceholder"
                     [(ngModel)]="formData.content"
                     name="content"
-                    rows="8"
-                    [placeholder]="copy().postFormContentPlaceholder"
                     (ngModelChange)="onFormChange()"
-                    required
-                  ></textarea>
+                    [minHeight]="400"
+                  />
                 </div>
               </section>
 
@@ -325,7 +324,7 @@ import { BlogCategory } from '../../models/blog.model';
                 </span>
               </div>
               <p class="modal-excerpt">{{ formData.excerpt || copy().postFormPreviewExcerptPlaceholder }}</p>
-              <div class="modal-content">{{ formData.content || copy().postFormPreviewContentPlaceholder }}</div>
+              <div class="modal-content" [innerHTML]="formData.content || copy().postFormPreviewContentPlaceholder"></div>
             </div>
           </div>
         </div>
