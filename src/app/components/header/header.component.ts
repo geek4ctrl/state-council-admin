@@ -65,7 +65,7 @@ import { ThemeService } from '../../services/theme.service';
   styles: [`
     .header {
       height: 72px;
-      background: linear-gradient(180deg, var(--surface) 0%, var(--surface-elev) 100%);
+      background: var(--surface-1);
       border-bottom: 1px solid var(--border);
       padding: 0 32px;
       display: flex;
@@ -74,7 +74,6 @@ import { ThemeService } from '../../services/theme.service';
       position: sticky;
       top: 0;
       z-index: 10;
-      backdrop-filter: blur(12px);
       box-shadow: var(--shadow-soft);
     }
 
@@ -136,7 +135,7 @@ import { ThemeService } from '../../services/theme.service';
 
     .theme-toggle {
       border: 1px solid var(--border);
-      background: var(--surface-alt);
+      background: var(--surface-1);
       color: var(--text);
       padding: 8px 14px;
       border-radius: 999px;
@@ -146,7 +145,6 @@ import { ThemeService } from '../../services/theme.service';
       line-height: 1;
       cursor: pointer;
       transition: all 0.2s;
-      box-shadow: inset 0 0 0 1px rgba(124, 109, 243, 0.15);
     }
 
     .language-toggle {
@@ -154,10 +152,9 @@ import { ThemeService } from '../../services/theme.service';
       align-items: center;
       border: 1px solid var(--border);
       border-radius: 999px;
-      background: var(--surface-alt);
+      background: var(--surface-1);
       padding: 2px;
       gap: 2px;
-      box-shadow: inset 0 0 0 1px rgba(124, 109, 243, 0.15);
     }
 
     .language-option {
@@ -179,9 +176,8 @@ import { ThemeService } from '../../services/theme.service';
     }
 
     .language-option.is-active {
-      background: rgba(17, 24, 39, 0.12);
-      color: var(--text);
-      box-shadow: none;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
     }
 
     :host-context([data-theme="dark"]) .language-option.is-active {
