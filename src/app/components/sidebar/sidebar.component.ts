@@ -60,10 +60,9 @@ interface NavItem {
     .sidebar {
       width: 240px;
       height: 100vh;
-      background: linear-gradient(180deg, var(--surface) 0%, var(--surface-alt) 100%);
+      background: var(--surface-1);
       border-right: 1px solid var(--border);
-      box-shadow: var(--shadow-strong);
-      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow-soft);
       display: flex;
       flex-direction: column;
       position: fixed;
@@ -78,7 +77,7 @@ interface NavItem {
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--border);
-      background: linear-gradient(180deg, var(--surface) 0%, var(--surface-elev) 100%);
+      background: var(--surface-1);
       height: 72px;
       padding: 0 20px;
     }
@@ -144,25 +143,24 @@ interface NavItem {
       width: 100%;
       text-align: left;
       font-size: 13px;
-      border-radius: 12px;
+      border-radius: 6px;
       margin-bottom: 6px;
     }
 
     .nav-item:hover, .logout-btn:hover {
-      background: color-mix(in srgb, var(--primary) 12%, transparent);
-      color: var(--text);
-      transform: translateX(2px);
+      background: var(--accent-soft);
+      color: var(--accent-strong);
     }
 
     .nav-item.active {
-      background: rgba(17, 24, 39, 0.08);
-      color: var(--text);
+      background: var(--accent-soft);
+      color: var(--accent-strong);
       box-shadow: none;
       font-weight: 600;
     }
 
     .nav-item.active .nav-icon {
-      color: var(--primary-strong);
+      color: var(--accent-strong);
       opacity: 1;
     }
 

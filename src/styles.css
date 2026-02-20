@@ -18,8 +18,8 @@
   --text-subtle: #7a887f;
   --border: rgba(63, 90, 74, 0.16);
   --border-strong: rgba(63, 90, 74, 0.28);
-  --primary: var(--accent-strong);
-  --primary-strong: #2f4a3a;
+  --primary: #bf9874;
+  --primary-strong: #9b6b3f;
   --accent-1: #bf9874;
   --accent-2: #6f7f6d;
   --accent-3: #3f5a4a;
@@ -31,6 +31,7 @@
   --overlay: rgba(31, 42, 36, 0.42);
   --ring: 0 0 0 3px rgba(191, 152, 116, 0.45);
   --shadow-soft: 0 12px 30px rgba(19, 27, 23, 0.08);
+  --shadow-lift: 0 18px 45px rgba(19, 27, 23, 0.12);
   --shadow-strong: 0 18px 45px rgba(19, 27, 23, 0.12);
   --shadow-card: 0 10px 28px rgba(19, 27, 23, 0.1);
   --space-1: 12px;
@@ -41,6 +42,13 @@
 
 :root[data-theme="dark"] {
   color-scheme: dark;
+  --surface-0: #0b0f14;
+  --surface-1: #121821;
+  --ink-strong: #e5e7eb;
+  --ink-muted: #b6becd;
+  --accent: #0891b2;
+  --accent-strong: #0891b2;
+  --accent-soft: rgba(8, 145, 178, 0.2);
   --bg: #0b0f14;
   --surface: #121821;
   --surface-alt: #171f2a;
@@ -63,6 +71,7 @@
   --overlay: rgba(3, 7, 18, 0.68);
   --ring: 0 0 0 2px rgba(8, 145, 178, 0.4);
   --shadow-soft: 0 10px 28px rgba(3, 7, 18, 0.45);
+  --shadow-lift: 0 24px 60px rgba(3, 7, 18, 0.65);
   --shadow-strong: 0 24px 60px rgba(3, 7, 18, 0.65);
   --shadow-card: 0 16px 40px rgba(3, 7, 18, 0.55);
 }
@@ -128,7 +137,7 @@ a:hover {
   margin-bottom: 24px;
   padding: 16px;
   background: var(--surface);
-  border-radius: 12px;
+  border-radius: 6px;
   border: 1px solid var(--border);
   box-shadow: var(--shadow-soft);
 }
@@ -155,7 +164,7 @@ a:hover {
 
 .filter-control {
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 6px;
   padding: 8px 10px;
   font-size: 12px;
   background: var(--surface);
@@ -176,7 +185,7 @@ a:hover {
   margin: 24px auto;
   max-width: 520px;
   background: var(--surface);
-  border-radius: 12px;
+  border-radius: 6px;
   border: 1px solid var(--border);
   box-shadow: var(--shadow-soft);
   display: flex;
@@ -366,7 +375,7 @@ a:hover {
 
 .post-form-page .form-container {
   background: var(--surface);
-  border-radius: 12px;
+  border-radius: 6px;
   padding: 28px;
   box-shadow: var(--shadow-soft);
 }
@@ -531,7 +540,7 @@ a:hover {
 
 .post-form-page .image-preview {
   margin-top: 12px;
-  border-radius: 8px;
+  border-radius: 6px;
   overflow: hidden;
   max-height: 300px;
 }
@@ -565,7 +574,7 @@ a:hover {
   gap: 12px;
   margin-top: 28px;
   padding: 14px 16px;
-  border-radius: 12px;
+  border-radius: 6px;
   border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
   background: color-mix(in srgb, var(--surface) 92%, transparent);
   box-shadow: var(--shadow-soft);
@@ -574,29 +583,29 @@ a:hover {
 
 .post-form-page .btn-primary {
   background: var(--primary);
-  color: white;
+  color: #ffffff;
   border: none;
   padding: 12px 32px;
-  border-radius: 8px;
+  border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 2px 4px rgba(8, 145, 178, 0.2);
+  box-shadow: var(--shadow-soft);
 }
 
 .post-form-page .btn-primary:hover {
   background: var(--primary-strong);
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(8, 145, 178, 0.3);
+  box-shadow: var(--shadow-lift);
 }
 
 .post-form-page .btn-secondary {
-  background: var(--surface);
-  color: var(--text-muted);
-  border: 1px solid var(--border);
+  background: var(--surface-1);
+  color: var(--primary);
+  border: 1px solid color-mix(in srgb, var(--primary) 40%, var(--border));
   padding: 12px 24px;
-  border-radius: 8px;
+  border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -604,8 +613,8 @@ a:hover {
 }
 
 .post-form-page .btn-secondary:hover {
-  background: var(--surface-alt);
-  border-color: var(--text-muted);
+  background: color-mix(in srgb, var(--primary) 12%, var(--surface-1));
+  border-color: var(--primary);
 }
 
 .post-form-page .checkbox-group {
@@ -616,7 +625,7 @@ a:hover {
 
 .post-form-page .preview-panel {
   background: var(--surface-alt);
-  border-radius: 14px;
+  border-radius: 6px;
   padding: 18px;
   border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
   height: fit-content;
@@ -641,10 +650,10 @@ a:hover {
 
 .post-form-page .preview-card {
   background: var(--surface);
-  border-radius: 12px;
+  border-radius: 6px;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-soft);
 }
 
 .post-form-page .preview-image img {
@@ -696,19 +705,130 @@ a:hover {
 .post-form-page .modal-card {
   position: relative;
   background: var(--surface);
-  border-radius: 16px;
+  border-radius: 6px;
   width: min(860px, 92vw);
   max-height: 84vh;
   overflow: hidden;
-  box-shadow: var(--shadow-strong);
+  box-shadow: var(--shadow-soft);
   z-index: 1;
   display: flex;
   flex-direction: column;
 }
 
+.post-form-page .modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  background: var(--surface-elev);
+}
+
+.post-form-page .modal-header h2 {
+  margin: 0 0 6px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.post-form-page .modal-header p {
+  margin: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text-subtle);
+}
+
+.post-form-page .btn-icon {
+  border: 1px solid var(--border);
+  background: var(--surface-1);
+  color: var(--text);
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 18px;
+  padding: 0;
+}
+
+.post-form-page .btn-icon:hover {
+  border-color: var(--primary);
+  color: var(--primary-strong);
+  background: color-mix(in srgb, var(--primary) 10%, var(--surface-1));
+}
+
 .post-form-page .modal-body {
   padding: 20px 24px 28px;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.post-form-page .modal-image {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: var(--surface-alt);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+.post-form-page .modal-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.post-form-page .preview-category,
+.post-form-page .preview-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  border: 1px solid transparent;
+}
+
+.post-form-page .preview-category {
+  background: color-mix(in srgb, var(--primary) 12%, var(--surface));
+  color: var(--primary-strong);
+  border-color: color-mix(in srgb, var(--primary) 30%, var(--border));
+}
+
+.post-form-page .preview-status.is-draft {
+  background: color-mix(in srgb, var(--accent-3) 16%, var(--surface));
+  color: color-mix(in srgb, var(--accent-3) 70%, var(--text));
+  border-color: color-mix(in srgb, var(--accent-3) 30%, var(--border));
+}
+
+.post-form-page .preview-status.is-review {
+  background: color-mix(in srgb, var(--accent-2) 16%, var(--surface));
+  color: color-mix(in srgb, var(--accent-2) 70%, var(--text));
+  border-color: color-mix(in srgb, var(--accent-2) 30%, var(--border));
+}
+
+.post-form-page .preview-status.is-published {
+  background: color-mix(in srgb, var(--primary) 16%, var(--surface));
+  color: var(--primary-strong);
+  border-color: color-mix(in srgb, var(--primary) 30%, var(--border));
+}
+
+.post-form-page .modal-excerpt {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.6;
 }
 
 .post-form-page .modal-content {
@@ -788,7 +908,7 @@ a:hover {
 
   .filter-control {
     padding: 10px 12px;
-    border-radius: 10px;
+    border-radius: 6px;
     background: linear-gradient(180deg, var(--surface), var(--surface-elev));
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
   }
@@ -813,7 +933,7 @@ a:hover {
 .posts-page .page-hero {
   padding: 18px 20px 20px;
   margin: -8px 0 24px;
-  border-radius: 16px;
+  border-radius: 6px;
   background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 85%, transparent) 0%, var(--surface-elev) 100%);
   border: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
   box-shadow: var(--shadow-soft);
@@ -858,7 +978,7 @@ a:hover {
   align-items: end;
   padding: 12px;
   background: var(--surface);
-  border-radius: 12px;
+  border-radius: 6px;
   border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
 }
 
@@ -881,7 +1001,7 @@ a:hover {
   border: 1px solid var(--border);
   background: var(--surface-alt);
   color: var(--text);
-  border-radius: 10px;
+  border-radius: 6px;
   padding: 8px 10px;
   font-size: 11px;
   font-weight: 600;
@@ -925,10 +1045,11 @@ a:hover {
   color: var(--primary);
   font-size: 10px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
   cursor: pointer;
   padding: 6px 8px;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
 }
 
 .posts-page .posts-grid {
@@ -939,7 +1060,7 @@ a:hover {
 
 .posts-page .post-card {
   background: var(--surface);
-  border-radius: 12px;
+  border-radius: 6px;
   overflow: visible;
   box-shadow: var(--shadow-soft);
   transition: all 0.3s;
@@ -947,14 +1068,14 @@ a:hover {
 
 .posts-page .post-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-strong);
+  box-shadow: var(--shadow-lift);
 }
 
 .posts-page .post-image {
   position: relative;
   height: 200px;
   overflow: hidden;
-  border-radius: 12px 12px 0 0;
+  border-radius: 6px 6px 0 0;
 }
 
 .posts-page .post-image img {
@@ -1072,7 +1193,7 @@ a:hover {
   background: var(--surface);
   color: var(--text);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 6px;
   padding: 6px 8px;
   font-size: 10px;
   white-space: nowrap;
@@ -1139,8 +1260,8 @@ a:hover {
   left: 0;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  box-shadow: var(--shadow-strong);
+  border-radius: 6px;
+  box-shadow: var(--shadow-soft);
   min-width: 120px;
   z-index: 100;
   margin-bottom: 4px;
@@ -1223,10 +1344,10 @@ a:hover {
 
 .posts-page .btn-primary {
   background: var(--primary);
-  color: white;
+  color: #ffffff;
   border: none;
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -1234,21 +1355,21 @@ a:hover {
   align-items: center;
   gap: 8px;
   transition: all 0.2s;
-  box-shadow: 0 2px 8px rgba(8, 145, 178, 0.2);
+  box-shadow: var(--shadow-soft);
 }
 
 .posts-page .btn-primary:hover {
   background: var(--primary-strong);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
+  box-shadow: var(--shadow-lift);
 }
 
 .posts-page .btn-secondary {
-  background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 12%, var(--surface)) 0%, transparent 100%);
+  background: var(--surface-1);
   color: var(--primary);
-  border: 1px solid color-mix(in srgb, var(--primary) 35%, var(--border));
+  border: 1px solid color-mix(in srgb, var(--primary) 40%, var(--border));
   padding: 8px 16px;
-  border-radius: 6px;
+  border-radius: 999px;
   font-size: 11px;
   font-weight: 600;
   cursor: pointer;
@@ -1260,9 +1381,8 @@ a:hover {
 }
 
 .posts-page .btn-secondary:hover {
-  background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 22%, var(--surface)) 0%, color-mix(in srgb, var(--primary) 12%, var(--surface)) 100%);
+  background: color-mix(in srgb, var(--primary) 12%, var(--surface-1));
   border-color: var(--primary);
-  transform: translateX(2px);
 }
 
 .posts-page .btn-icon {
@@ -1282,8 +1402,8 @@ a:hover {
 }
 
 .posts-page .btn-icon.btn-kebab {
-  border-radius: 10px;
-  background: var(--surface-alt);
+  border-radius: 6px;
+  background: var(--surface-1);
 }
 
 .posts-page .kebab {
@@ -1299,8 +1419,8 @@ a:hover {
   min-width: 160px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  box-shadow: var(--shadow-strong);
+  border-radius: 6px;
+  box-shadow: var(--shadow-soft);
   padding: 6px;
   display: flex;
   flex-direction: column;
@@ -1315,7 +1435,7 @@ a:hover {
   font-size: 11px;
   font-weight: 600;
   text-align: left;
-  border-radius: 8px;
+  border-radius: 6px;
   color: var(--text);
   cursor: pointer;
   text-decoration: none;
@@ -1376,7 +1496,7 @@ a:hover {
   text-align: center;
   padding: 64px 20px;
   background: var(--surface);
-  border-radius: 12px;
+  border-radius: 6px;
   box-shadow: var(--shadow-soft);
   display: flex;
   flex-direction: column;
@@ -1428,10 +1548,10 @@ a:hover {
 
   .posts-page .post-card {
     padding: 0;
-    border-radius: 16px;
+    border-radius: 6px;
     border: 1px solid var(--border);
     background: linear-gradient(180deg, var(--surface), var(--surface-elev));
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--shadow-soft);
   }
 
   .posts-page .post-image {
@@ -1460,7 +1580,7 @@ a:hover {
     flex: 1 1 100%;
     min-width: 0;
     padding: 10px 14px;
-    border-radius: 10px;
+    border-radius: 999px;
   }
 
   .posts-page .btn-icon {
@@ -1468,7 +1588,7 @@ a:hover {
     border: 1px solid var(--border);
     width: 40px;
     height: 40px;
-    border-radius: 12px;
+    border-radius: 6px;
   }
 
   .posts-page .action-menu {
@@ -1489,35 +1609,37 @@ a:hover {
   margin-top: 40px;
   padding: 24px 32px;
   background: var(--surface);
-  border-radius: 12px;
+  border-radius: 6px;
   box-shadow: var(--shadow-soft);
   gap: 16px;
 }
 
 .posts-page .pagination-btn {
   background: var(--primary);
-  color: white;
+  color: #ffffff;
   border: none;
   padding: 12px 24px;
-  border-radius: 8px;
+  border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 2px 4px rgba(8, 145, 178, 0.2);
+  box-shadow: var(--shadow-soft);
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 140px;
+  justify-content: center;
 }
 
 .posts-page .pagination-btn:hover:not(:disabled) {
   background: var(--primary-strong);
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(8, 145, 178, 0.3);
+  box-shadow: var(--shadow-lift);
 }
 
 .posts-page .pagination-btn:disabled {
-  background: var(--surface-alt);
+  background: var(--surface-1);
   color: var(--text-subtle);
   cursor: not-allowed;
   box-shadow: none;
