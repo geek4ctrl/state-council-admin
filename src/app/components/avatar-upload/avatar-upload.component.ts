@@ -1,4 +1,4 @@
-import { Component, input, output, signal, inject } from '@angular/core';
+import { Component, input, output, signal, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LanguageService } from '../../services/language.service';
 import { getUserAvatar } from '../../models/user.model';
@@ -15,6 +15,11 @@ import { getUserAvatar } from '../../models/user.model';
           class="avatar-image"
           (error)="onImageError($event)"
         />
+        @if (isUploading()) {
+          <div class="upload-loading">
+            <div class="spinner"></div>
+          </div>
+        }
         <div class="avatar-overlay">
           <label for="avatar-input" class="upload-trigger">
             <span class="upload-icon">📷</span>
@@ -130,6 +135,30 @@ import { getUserAvatar } from '../../models/user.model';
 
     .avatar-preview:hover .avatar-overlay {
       opacity: 1;
+    }
+
+    .upload-loading {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      z-index: 10;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
 
     .upload-trigger {
@@ -285,20 +314,28 @@ export class AvatarUploadComponent {
   protected currentUrl = signal('');
   protected previewUrl = signal('');
   protected fallbackUrl = signal('');
+  protected isUploading = signal(false);
 
   constructor() {
-    // Initialize preview with current avatar or Gravatar
-    const email = this.userEmail();
-    const avatar = this.currentAvatarUrl();
-    
-    if (avatar) {
-      this.previewUrl.set(avatar);
-      this.currentUrl.set(avatar);
-    } else if (email) {
-      const gravatar = getUserAvatar({ email, avatar: undefined });
-      this.previewUrl.set(gravatar);
-      this.fallbackUrl.set(gravatar);
-    }
+    // React to input changes
+    effect(() => {
+      const email = this.userEmail();
+      const avatar = this.currentAvatarUrl();
+      
+      if (avatar) {
+        this.previewUrl.set(avatar);
+        this.currentUrl.set(avatar);
+      } else if (email) {
+        const gravatar = getUserAvatar({ email, avatar: undefined });
+        this.previewUrl.set(gravatar);
+        this.fallbackUrl.set(gravatar);
+      } else {
+        // Default placeholder
+        const defaultAvatar = 'https://ui-avatars.com/api/?name=User&size=240&background=007FFF&color=fff';
+        this.previewUrl.set(defaultAvatar);
+        this.fallbackUrl.set(defaultAvatar);
+      }
+    });
   }
 
   protected onFileSelected(event: Event): void {
@@ -322,14 +359,31 @@ export class AvatarUploadComponent {
       return;
     }
 
-    // Read file and create preview
+    // Show loading state immediately
+    this.isUploading.set(true);
+
+    // Create instant preview using object URL (much faster)
+    const objectUrl = URL.createObjectURL(file);
+    this.previewUrl.set(objectUrl);
+
+    // Read file in background for actual storage
     const reader = new FileReader();
     reader.onload = (e) => {
       const dataUrl = e.target?.result as string;
-      this.previewUrl.set(dataUrl);
       this.currentUrl.set(dataUrl);
       this.avatarChange.emit(dataUrl);
+      this.isUploading.set(false);
+      
+      // Clean up object URL
+      URL.revokeObjectURL(objectUrl);
     };
+    
+    reader.onerror = () => {
+      this.isUploading.set(false);
+      alert('Error reading file. Please try again.');
+      URL.revokeObjectURL(objectUrl);
+    };
+    
     reader.readAsDataURL(file);
   }
 
