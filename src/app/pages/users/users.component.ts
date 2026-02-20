@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth.service';
 import { ConfirmationService } from '../../services/confirmation.service';
 import { PasswordResetService } from '../../services/password-reset.service';
 import { ExportService } from '../../services/export.service';
+import { getUserAvatar } from '../../models/user.model';
 
 @Component({
   selector: 'app-users',
@@ -76,13 +77,19 @@ import { ExportService } from '../../services/export.service';
           <div class="users-list" role="list" aria-labelledby="users-title">
             @for (user of filteredUsers(); track user.id) {
               <div class="user-card" role="listitem">
-                <img
-                  class="user-avatar"
-                  [src]="user.avatar"
-                  [alt]="user.name"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <div class="avatar-wrapper">
+                  <img
+                    class="user-avatar"
+                    [src]="getUserAvatar(user)"
+                    [alt]="user.name"
+                    loading="lazy"
+                    decoding="async"
+                    (error)="onAvatarError($event, user.name)"
+                  />
+                  @if (user.role === 'admin') {
+                    <span class="admin-badge" title="Administrator">★</span>
+                  }
+                </div>
                 <div class="user-meta">
                   <div class="user-name">{{ user.name }}</div>
                   <div class="user-email">{{ user.email }}</div>
@@ -246,6 +253,31 @@ import { ExportService } from '../../services/export.service';
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid var(--border);
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+    }
+
+    .admin-badge {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 20px;
+      height: 20px;
+      background: var(--drc-yellow);
+      border: 2px solid var(--surface);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #000;
+      font-weight: 700;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     .user-meta {
@@ -712,6 +744,15 @@ export class UsersComponent implements OnInit {
     }
 
     return true;
+  }
+
+  protected getUserAvatar(user: { email: string; avatar?: string }): string {
+    return getUserAvatar(user, 96);
+  }
+
+  protected onAvatarError(event: Event, userName: string): void {
+    const img = event.target as HTMLImageElement;
+    img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&size=96&background=007FFF&color=fff`;
   }
 }
 
