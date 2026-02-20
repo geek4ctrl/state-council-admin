@@ -13,11 +13,11 @@ import { ThemeService } from '../../services/theme.service';
   template: `
     <div class="login-page">
       <div class="logo">
-        <svg width="180" height="40" viewBox="0 0 180 40" fill="none">
+        <svg width="280" height="40" viewBox="0 0 280 40" fill="none">
           <circle cx="20" cy="20" r="18" fill="currentColor"/>
           <path d="M15 15 L20 20 L25 15" stroke="white" stroke-width="2" fill="none"/>
           <path d="M15 23 L25 23" stroke="white" stroke-width="2"/>
-          <text x="45" y="27" font-family="Sora, sans-serif" font-size="16" font-weight="600" fill="currentColor">{{ copy().logoText }}</text>
+          <text x="45" y="27" font-family="Sora, sans-serif" font-size="15" font-weight="600" fill="currentColor">{{ copy().logoText }}</text>
         </svg>
       </div>
       <div class="utility-menu" [class.is-open]="utilityOpen()">
@@ -778,7 +778,7 @@ import { ThemeService } from '../../services/theme.service';
       }
 
       .logo svg {
-        width: 160px;
+        width: 260px;
         height: 36px;
       }
 

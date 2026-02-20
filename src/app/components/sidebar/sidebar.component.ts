@@ -58,7 +58,7 @@ interface NavItem {
   `,
   styles: [`
     .sidebar {
-      width: 240px;
+      width: 280px;
       height: 100vh;
       background: var(--surface-1);
       border-right: 1px solid var(--border);
@@ -88,11 +88,14 @@ interface NavItem {
     }
 
     .logo h1 {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
       color: var(--text);
-      letter-spacing: 0.3px;
+      letter-spacing: 0.2px;
       margin: 0;
+      line-height: 1.3;
+      white-space: normal;
+      word-wrap: break-word;
     }
 
     .close-btn {
@@ -149,12 +152,12 @@ interface NavItem {
 
     .nav-item:hover, .logout-btn:hover {
       background: var(--accent-soft);
-      color: var(--accent-strong);
+      color: var(--primary-strong);
     }
 
     .nav-item.active {
       background: var(--accent-soft);
-      color: var(--accent-strong);
+      color: var(--primary-strong);
       box-shadow: none;
       font-weight: 600;
     }
@@ -169,7 +172,15 @@ interface NavItem {
       margin-right: 12px;
       width: 24px;
       text-align: center;
-      opacity: 0.9;
+      opacity: 0.75;
+    }
+
+    .nav-item:hover .nav-icon {
+      opacity: 1;
+    }
+
+    .nav-item.active .nav-icon {
+      opacity: 1;
     }
 
     .nav-label {
