@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { AuditLogService } from '../../services/audit-log.service';
 import { AuditLog } from '../../models/audit-log.model';
 import { LanguageService } from '../../services/language.service';
+import { ExportService } from '../../services/export.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-audit-log',
@@ -14,7 +16,17 @@ import { LanguageService } from '../../services/language.service';
           <h1 id="audit-title">{{ copy().auditLogTitle }}</h1>
           <p class="subtitle">{{ copy().auditLogSubtitle }}</p>
         </div>
-        <span class="log-count">{{ total() }} {{ copy().auditLogCountSuffix }}</span>
+        <div class="header-actions">
+          <span class="log-count">{{ total() }} {{ copy().auditLogCountSuffix }}</span>
+          <div class="section-actions">
+            <button class="btn-secondary" type="button" (click)="exportAuditCsv()">
+              {{ copy().exportCsvText }}
+            </button>
+            <button class="btn-secondary" type="button" (click)="exportAuditPdf()">
+              {{ copy().exportPdfText }}
+            </button>
+          </div>
+        </div>
       </div>
 
       <div class="filters filter-panel" role="search" aria-label="Audit log filters">
@@ -168,6 +180,19 @@ import { LanguageService } from '../../services/language.service';
       margin-bottom: 24px;
     }
 
+    .header-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .section-actions {
+      display: inline-flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
     h1 {
       font-size: 30px;
       font-weight: 400;
@@ -304,6 +329,17 @@ import { LanguageService } from '../../services/language.service';
     }
 
     @media (max-width: 640px) {
+      .header-actions {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .section-actions {
+        width: 100%;
+        justify-content: flex-start;
+      }
             .pagination {
               flex-direction: column;
               gap: 12px;
@@ -404,6 +440,8 @@ import { LanguageService } from '../../services/language.service';
 export class AuditLogComponent implements OnInit {
   private auditLogService = inject(AuditLogService);
   private languageService = inject(LanguageService);
+  private exportService = inject(ExportService);
+  private toastService = inject(ToastService);
   protected copy = this.languageService.copy;
 
   protected logs = signal<AuditLog[]>([]);
@@ -555,6 +593,93 @@ export class AuditLogComponent implements OnInit {
     }
 
     return JSON.stringify(details);
+  }
+
+  protected async exportAuditCsv(): Promise<void> {
+    const logs = await this.fetchExportLogs();
+    if (!logs.length) {
+      this.toastService.info(this.copy().exportNoData);
+      return;
+    }
+
+    const filename = `audit-log-${this.exportDateStamp()}.csv`;
+    this.exportService.downloadCsv(filename, this.auditExportHeaders(), this.buildAuditRows(logs, false));
+    this.toastService.success(this.copy().exportStarted);
+  }
+
+  protected async exportAuditPdf(): Promise<void> {
+    const logs = await this.fetchExportLogs();
+    if (!logs.length) {
+      this.toastService.info(this.copy().exportNoData);
+      return;
+    }
+
+    const filename = `audit-log-${this.exportDateStamp()}.pdf`;
+    this.exportService.downloadPdf(
+      filename,
+      this.copy().auditLogTitle,
+      this.auditExportHeaders(),
+      this.buildAuditRows(logs, true)
+    );
+    this.toastService.success(this.copy().exportStarted);
+  }
+
+  private auditExportHeaders(): string[] {
+    const copy = this.copy();
+    return [
+      copy.auditLogTableTime,
+      copy.auditLogTableActor,
+      copy.auditLogTableAction,
+      copy.auditLogTableEntity,
+      copy.auditLogTableIp,
+      copy.auditLogTableDetails
+    ];
+  }
+
+  private buildAuditRows(logs: AuditLog[], useLocaleDates: boolean): Array<Array<string>> {
+    return logs.map((log) => [
+      useLocaleDates ? this.formatDate(log.createdAt) : log.createdAt.toISOString(),
+      this.formatActor(log),
+      this.formatAction(log.action),
+      this.formatEntity(log.entityType),
+      log.ip ?? this.copy().commonNotAvailable,
+      this.formatDetails(log.details)
+    ]);
+  }
+
+  private async fetchExportLogs(): Promise<AuditLog[]> {
+    const query = this.buildAuditQuery();
+    try {
+      const { logs } = await this.auditLogService.listLogs({
+        ...query,
+        limit: 200,
+        offset: 0
+      });
+      return logs;
+    } catch {
+      this.toastService.error(this.copy().exportFailed);
+      return [];
+    }
+  }
+
+  private buildAuditQuery() {
+    const actorInput = this.actorQuery().trim();
+    const actorId = actorInput && Number.isFinite(Number(actorInput)) ? Number(actorInput) : undefined;
+    const qParts = [this.searchQuery().trim(), actorId ? '' : actorInput].filter(Boolean);
+    const q = qParts.length > 0 ? qParts.join(' ') : undefined;
+
+    return {
+      action: this.actionFilter() || undefined,
+      entityType: this.entityFilter() || undefined,
+      actorId,
+      from: this.dateFrom() || undefined,
+      to: this.dateTo() || undefined,
+      q
+    };
+  }
+
+  private exportDateStamp(): string {
+    return new Date().toISOString().slice(0, 10);
   }
 
   private resetPageAndReload(): void {

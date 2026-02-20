@@ -6,6 +6,7 @@ import { ToastService } from '../../services/toast.service';
 import { AuthService } from '../../services/auth.service';
 import { ConfirmationService } from '../../services/confirmation.service';
 import { PasswordResetService } from '../../services/password-reset.service';
+import { ExportService } from '../../services/export.service';
 
 @Component({
   selector: 'app-users',
@@ -16,8 +17,18 @@ import { PasswordResetService } from '../../services/password-reset.service';
 
       <div class="users-section" aria-labelledby="users-title">
         <div class="section-header">
-          <h2>{{ copy().dashboardUsersTitle }}</h2>
-          <span class="users-count">{{ filteredUsers().length }} {{ copy().dashboardUsersCountSuffix }}</span>
+          <div class="title-stack">
+            <h2>{{ copy().dashboardUsersTitle }}</h2>
+            <span class="users-count">{{ filteredUsers().length }} {{ copy().dashboardUsersCountSuffix }}</span>
+          </div>
+          <div class="section-actions">
+            <button class="btn-secondary" type="button" (click)="exportUsersCsv()">
+              {{ copy().exportCsvText }}
+            </button>
+            <button class="btn-secondary" type="button" (click)="exportUsersPdf()">
+              {{ copy().exportPdfText }}
+            </button>
+          </div>
         </div>
 
         <div class="filters filter-panel" role="search" [attr.aria-label]="copy().usersFiltersAria">
@@ -165,6 +176,19 @@ import { PasswordResetService } from '../../services/password-reset.service';
       margin-bottom: 24px;
       padding-bottom: 16px;
       border-bottom: 1px solid var(--border);
+    }
+
+    .title-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .section-actions {
+      display: inline-flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
     }
 
     .section-header h2 {
@@ -386,6 +410,10 @@ import { PasswordResetService } from '../../services/password-reset.service';
         gap: 12px;
       }
 
+      .section-actions {
+        width: 100%;
+      }
+
       .section-header h2 {
         font-size: 16px;
       }
@@ -441,6 +469,7 @@ export class UsersComponent implements OnInit {
   private toastService = inject(ToastService);
   private confirmationService = inject(ConfirmationService);
   private passwordResetService = inject(PasswordResetService);
+  private exportService = inject(ExportService);
 
   protected users = this.userService.getUsers();
   protected searchQuery = signal('');
@@ -605,6 +634,61 @@ export class UsersComponent implements OnInit {
     this.roleFilter.set('');
     this.dateFrom.set('');
     this.dateTo.set('');
+  }
+
+  protected exportUsersCsv(): void {
+    const rows = this.buildUserRows(false);
+    if (!rows.length) {
+      this.toastService.info(this.copy().exportNoData);
+      return;
+    }
+
+    const filename = `users-${this.exportDateStamp()}.csv`;
+    this.exportService.downloadCsv(filename, this.userExportHeaders(), rows);
+    this.toastService.success(this.copy().exportStarted);
+  }
+
+  protected exportUsersPdf(): void {
+    const rows = this.buildUserRows(true);
+    if (!rows.length) {
+      this.toastService.info(this.copy().exportNoData);
+      return;
+    }
+
+    const filename = `users-${this.exportDateStamp()}.pdf`;
+    this.exportService.downloadPdf(
+      filename,
+      this.copy().dashboardUsersTitle,
+      this.userExportHeaders(),
+      rows
+    );
+    this.toastService.success(this.copy().exportStarted);
+  }
+
+  private userExportHeaders(): string[] {
+    const copy = this.copy();
+    return [
+      copy.dashboardUsersNameLabel,
+      copy.dashboardUsersEmailLabel,
+      copy.dashboardUsersRoleLabel,
+      copy.usersStatusLabel,
+      copy.dashboardUsersJoinedLabel
+    ];
+  }
+
+  private buildUserRows(useLocaleDates: boolean): Array<Array<string>> {
+    const copy = this.copy();
+    return this.filteredUsers().map((user) => [
+      user.name,
+      user.email,
+      user.role === 'admin' ? copy.usersRoleAdmin : copy.usersRoleUser,
+      user.locked ? copy.usersStatusLocked : copy.usersStatusActive,
+      useLocaleDates ? this.formatDate(user.createdAt) : user.createdAt.toISOString()
+    ]);
+  }
+
+  private exportDateStamp(): string {
+    return new Date().toISOString().slice(0, 10);
   }
 
   private matchesDateRange(date: Date, from: string, to: string): boolean {

@@ -67,6 +67,31 @@ type AppCopy = {
   dashboardStatsEventsLabel: string;
   dashboardStatsAnnouncementsLabel: string;
   dashboardStatsNewsLabel: string;
+  dashboardAnalyticsTitle: string;
+  dashboardAnalyticsSubtitle: string;
+  dashboardAnalyticsLoading: string;
+  dashboardAnalyticsError: string;
+  dashboardAnalyticsRangeLabel: string;
+  dashboardAnalyticsPostsLabel: string;
+  dashboardAnalyticsPublishedLabel: string;
+  dashboardAnalyticsDraftLabel: string;
+  dashboardAnalyticsReviewLabel: string;
+  dashboardAnalyticsUsersLabel: string;
+  dashboardAnalyticsTotalUsersLabel: string;
+  dashboardAnalyticsActiveUsersLabel: string;
+  dashboardAnalyticsNewUsersLabel: string;
+  dashboardAnalyticsLoginsLabel: string;
+  dashboardAnalyticsUserActivityLabel: string;
+  dashboardAnalyticsPostActivityLabel: string;
+  dashboardAnalyticsTopContentLabel: string;
+  dashboardAnalyticsTopContentHint: string;
+  dashboardAnalyticsTopContentEmpty: string;
+  dashboardAnalyticsReportTitle: string;
+  dashboardAnalyticsReportSection: string;
+  dashboardAnalyticsReportMetric: string;
+  dashboardAnalyticsReportValue: string;
+  dashboardReportExportCsv: string;
+  dashboardReportExportPdf: string;
   dashboardUsersTitle: string;
   dashboardUsersCountSuffix: string;
   dashboardUsersLoading: string;
@@ -217,6 +242,13 @@ type AppCopy = {
   postFormPreviewContentPlaceholder: string;
   postFormPreviewImageFallback: string;
   commonNotAvailable: string;
+  exportCsvText: string;
+  exportPdfText: string;
+  exportNoData: string;
+  exportStarted: string;
+  exportFailed: string;
+  exportCreatedLabel: string;
+  exportUpdatedLabel: string;
   settingsTitle: string;
   settingsProfileTitle: string;
   settingsProfileSubtitle: string;
@@ -363,6 +395,31 @@ const translations: Record<Language, AppCopy> = {
     dashboardStatsEventsLabel: 'Events',
     dashboardStatsAnnouncementsLabel: 'Announcements',
     dashboardStatsNewsLabel: 'News',
+    dashboardAnalyticsTitle: 'Analytics',
+    dashboardAnalyticsSubtitle: 'Operational overview',
+    dashboardAnalyticsLoading: 'Loading analytics...',
+    dashboardAnalyticsError: 'Failed to load analytics.',
+    dashboardAnalyticsRangeLabel: 'Last {days} days',
+    dashboardAnalyticsPostsLabel: 'Posts',
+    dashboardAnalyticsPublishedLabel: 'Published',
+    dashboardAnalyticsDraftLabel: 'Drafts',
+    dashboardAnalyticsReviewLabel: 'In review',
+    dashboardAnalyticsUsersLabel: 'Users',
+    dashboardAnalyticsTotalUsersLabel: 'Total users',
+    dashboardAnalyticsActiveUsersLabel: 'Active users',
+    dashboardAnalyticsNewUsersLabel: 'New users',
+    dashboardAnalyticsLoginsLabel: 'Logins',
+    dashboardAnalyticsUserActivityLabel: 'User activity',
+    dashboardAnalyticsPostActivityLabel: 'Post activity',
+    dashboardAnalyticsTopContentLabel: 'Top content',
+    dashboardAnalyticsTopContentHint: 'Recent updates',
+    dashboardAnalyticsTopContentEmpty: 'No published posts yet.',
+    dashboardAnalyticsReportTitle: 'Dashboard report',
+    dashboardAnalyticsReportSection: 'Section',
+    dashboardAnalyticsReportMetric: 'Metric',
+    dashboardAnalyticsReportValue: 'Value',
+    dashboardReportExportCsv: 'Export report (CSV)',
+    dashboardReportExportPdf: 'Export report (PDF)',
     dashboardUsersTitle: 'Users',
     dashboardUsersCountSuffix: 'users',
     dashboardUsersLoading: 'Loading users...',
@@ -513,6 +570,13 @@ const translations: Record<Language, AppCopy> = {
     postFormPreviewContentPlaceholder: 'Full content preview will appear here.',
     postFormPreviewImageFallback: 'Preview not available',
     commonNotAvailable: 'N/A',
+    exportCsvText: 'Export CSV',
+    exportPdfText: 'Export PDF',
+    exportNoData: 'Nothing to export.',
+    exportStarted: 'Export started.',
+    exportFailed: 'Export failed. Please try again.',
+    exportCreatedLabel: 'Created',
+    exportUpdatedLabel: 'Updated',
     settingsTitle: 'Settings',
     settingsProfileTitle: 'Profile Information',
     settingsProfileSubtitle: 'Manage your profile details',
@@ -657,6 +721,31 @@ const translations: Record<Language, AppCopy> = {
     dashboardStatsEventsLabel: 'Événements',
     dashboardStatsAnnouncementsLabel: 'Annonces',
     dashboardStatsNewsLabel: 'Actualités',
+    dashboardAnalyticsTitle: 'Analytique',
+    dashboardAnalyticsSubtitle: 'Vue d’ensemble opérationnelle',
+    dashboardAnalyticsLoading: 'Chargement des statistiques...',
+    dashboardAnalyticsError: 'Impossible de charger les statistiques.',
+    dashboardAnalyticsRangeLabel: 'Derniers {days} jours',
+    dashboardAnalyticsPostsLabel: 'Publications',
+    dashboardAnalyticsPublishedLabel: 'Publiées',
+    dashboardAnalyticsDraftLabel: 'Brouillons',
+    dashboardAnalyticsReviewLabel: 'En revue',
+    dashboardAnalyticsUsersLabel: 'Utilisateurs',
+    dashboardAnalyticsTotalUsersLabel: 'Utilisateurs totaux',
+    dashboardAnalyticsActiveUsersLabel: 'Utilisateurs actifs',
+    dashboardAnalyticsNewUsersLabel: 'Nouveaux utilisateurs',
+    dashboardAnalyticsLoginsLabel: 'Connexions',
+    dashboardAnalyticsUserActivityLabel: 'Activité utilisateurs',
+    dashboardAnalyticsPostActivityLabel: 'Activité publications',
+    dashboardAnalyticsTopContentLabel: 'Contenus phares',
+    dashboardAnalyticsTopContentHint: 'Mises à jour récentes',
+    dashboardAnalyticsTopContentEmpty: 'Aucune publication publiée pour le moment.',
+    dashboardAnalyticsReportTitle: 'Rapport du tableau de bord',
+    dashboardAnalyticsReportSection: 'Section',
+    dashboardAnalyticsReportMetric: 'Indicateur',
+    dashboardAnalyticsReportValue: 'Valeur',
+    dashboardReportExportCsv: 'Exporter le rapport (CSV)',
+    dashboardReportExportPdf: 'Exporter le rapport (PDF)',
     dashboardUsersTitle: 'Utilisateurs',
     dashboardUsersCountSuffix: 'utilisateurs',
     dashboardUsersLoading: 'Chargement des utilisateurs...',
@@ -807,6 +896,13 @@ const translations: Record<Language, AppCopy> = {
     postFormPreviewContentPlaceholder: 'Le contenu complet s\'affichera ici.',
     postFormPreviewImageFallback: 'Aperçu non disponible',
     commonNotAvailable: 'N/A',
+    exportCsvText: 'Exporter en CSV',
+    exportPdfText: 'Exporter en PDF',
+    exportNoData: 'Rien à exporter.',
+    exportStarted: 'Export en cours.',
+    exportFailed: 'Échec de l’export. Veuillez réessayer.',
+    exportCreatedLabel: 'Créé',
+    exportUpdatedLabel: 'Mis à jour',
     settingsTitle: 'Paramètres',
     settingsProfileTitle: 'Informations du profil',
     settingsProfileSubtitle: 'Gérer votre profil',
