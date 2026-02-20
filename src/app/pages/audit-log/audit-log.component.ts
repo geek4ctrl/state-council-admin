@@ -190,11 +190,11 @@ import { LanguageService } from '../../services/language.service';
     }
 
     .btn-secondary {
-      background: var(--surface-alt);
-      color: var(--text);
-      border: 1px solid var(--border);
+      background: var(--surface-1);
+      color: var(--primary);
+      border: 1px solid color-mix(in srgb, var(--primary) 40%, var(--border));
       padding: 8px 16px;
-      border-radius: 6px;
+      border-radius: 999px;
       font-size: 11px;
       font-weight: 600;
       cursor: pointer;
@@ -202,13 +202,13 @@ import { LanguageService } from '../../services/language.service';
     }
 
     .btn-secondary:hover {
-      background: color-mix(in srgb, var(--primary) 10%, var(--surface-alt));
+      background: color-mix(in srgb, var(--primary) 12%, var(--surface-1));
       border-color: var(--primary);
     }
 
     .table-wrapper {
       background: var(--surface);
-      border-radius: 12px;
+      border-radius: 6px;
       padding: 8px;
       border: 1px solid var(--border);
       box-shadow: var(--shadow-soft);
@@ -282,12 +282,15 @@ import { LanguageService } from '../../services/language.service';
     .pagination-btn {
       background: var(--surface-alt);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 999px;
       padding: 8px 12px;
       font-size: 11px;
       font-weight: 600;
       color: var(--text);
       cursor: pointer;
+      min-width: 140px;
+      display: inline-flex;
+      justify-content: center;
     }
 
     .pagination-btn:disabled {
@@ -301,6 +304,19 @@ import { LanguageService } from '../../services/language.service';
     }
 
     @media (max-width: 640px) {
+            .pagination {
+              flex-direction: column;
+              gap: 12px;
+            }
+
+            .pagination-btn {
+              width: 100%;
+            }
+
+            .pagination-info {
+              order: -1;
+            }
+
       .filters {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -338,10 +354,10 @@ import { LanguageService } from '../../services/language.service';
       .audit-table tr {
         background: var(--surface);
         border: 1px solid var(--border);
-        border-radius: 14px;
+        border-radius: 6px;
         padding: 14px 16px;
         margin-bottom: 12px;
-        box-shadow: var(--shadow-card);
+        box-shadow: var(--shadow-soft);
       }
 
       .audit-table td {

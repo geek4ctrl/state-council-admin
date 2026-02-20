@@ -153,7 +153,7 @@ import { PasswordResetService } from '../../services/password-reset.service';
 
     .users-section {
       background: var(--surface);
-      border-radius: 12px;
+      border-radius: 6px;
       padding: 32px;
       box-shadow: var(--shadow-soft);
     }
@@ -188,11 +188,11 @@ import { PasswordResetService } from '../../services/password-reset.service';
     }
 
     .btn-secondary {
-      background: var(--surface-alt);
-      color: var(--text);
-      border: 1px solid var(--border);
+      background: var(--surface-1);
+      color: var(--primary);
+      border: 1px solid color-mix(in srgb, var(--primary) 40%, var(--border));
       padding: 8px 16px;
-      border-radius: 6px;
+      border-radius: 999px;
       font-size: 11px;
       font-weight: 600;
       cursor: pointer;
@@ -200,7 +200,7 @@ import { PasswordResetService } from '../../services/password-reset.service';
     }
 
     .btn-secondary:hover {
-      background: color-mix(in srgb, var(--primary) 10%, var(--surface-alt));
+      background: color-mix(in srgb, var(--primary) 12%, var(--surface-1));
       border-color: var(--primary);
     }
 
@@ -210,9 +210,10 @@ import { PasswordResetService } from '../../services/password-reset.service';
       align-items: center;
       gap: 16px;
       padding: 16px;
-      border-radius: 12px;
-      background: var(--surface-alt);
+      border-radius: 6px;
+      background: var(--surface-1);
       border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
     }
 
     .user-avatar {
@@ -326,11 +327,11 @@ import { PasswordResetService } from '../../services/password-reset.service';
     }
 
     .btn-action {
-      background: var(--surface);
-      color: var(--text);
-      border: 1px solid var(--border);
+      background: var(--surface-1);
+      color: var(--primary);
+      border: 1px solid color-mix(in srgb, var(--primary) 40%, var(--border));
       padding: 6px 10px;
-      border-radius: 6px;
+      border-radius: 999px;
       font-size: 10px;
       font-weight: 600;
       cursor: pointer;
@@ -345,7 +346,8 @@ import { PasswordResetService } from '../../services/password-reset.service';
 
     .btn-action:hover:not(:disabled) {
       border-color: var(--primary);
-      color: var(--primary);
+      color: var(--primary-strong);
+      background: color-mix(in srgb, var(--primary) 12%, var(--surface-1));
     }
 
     .btn-action:disabled {
@@ -392,9 +394,9 @@ import { PasswordResetService } from '../../services/password-reset.service';
         grid-template-columns: 44px 1fr;
         padding: 14px;
         gap: 12px;
-        border-radius: 14px;
-        background: linear-gradient(180deg, var(--surface-alt), color-mix(in srgb, var(--surface) 70%, var(--surface-alt)));
-        box-shadow: var(--shadow-card);
+        border-radius: 6px;
+        background: var(--surface-1);
+        box-shadow: var(--shadow-soft);
       }
 
       .user-avatar {
@@ -411,7 +413,7 @@ import { PasswordResetService } from '../../services/password-reset.service';
         flex-direction: row;
         justify-content: space-between;
         padding: 8px 10px;
-        border-radius: 10px;
+        border-radius: 6px;
         background: var(--surface);
         border: 1px solid var(--border);
       }
@@ -426,7 +428,7 @@ import { PasswordResetService } from '../../services/password-reset.service';
         flex: 1 1 100%;
         text-align: center;
         padding: 10px 12px;
-        border-radius: 10px;
+        border-radius: 999px;
         font-size: 11px;
       }
     }
