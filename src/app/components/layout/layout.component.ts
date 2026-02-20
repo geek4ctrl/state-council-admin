@@ -49,7 +49,7 @@ import { CommonModule } from '@angular/common';
     }
 
     .main-content {
-      margin-left: 240px;
+      margin-left: 280px;
       flex: 1;
       display: flex;
       flex-direction: column;
